@@ -1,4 +1,4 @@
-# Space UI [![Build Status](https://travis-ci.org/CodeAdventure/meteor-space-ui.svg?branch=master)](https://travis-ci.org/CodeAdventure/meteor-space-ui)
+# Space UI [![Build Status](https://travis-ci.org/CodeAdventure/space-ui.svg?branch=master)](https://travis-ci.org/CodeAdventure/space-ui)
 
 Reactive UI based on Iron Router and the Flux architecture.
 

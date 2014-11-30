@@ -10,7 +10,7 @@ class Space.ui.RouteController extends Space.ui.ActionHandler
 
   onDependenciesReady: ->
     super()
-    if @configure? then @configure()
+    @configure()
 
   configure: ->
 
@@ -18,7 +18,7 @@ class Space.ui.RouteController extends Space.ui.ActionHandler
     template = @templates[mapping.template]
     @templateMediatorMap.map(template).toMediator mapping.mediator
 
-  addRoute: (route) -> @router.map -> @route route.name, route
+  addRoute: (route) -> @router.route route.path, route
 
   addMediatedRoute: (config) ->
 

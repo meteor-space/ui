@@ -17,13 +17,13 @@ a front-end framework that could compete with [Angular](https://angularjs.org/) 
 The templating package of Meteor is somewhat comparable with [React.js](http://facebook.github.io/react/)
 but lacks a lot of philosophy and good architectural patterns. In big applications things can 
 get ugly pretty quickly when using standard templates / managers. They are hard to test and compose, force you
-to do data fetching and processing in the view layer (where it doesn't belong) and sport a horrible syntax.
+to do data fetching and processing in the view layer (where it doesn't belong) and sport a horrible syntax
+(`Template.my_view.events()`).
 
 At the same time one can write beautiful and testable Meteor applications when carefully sticking
 to the core ideas of the [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed
-by Facebook. The cool thing is: `space:ui` doesn't add huge amounts of code to provide you with
-all buildings blocks to implement Flux, so its a very lightweight alternative to using Angular or React
-with as your UI layer in Meteor.
+by Facebook. The cool thing is you don't have to add huge amounts of code to provide you with
+all buildings blocks to implement Flux, so its a very lightweight alternative to using Angular or React as your UI layer in Meteor.
 
 ### Centralized Logic
 The core idea of Flux is to centralize the places where the application logic lives. 
@@ -31,8 +31,72 @@ The core idea of Flux is to centralize the places where the application logic li
 deleted. They are what you would call *model* in other frameworks, except that they don't have to map
 directly to the concept of a *thing* (e.g: Todo). Stores represent a business domain within your application.
 The [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC) only has a 
-single [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) because the whole business logic of a TodoMVC application easily fits into 64 lines
-of CoffeeScript if you use this pattern ;-)
+single [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) because the whole business logic of a TodoMVC application easily fits into 60 lines
+of CoffeeScript if you use this pattern:
+
+```CoffeeScript
+class @TodosStore extends Space.ui.Store
+
+  Dependencies:
+    todosCollection: 'TodosCollection'
+    actions: 'Actions'
+    meteor: 'Meteor'
+
+  FILTERS:
+    ALL: 'all'
+    ACTIVE: 'active'
+    COMPLETED: 'completed'
+
+  onDependenciesReady: ->
+    @todos = @todosCollection.get()
+    super()
+
+  setInitialState: -> {
+    todos: @todos.find()
+    completedTodos: @todos.find isCompleted: true
+    activeTodos: @todos.find isCompleted: false
+    activeFilter: @FILTERS.ALL
+  }
+
+  configure: ->
+
+    @bindActions(
+      @actions.TOGGLE_TODO, '_toggleTodo'
+      @actions.CREATE_TODO, '_createTodo'
+      @actions.DESTROY_TODO, '_destroyTodo'
+      @actions.CHANGE_TODO_TITLE, '_changeTodoTitle'
+      @actions.TOGGLE_ALL_TODOS, '_toggleAll'
+      @actions.CLEAR_COMPLETED_TODOS, '_clearCompleted'
+      @actions.SET_FILTER, '_setFilter'
+    )
+
+  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
+
+  _createTodo: (title) -> @todos.insert title: title, isCompleted: false
+
+  _destroyTodo: (todo) -> @todos.remove todo._id
+
+  _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle 
+
+  _toggleAll: -> @meteor.call 'toggle-all-todos'
+
+  _clearCompleted: -> @meteor.call 'clear-completed-todos'
+
+  _setFilter: (filter) ->
+
+    # only continue if it changed
+    if @getState('activeFilter') is filter then return
+
+    switch filter
+
+      when @FILTERS.ALL then @setState 'todos', @todos.find()
+      when @FILTERS.ACTIVE then @setState 'todos', @todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @setState 'todos', @todos.find isCompleted: true
+
+      else return # only accept valid options
+
+    @setState 'activeFilter', filter
+```
 
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
@@ -42,33 +106,7 @@ if we had a mature view layer like React.js to compose our Meteor UIs and carefu
 into the managing views. The data would always flow in one direction: **Stores** -> **View Controllers** -> 
 **Templates** -> (events) -> **View Controllers** -> (actions) -> **Dispatcher** -> **Stores** (mutate data and continue cycle).
 
-### Explicit Messaging
-As you can see, the most important addition to the standard Meteor templates are the **ViewControllers* which
-provide data to their managed sub-templates and react to events that bubble up. They turn the events into 
-business actions and dispatch them to the rest of the application. The stores receive the actions and act.
-This makes the features of your app extremely explicit, you can see everything that the TodoMVC application
-is capable of doing in [7 lines of actions definition](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/actions.coffee).
-
-Using messaging between the various layers of your application is an effective way to decouple them.
-The stores don't know anything about other parts of the system (core domain). View Controllers know
-how to get data from stores and to interpret events from their child templates. Templates don't know
-anything but to display given data and publish events about user interaction with buttons etc.
-
-Each layer plays an important role and the implementation details can be changed easily. This is how
-you can refactor huge parts of your application without getting crazy.
-
-### Testability & Dependency Injection
-There is one thing Angular.js got really right: building dependeny injection into the heart of the framework.
-The [Space architecture](https://github.com/CodeAdventure/meteor-space) goes a similar route and `space:ui`
-follows the conventions: 
-
-1. No global variables
-2. Clear dependency declarations 
-3. Don't force me into your coding-style (Biggest mistake of Angular.js)
-
-The result speaks for itself. This is the **ViewController** for the todo list
-of the TodoMVC example application built with `space:ui`:
-
+This is the **ViewController** for the todo list of the TodoMVC example:
 ```CoffeeScript
 class @TodoListController extends Space.ui.ViewController
 
@@ -102,6 +140,47 @@ class @TodoListController extends Space.ui.ViewController
 
   toggleAll: -> @dispatch @actions.TOGGLE_ALL_TODOS
 ```
+
+### Explicit Messaging
+As you can see, the most important addition to the standard Meteor templates are the **ViewControllers** which
+provide data to their managed sub-templates and react to events that bubble up. They turn the events into 
+business actions and dispatch them to the rest of the application. The stores receive the actions and act.
+This makes the features of your app extremely explicit, you can see everything that the TodoMVC application
+is capable of doing in [7 lines of actions definition](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/actions.coffee).
+
+Using messaging between the various layers of your application is an effective way to decouple them.
+The stores don't know anything about other parts of the system (core domain). View Controllers know
+how to get data from stores and to interpret events from their child templates. Templates don't know
+anything but to display given data and publish events about user interaction with buttons etc.
+
+Each layer plays an important role and the implementation details can be changed easily. This is how
+you can refactor huge parts of your application without getting crazy.
+
+### Testability & Dependency Injection
+There is one thing Angular.js got really right: building dependeny injection into the heart of the framework.
+The [Space architecture](https://github.com/CodeAdventure/meteor-space) goes a similar route and `space:ui`
+follows the conventions: 
+
+1. No global variables
+2. Clear dependency declarations 
+3. Don't force me into your coding-style (Biggest mistake of Angular.js)
+
+```CoffeeScript
+class @RouteController extends Space.ui.RouteController
+
+  Dependencies:
+    indexRoute: 'IndexRoute'
+    router: 'Space.ui.Router'
+
+  configure: ->
+
+    # redirect to show all todos by default
+    @router.route '/', -> @redirect '/all'
+
+    # the index route handles all filter cases
+    @addRoute @indexRoute
+```
+
 You might realize that this is a standard CoffeeScript class which simply extends
 a core class of the package. You will never see anything else while working with `space:ui`, 
 because I think the biggest mistake a lot of frameworks make, is to force you into a specific way
@@ -112,6 +191,43 @@ like annotations that can be used by other parts of the application to wire up t
 at runtime. The cool thing is: the instance doesn't need to know where the concrete dependencies
 came from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance) 
 (the dependency injection framework included with `space:ui`) or added by your test setup.
+
+Here you see where the "magic" happens and all the parts of your application are wired up:
+
+```CoffeeScript
+class @TodoMVC extends Space.Application
+
+  RequiredModules: ['Space.ui']
+
+  Dependencies:
+    templates: 'Template'
+    templateMediatorMap: 'Space.ui.TemplateMediatorMap'
+
+  configure: ->
+
+    # DATA + LOGIC
+    @injector.map(TodosCollection).asSingleton()
+    @injector.map(TodosStore).asSingleton()
+    @injector.map('Actions').toStaticValue ACTIONS
+
+    # ROUTING
+    @injector.map(IndexRoute).asSingleton()
+    @injector.map(RouteController).asSingleton()
+
+    # VIEWS
+    @injector.map(TodoListController).asSingleton()
+    @injector.map(InputController).asSingleton()
+    @injector.map(FooterController).asSingleton()
+
+    # Wire up Meteor templates with view controllers
+    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListController
+    @templateMediatorMap.map(@templates.input).toMediator InputController
+    @templateMediatorMap.map(@templates.footer).toMediator FooterController
+
+  run: ->
+    @injector.create TodosStore 
+    @injector.create RouteController # start routing
+```
 
 ## Run the tests
 `meteor test-packages ./`

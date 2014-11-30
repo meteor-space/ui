@@ -10,7 +10,6 @@ class Space.ui extends Space.Module
 
     # map public api of iron-router
     @injector.map('Space.ui.Router').toStaticValue Router
-    @injector.map('Space.ui.Route').toStaticValue Route
     @injector.map('Space.ui.RouteController').toStaticValue RouteController
 
     # map public api of fast-render
@@ -19,8 +18,6 @@ class Space.ui extends Space.Module
     if @meteor.isClient
 
       @injector.map('Space.ui.ReactiveProperty').toClass ReactiveVar
-
-      @injector.map('Space.ui.IronLocation').toStaticValue IronLocation
       @injector.map('Space.ui.History').toStaticValue history
 
       @injector.map(Space.ui.Dispatcher).asSingleton()

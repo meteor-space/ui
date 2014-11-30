@@ -1,13 +1,13 @@
 Package.describe({
   summary: 'Reactive UI based on Iron Router and the Flux architecture.',
   name: 'space:ui',
-  version: '1.0.1',
+  version: '2.0.0',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 
 Package.onUse(function(api) {
 
-  api.versionsFrom("METEOR@0.9.4");
+  api.versionsFrom("METEOR@1.0");
 
   api.use([
     'coffeescript',
@@ -15,8 +15,8 @@ Package.onUse(function(api) {
     'reactive-var',
 
     'space:base@1.1.0',
-    'iron:router@0.9.4',
-    'meteorhacks:fast-render@1.1.2',
+    'iron:router@1.0.3',
+    'meteorhacks:fast-render@2.0.2',
     'tmeasday:html5-history-api@4.0.0',
   ]);
 

@@ -62,15 +62,13 @@ describe "#{RouteController}", ->
         name: 'test'
         path: '/test'
 
-      mapContext = route: sinon.spy()
-
       controller = new RouteController()
-      controller.router = map: sinon.stub().yieldsOn mapContext
+      controller.router = route: sinon.stub()
 
       # ACTION
       controller.addRoute route
 
-      expect(mapContext.route).to.have.been.calledWith route.name, route
+      expect(controller.router.route).to.have.been.calledWith route.path, route
 
 
   describe '#addMediatedRoute', ->

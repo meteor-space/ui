@@ -103,7 +103,9 @@ I would highly recommend using some simple library to make classical inheritance
 [class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
 
 ```JavaScript
-Class('TodosStore', {
+Class('TodosStore', { 
+
+  Extends: Space.ui.Store,
 
   Dependencies: {
     todosCollection: 'TodosCollection',

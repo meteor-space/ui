@@ -98,6 +98,43 @@ class @TodosStore extends Space.ui.Store
     @setState 'activeFilter', filter
 ```
 
+**If you prefer JavaScript**: 
+I would highly recommend using some simple library to make classical inheritance easier.
+[class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
+
+```JavaScript
+Class('TodosStore', {
+
+  Dependencies: {
+    todosCollection: 'TodosCollection',
+    actions: 'Actions',
+    meteor: 'Meteor',
+  },
+
+  FILTERS: {
+    ALL: 'all',
+    ACTIVE: 'active',
+    COMPLETED: 'completed',
+  },
+
+  onDependenciesReady: function() {
+    @todos = @todosCollection.get();
+    @Class.Super.protoype.onDependenciesReady.call(this);
+  },
+
+  setInitialState: function() {
+    return {
+      todos: @todos.find(),
+      completedTodos: @todos.find isCompleted: true,
+      activeTodos: @todos.find isCompleted: false,
+      activeFilter: @FILTERS.ALL
+    };
+  }
+  
+  // ... you get the point ;-)
+});
+```
+
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
 there is no good pattern provided by the core team, so everyone painfully has to come up with custom

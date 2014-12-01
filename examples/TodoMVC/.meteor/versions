@@ -58,7 +58,7 @@ routepolicy@1.0.2
 service-configuration@1.0.2
 session@1.0.4
 space:base@1.1.0
-space:ui@2.0.0
+space:ui@2.0.1
 spacebars-compiler@1.0.3
 spacebars@1.0.3
 templating@1.0.9

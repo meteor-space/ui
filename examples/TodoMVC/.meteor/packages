@@ -8,4 +8,4 @@ autopublish
 insecure
 coffeescript
 
-space:ui
+space:ui@2.0.1

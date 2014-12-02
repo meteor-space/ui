@@ -41,7 +41,6 @@ Package.onUse(function(api) {
     'source/mediators/template.coffee',
 
     // ROUTING
-    'source/routing/route.coffee',
     'source/routing/route_controller.coffee',
 
   ], 'client');

@@ -15,8 +15,7 @@ class @TodoMVC extends Space.Application
     @injector.map('Actions').toStaticValue ACTIONS
 
     # ROUTING
-    @injector.map(IndexRoute).asSingleton()
-    @injector.map(RouteController).asSingleton()
+    @injector.map(IndexController).asSingleton()
 
     # VIEWS
     @injector.map(TodoListController).asSingleton()
@@ -29,5 +28,4 @@ class @TodoMVC extends Space.Application
 
   run: ->
     @injector.create TodosStore
-    # start routing
-    @injector.create RouteController
+    @injector.create IndexController # start routing

@@ -1,5 +1,5 @@
 
-class Space.ui.RouteController extends Space.ui.ActionHandler
+class Space.ui.RouteController extends Space.ui.ActionDispatcher
 
   @toString: -> 'Space.ui.RouteController'
 
@@ -8,9 +8,7 @@ class Space.ui.RouteController extends Space.ui.ActionHandler
     templateMediatorMap: 'Space.ui.TemplateMediatorMap'
     router: 'Space.ui.Router'
 
-  onDependenciesReady: ->
-    super()
-    @configure()
+  onDependenciesReady: -> @configure()
 
   configure: ->
 

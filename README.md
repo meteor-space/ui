@@ -207,12 +207,10 @@ follows the conventions:
 ```CoffeeScript
 class @IndexController extends Space.ui.RouteController
 
-  @toString: -> 'IndexController'
-
   Dependencies:
-  actions: 'Actions'
-  tracker: 'Tracker'
-  dispatcher: 'Space.ui.Dispatcher'
+    actions: 'Actions'
+    tracker: 'Tracker'
+    dispatcher: 'Space.ui.Dispatcher'
 
   configure: ->
 

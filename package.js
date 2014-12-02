@@ -32,9 +32,9 @@ Package.onUse(function(api) {
     'source/flux/action_dispatcher.coffee',
     'source/flux/store.coffee',
     'source/flux/repository.coffee',
-    'source/flux/view_controller.coffee',
 
     // MEDIATORS
+    'source/mediators/mediator.coffee',
     'source/mediators/template_mediator_mapping.coffee',
     'source/mediators/template_mediator_map.coffee',
     'source/mediators/template.html',

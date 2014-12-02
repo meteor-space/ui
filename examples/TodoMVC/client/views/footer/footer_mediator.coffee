@@ -1,7 +1,7 @@
 
-class @FooterController extends Space.ui.ViewController
+class @FooterMediator extends Space.ui.Mediator
 
-  @toString: -> 'FooterController'
+  @toString: -> 'FooterMediator'
 
   Dependencies:
     store: 'TodosStore'

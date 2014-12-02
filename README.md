@@ -142,12 +142,12 @@ The biggest problem with Meteor templates is that they need to get their data fr
 there is no good pattern provided by the core team, so everyone painfully has to come up with custom
 solutions. I think this might be the worst part of the whole Meteor platform. Imagine how amazing it would be
 if we had a mature view layer like React.js to compose our Meteor UIs and carefully inject the (immutable) data
-into the managing views. The data would always flow in one direction: **Stores** -> **View Controllers** ->
-**Templates** -> (events) -> **View Controllers** -> (actions) -> **Dispatcher** -> **Stores** (mutate data and continue cycle).
+into the managing views. The data would always flow in one direction: **Stores** -> **Mediators** ->
+**Templates** -> (events) -> **Mediators** -> (actions) -> **Dispatcher** -> **Stores** (mutate data and continue cycle).
 
 This is the **ViewController** for the todo list of the TodoMVC example:
 ```CoffeeScript
-class @TodoListController extends Space.ui.ViewController
+class @TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
@@ -181,14 +181,14 @@ class @TodoListController extends Space.ui.ViewController
 ```
 
 ### Explicit Messaging
-As you can see, the most important addition to the standard Meteor templates are the **ViewControllers** which
+As you can see, the most important addition to the standard Meteor templates are the **Mediators** which
 provide data to their managed sub-templates and react to events that bubble up. They turn the events into
 business actions and dispatch them to the rest of the application. The stores receive the actions and act.
 This makes the features of your app extremely explicit, you can see everything that the TodoMVC application
 is capable of doing in [7 lines of actions definition](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/actions.coffee).
 
 Using messaging between the various layers of your application is an effective way to decouple them.
-The stores don't know anything about other parts of the system (core domain). View Controllers know
+The stores don't know anything about other parts of the system (core domain). Mediators know
 how to get data from stores and to interpret events from their child templates. Templates don't know
 anything but to display given data and publish events about user interaction with buttons etc.
 
@@ -268,14 +268,13 @@ class @TodoMVC extends Space.Application
     @injector.map(IndexController).asSingleton()
 
     # VIEWS
-    @injector.map(TodoListController).asSingleton()
-    @injector.map(InputController).asSingleton()
-    @injector.map(FooterController).asSingleton()
+    @injector.map(TodoListMediator).asSingleton()
+    @injector.map(InputMediator).asSingleton()
+    @injector.map(FooterMediator).asSingleton()
 
-    # Wire up Meteor templates with view controllers
-    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListController
-    @templateMediatorMap.map(@templates.input).toMediator InputController
-    @templateMediatorMap.map(@templates.footer).toMediator FooterController
+    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListMediator
+    @templateMediatorMap.map(@templates.input).toMediator InputMediator
+    @templateMediatorMap.map(@templates.footer).toMediator FooterMediator
 
   run: ->
     @injector.create TodosStore

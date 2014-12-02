@@ -1,7 +1,7 @@
 
-class @TodoListController extends Space.ui.ViewController
+class @TodoListMediator extends Space.ui.Mediator
 
-  @toString: -> 'TodoListController'
+  @toString: -> 'TodoListMediator'
 
   Dependencies:
     store: 'TodosStore'

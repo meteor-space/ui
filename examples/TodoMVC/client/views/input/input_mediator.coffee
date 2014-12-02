@@ -1,7 +1,7 @@
 
-class @InputController extends Space.ui.ViewController
+class @InputMediator extends Space.ui.Mediator
 
-  @toString: -> 'InputController'
+  @toString: -> 'InputMediator'
 
   Dependencies:
     actions: 'Actions'

@@ -18,13 +18,13 @@ class @TodoMVC extends Space.Application
     @injector.map(IndexController).asSingleton()
 
     # VIEWS
-    @injector.map(TodoListController).asSingleton()
-    @injector.map(InputController).asSingleton()
-    @injector.map(FooterController).asSingleton()
+    @injector.map(TodoListMediator).asSingleton()
+    @injector.map(InputMediator).asSingleton()
+    @injector.map(FooterMediator).asSingleton()
 
-    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListController
-    @templateMediatorMap.map(@templates.input).toMediator InputController
-    @templateMediatorMap.map(@templates.footer).toMediator FooterController
+    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListMediator
+    @templateMediatorMap.map(@templates.input).toMediator InputMediator
+    @templateMediatorMap.map(@templates.footer).toMediator FooterMediator
 
   run: ->
     @injector.create TodosStore

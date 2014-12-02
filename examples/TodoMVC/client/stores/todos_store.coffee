@@ -4,7 +4,7 @@ class @TodosStore extends Space.ui.Store
   @toString: -> 'TodosStore'
 
   Dependencies:
-    todosCollection: 'TodosCollection'
+    todos: 'Todos'
     actions: 'Actions'
     meteor: 'Meteor'
 
@@ -12,10 +12,6 @@ class @TodosStore extends Space.ui.Store
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
-
-  onDependenciesReady: ->
-    @todos = @todosCollection.get()
-    super()
 
   setInitialState: -> {
     todos: @todos.find()

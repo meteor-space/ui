@@ -38,7 +38,7 @@ of CoffeeScript if you use this pattern:
 class @TodosStore extends Space.ui.Store
 
   Dependencies:
-    todosCollection: 'TodosCollection'
+    todos: 'Todos'
     actions: 'Actions'
     meteor: 'Meteor'
 
@@ -46,10 +46,6 @@ class @TodosStore extends Space.ui.Store
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
-
-  onDependenciesReady: ->
-    @todos = @todosCollection.get()
-    super()
 
   setInitialState: -> {
     todos: @todos.find()
@@ -108,7 +104,7 @@ Class('TodosStore', {
   Extends: Space.ui.Store,
 
   Dependencies: {
-    todosCollection: 'TodosCollection',
+    todos: 'Todos',
     actions: 'Actions',
     meteor: 'Meteor',
   },
@@ -117,11 +113,6 @@ Class('TodosStore', {
     ALL: 'all',
     ACTIVE: 'active',
     COMPLETED: 'completed',
-  },
-
-  onDependenciesReady: function() {
-    this.todos = this.todosCollection.get();
-    this.Class.Super.protoype.onDependenciesReady.call(this);
   },
 
   setInitialState: function() {
@@ -254,15 +245,16 @@ class @TodoMVC extends Space.Application
   RequiredModules: ['Space.ui']
 
   Dependencies:
+    mongo: 'Mongo'
     templates: 'Template'
     templateMediatorMap: 'Space.ui.TemplateMediatorMap'
 
   configure: ->
 
     # DATA + LOGIC
-    @injector.map(TodosCollection).asSingleton()
-    @injector.map(TodosStore).asSingleton()
+    @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
     @injector.map('Actions').toStaticValue ACTIONS
+    @injector.map(TodosStore).asSingleton()
 
     # ROUTING
     @injector.map(IndexController).asSingleton()

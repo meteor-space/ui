@@ -4,15 +4,16 @@ class @TodoMVC extends Space.Application
   RequiredModules: ['Space.ui']
 
   Dependencies:
+    mongo: 'Mongo'
     templates: 'Template'
     templateMediatorMap: 'Space.ui.TemplateMediatorMap'
 
   configure: ->
 
     # DATA + LOGIC
-    @injector.map(TodosCollection).asSingleton()
-    @injector.map(TodosStore).asSingleton()
+    @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
     @injector.map('Actions').toStaticValue ACTIONS
+    @injector.map(TodosStore).asSingleton()
 
     # ROUTING
     @injector.map(IndexController).asSingleton()

@@ -216,10 +216,13 @@ class @IndexController extends Space.ui.RouteController
       name: 'index'
 
       onBeforeAction: ->
-      filter = @params._filter
-      # dispatch action non-reactivly to prevent endless-loops
-      self.tracker.nonreactive -> self._setFilter filter
-      @next()
+
+        filter = @params._filter
+
+        # dispatch action non-reactivly to prevent endless-loops
+        self.tracker.nonreactive -> self._setFilter filter
+
+        @next()
     }
 
   _setFilter: (filter) => @dispatch @actions.SET_FILTER, filter

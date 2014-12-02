@@ -11,7 +11,7 @@ class @TodosController
 
     @meteor.methods
 
-      'toggle-all-todos': ->
+      toggleAllTodos: ->
 
         allTodosCompleted = todos.find(isCompleted: false).count() is 0
 
@@ -20,4 +20,4 @@ class @TodosController
         else
           todos.update {}, { $set: isCompleted: true }, multi: true
 
-      'clear-completed-todos': -> todos.remove isCompleted: true
+      clearCompletedTodos: -> todos.remove isCompleted: true

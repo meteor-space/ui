@@ -42,11 +42,11 @@ class @TodosStore extends Space.ui.Store
 
   _destroyTodo: (todo) -> @todos.remove todo._id
 
-  _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle 
+  _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
 
-  _toggleAll: -> @meteor.call 'toggle-all-todos'
+  _toggleAll: -> @meteor.call 'toggleAllTodos'
 
-  _clearCompleted: -> @meteor.call 'clear-completed-todos'
+  _clearCompleted: -> @meteor.call 'clearCompletedTodos'
 
   _setFilter: (filter) ->
 

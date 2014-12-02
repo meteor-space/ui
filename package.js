@@ -31,7 +31,6 @@ Package.onUse(function(api) {
     'source/flux/action_handler.coffee',
     'source/flux/action_dispatcher.coffee',
     'source/flux/store.coffee',
-    'source/flux/repository.coffee',
 
     // MEDIATORS
     'source/mediators/mediator.coffee',

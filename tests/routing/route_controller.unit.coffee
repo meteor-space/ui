@@ -9,8 +9,8 @@ describe "#{RouteController}", ->
     sinon.stub @controller, 'mapTemplateToMediator'
     sinon.stub @controller, 'addRoute'
 
-  it 'handles actions', ->
-    expect(@controller).to.be.instanceof Space.ui.ActionHandler
+  it 'dispatches actions', ->
+    expect(@controller).to.be.instanceof Space.ui.ActionDispatcher
 
   it 'configures itself when dependencies are ready.', ->
 

@@ -103,7 +103,9 @@ I would highly recommend using some simple library to make classical inheritance
 [class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
 
 ```JavaScript
-Class('TodosStore', {
+Class('TodosStore', { 
+
+  Extends: Space.ui.Store,
 
   Dependencies: {
     todosCollection: 'TodosCollection',
@@ -118,16 +120,16 @@ Class('TodosStore', {
   },
 
   onDependenciesReady: function() {
-    @todos = @todosCollection.get();
-    @Class.Super.protoype.onDependenciesReady.call(this);
+    this.todos = this.todosCollection.get();
+    this.Class.Super.protoype.onDependenciesReady.call(this);
   },
 
   setInitialState: function() {
     return {
-      todos: @todos.find(),
-      completedTodos: @todos.find isCompleted: true,
-      activeTodos: @todos.find isCompleted: false,
-      activeFilter: @FILTERS.ALL
+      todos: this.todos.find(),
+      completedTodos: this.todos.find isCompleted: true,
+      activeTodos: this.todos.find isCompleted: false,
+      activeFilter: this.FILTERS.ALL
     };
   }
   

@@ -1,5 +1,5 @@
 
-@ACTIONS =
+TodoMVC.ACTIONS =
 
   TOGGLE_TODO: 'toggle-todo'
   CREATE_TODO: 'create-todo'

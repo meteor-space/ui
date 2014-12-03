@@ -1,5 +1,5 @@
 
-class @TodoMVC extends Space.Application
+class TodoMVC.Application extends Space.Application
 
   Dependencies:
     meteor: 'Meteor'

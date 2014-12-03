@@ -1,7 +1,5 @@
 
-class @FooterMediator extends Space.ui.Mediator
-
-  @toString: -> 'FooterMediator'
+class TodoMVC.FooterMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'

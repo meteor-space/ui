@@ -1,7 +1,5 @@
 
-class @TodoListMediator extends Space.ui.Mediator
-
-  @toString: -> 'TodoListMediator'
+class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'

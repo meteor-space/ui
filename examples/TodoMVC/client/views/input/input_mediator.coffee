@@ -1,7 +1,5 @@
 
-class @InputMediator extends Space.ui.Mediator
-
-  @toString: -> 'InputMediator'
+class TodoMVC.InputMediator extends Space.ui.Mediator
 
   Dependencies:
     actions: 'Actions'

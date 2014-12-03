@@ -1,7 +1,5 @@
 
-class @TodosStore extends Space.ui.Store
-
-  @toString: -> 'TodosStore'
+class TodoMVC.TodosStore extends Space.ui.Store
 
   Dependencies:
     todos: 'Todos'

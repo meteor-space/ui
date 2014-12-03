@@ -1,7 +1,5 @@
 
-class @IndexController extends Space.ui.RouteController
-
-  @toString: -> 'IndexController'
+class TodoMVC.IndexController extends Space.ui.RouteController
 
   Dependencies:
     actions: 'Actions'

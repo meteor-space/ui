@@ -1,5 +1,5 @@
 
-class @TodoMVC extends Space.Application
+class TodoMVC.Application extends Space.Application
 
   RequiredModules: ['Space.ui']
 
@@ -12,21 +12,21 @@ class @TodoMVC extends Space.Application
 
     # DATA + LOGIC
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('Actions').toStaticValue ACTIONS
-    @injector.map(TodosStore).asSingleton()
+    @injector.map('Actions').toStaticValue TodoMVC.ACTIONS
+    @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
 
     # ROUTING
-    @injector.map(IndexController).asSingleton()
+    @injector.map('IndexController').toSingleton TodoMVC.IndexController
 
     # VIEWS
-    @injector.map(TodoListMediator).asSingleton()
-    @injector.map(InputMediator).asSingleton()
-    @injector.map(FooterMediator).asSingleton()
+    @injector.map('TodoListMediator').toSingleton TodoMVC.TodoListMediator
+    @injector.map('InputMediator').toSingleton TodoMVC.InputMediator
+    @injector.map('FooterMediator').toSingleton TodoMVC.FooterMediator
 
-    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListMediator
-    @templateMediatorMap.map(@templates.input).toMediator InputMediator
-    @templateMediatorMap.map(@templates.footer).toMediator FooterMediator
+    @templateMediatorMap.map(@templates.todo_list).toMediator 'TodoListMediator'
+    @templateMediatorMap.map(@templates.input).toMediator 'InputMediator'
+    @templateMediatorMap.map(@templates.footer).toMediator 'FooterMediator'
 
   run: ->
-    @injector.create TodosStore
-    @injector.create IndexController # start routing
+    @injector.create 'TodosStore'
+    @injector.create 'IndexController' # start routing

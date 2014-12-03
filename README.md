@@ -35,7 +35,7 @@ single [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/exampl
 of CoffeeScript if you use this pattern:
 
 ```CoffeeScript
-class @TodosStore extends Space.ui.Store
+class TodoMVC.TodosStore extends Space.ui.Store
 
   Dependencies:
     todos: 'Todos'
@@ -74,9 +74,9 @@ class @TodosStore extends Space.ui.Store
 
   _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
 
-  _toggleAll: -> @meteor.call 'toggle-all-todos'
+  _toggleAll: -> @meteor.call 'toggleAllTodos'
 
-  _clearCompleted: -> @meteor.call 'clear-completed-todos'
+  _clearCompleted: -> @meteor.call 'clearCompletedTodos'
 
   _setFilter: (filter) ->
 
@@ -99,7 +99,7 @@ I would highly recommend using some simple library to make classical inheritance
 [class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
 
 ```JavaScript
-Class('TodosStore', {
+Class('TodoMVC.TodosStore', {
 
   Extends: Space.ui.Store,
 
@@ -136,9 +136,10 @@ if we had a mature view layer like React.js to compose our Meteor UIs and carefu
 into the managing views. The data would always flow in one direction: **Stores** -> **Mediators** ->
 **Templates** -> (events) -> **Mediators** -> (actions) -> **Dispatcher** -> **Stores** (mutate data and continue cycle).
 
-This is the **ViewController** for the todo list of the TodoMVC example:
+This is the **Mediator** for the todo list of the TodoMVC example:
+
 ```CoffeeScript
-class @TodoListMediator extends Space.ui.Mediator
+class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
@@ -196,7 +197,7 @@ follows the conventions:
 3. Don't force me into your coding-style (Biggest mistake of Angular.js)
 
 ```CoffeeScript
-class @IndexController extends Space.ui.RouteController
+class TodoMVC.IndexController extends Space.ui.RouteController
 
   Dependencies:
     actions: 'Actions'
@@ -216,16 +217,14 @@ class @IndexController extends Space.ui.RouteController
       name: 'index'
 
       onBeforeAction: ->
-
         filter = @params._filter
-
         # dispatch action non-reactivly to prevent endless-loops
         self.tracker.nonreactive -> self._setFilter filter
-
         @next()
     }
 
   _setFilter: (filter) => @dispatch @actions.SET_FILTER, filter
+
 
 ```
 
@@ -243,7 +242,7 @@ came from. They could be injected by [Dependance](https://github.com/CodeAdventu
 Here you see where the "magic" happens and all the parts of your application are wired up:
 
 ```CoffeeScript
-class @TodoMVC extends Space.Application
+class TodoMVC.Application extends Space.Application
 
   RequiredModules: ['Space.ui']
 
@@ -256,30 +255,32 @@ class @TodoMVC extends Space.Application
 
     # DATA + LOGIC
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('Actions').toStaticValue ACTIONS
-    @injector.map(TodosStore).asSingleton()
+    @injector.map('Actions').toStaticValue TodoMVC.ACTIONS
+    @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
 
     # ROUTING
-    @injector.map(IndexController).asSingleton()
+    @injector.map('IndexController').toSingleton TodoMVC.IndexController
 
     # VIEWS
-    @injector.map(TodoListMediator).asSingleton()
-    @injector.map(InputMediator).asSingleton()
-    @injector.map(FooterMediator).asSingleton()
+    @injector.map('TodoListMediator').toSingleton TodoMVC.TodoListMediator
+    @injector.map('InputMediator').toSingleton TodoMVC.InputMediator
+    @injector.map('FooterMediator').toSingleton TodoMVC.FooterMediator
 
-    @templateMediatorMap.map(@templates.todo_list).toMediator TodoListMediator
-    @templateMediatorMap.map(@templates.input).toMediator InputMediator
-    @templateMediatorMap.map(@templates.footer).toMediator FooterMediator
+    @templateMediatorMap.map(@templates.todo_list).toMediator 'TodoListMediator'
+    @templateMediatorMap.map(@templates.input).toMediator 'InputMediator'
+    @templateMediatorMap.map(@templates.footer).toMediator 'FooterMediator'
 
   run: ->
-    @injector.create TodosStore
-    @injector.create IndexController # start routing
+    @injector.create 'TodosStore'
+    @injector.create 'IndexController' # start routing
+
 ```
 
 ## Run the tests
 `meteor test-packages ./`
 
 ## Release History
+* 3.0.0 - Cleans up the mediator API and removed old relicts that are not used anymore
 * 2.0.0 - Update to the latest 1.0.3 verison of iron:router and fast-render packages
 * 1.0.0 - Publish first version to Meteor package system
 

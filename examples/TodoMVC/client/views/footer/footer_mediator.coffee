@@ -1,6 +1,8 @@
 
 class TodoMVC.FooterMediator extends Space.ui.Mediator
 
+  @Template: 'footer'
+
   Dependencies:
     store: 'TodosStore'
     actions: 'Actions'

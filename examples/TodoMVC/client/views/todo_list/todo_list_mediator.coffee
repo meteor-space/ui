@@ -1,6 +1,8 @@
 
 class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
+  @Template: 'todo_list'
+
   Dependencies:
     store: 'TodosStore'
     actions: 'Actions'

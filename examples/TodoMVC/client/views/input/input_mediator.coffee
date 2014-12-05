@@ -1,6 +1,8 @@
 
 class TodoMVC.InputMediator extends Space.ui.Mediator
 
+  @Template: 'input'
+
   Dependencies:
     actions: 'Actions'
 

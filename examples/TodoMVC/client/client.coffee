@@ -18,14 +18,10 @@ class TodoMVC.Application extends Space.Application
     # ROUTING
     @injector.map('IndexController').toSingleton TodoMVC.IndexController
 
-    # VIEWS
-    @injector.map('TodoListMediator').toSingleton TodoMVC.TodoListMediator
-    @injector.map('InputMediator').toSingleton TodoMVC.InputMediator
-    @injector.map('FooterMediator').toSingleton TodoMVC.FooterMediator
-
-    @templateMediatorMap.map(@templates.todo_list).toMediator 'TodoListMediator'
-    @templateMediatorMap.map(@templates.input).toMediator 'InputMediator'
-    @templateMediatorMap.map(@templates.footer).toMediator 'FooterMediator'
+    # TEMPLATE MEDIATORS
+    @templateMediatorMap.autoMap 'TodoListMediator', TodoMVC.TodoListMediator
+    @templateMediatorMap.autoMap 'InputMediator', TodoMVC.InputMediator
+    @templateMediatorMap.autoMap 'FooterMediator', TodoMVC.FooterMediator
 
   run: ->
     @injector.create 'TodosStore'

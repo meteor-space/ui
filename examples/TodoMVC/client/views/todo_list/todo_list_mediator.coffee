@@ -8,8 +8,6 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     actions: 'Actions'
     editingTodoId: 'ReactiveVar'
 
-  onDependenciesReady: -> @editingTodoId.set null
-
   provideState: -> {
     todos: @store.getState().todos
     hasAnyTodos: @store.getState().todos.count() > 0

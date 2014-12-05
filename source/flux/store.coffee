@@ -1,5 +1,5 @@
 
-class Space.ui.Store extends Space.ui.ActionHandler
+class Space.ui.Store extends Space.ui.Messenger
 
   Dependencies:
     state: 'Space.ui.ReactiveProperty'

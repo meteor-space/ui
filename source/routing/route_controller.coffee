@@ -1,5 +1,5 @@
 
-class Space.ui.RouteController extends Space.ui.ActionDispatcher
+class Space.ui.RouteController extends Space.ui.Messenger
 
   @toString: -> 'Space.ui.RouteController'
 

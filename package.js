@@ -28,8 +28,7 @@ Package.onUse(function(api) {
 
     // FLUX
     'source/flux/dispatcher.coffee',
-    'source/flux/action_handler.coffee',
-    'source/flux/action_dispatcher.coffee',
+    'source/flux/messenger.coffee',
     'source/flux/store.coffee',
 
     // MEDIATORS

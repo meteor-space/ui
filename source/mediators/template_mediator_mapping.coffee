@@ -35,3 +35,5 @@ class Space.ui.TemplateMediatorMapping
       if existingDestroyedCallback? then existingDestroyedCallback.call this
 
       if @mediator? && @mediator.templateDestroyed? then @mediator.templateDestroyed this
+
+      delete @mediator

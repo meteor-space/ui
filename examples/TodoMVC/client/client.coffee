@@ -5,7 +5,6 @@ class TodoMVC.Application extends Space.Application
 
   Dependencies:
     mongo: 'Mongo'
-    templates: 'Template'
     templateMediatorMap: 'Space.ui.TemplateMediatorMap'
 
   configure: ->

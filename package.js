@@ -16,8 +16,6 @@ Package.onUse(function(api) {
 
     'space:base@1.1.0',
     'iron:router@1.0.3',
-    'meteorhacks:fast-render@2.0.2',
-    'tmeasday:html5-history-api@4.0.0',
   ]);
 
   api.addFiles([
@@ -54,7 +52,6 @@ Package.onTest(function(api) {
 
     // needed to test mappings
     'iron:router',
-    'meteorhacks:fast-render',
 
     'space:ui',
     'spacejamio:munit@2.0.2',
@@ -73,7 +70,6 @@ Package.onTest(function(api) {
   ], 'client');
 
   api.addFiles([
-    'tests/routing/fast_render.integration.coffee',
     'tests/routing/iron_router.integration.coffee',
   ]);
 

@@ -2,7 +2,7 @@
 class Space.ui.Store extends Space.ui.Messenger
 
   Dependencies:
-    state: 'Space.ui.ReactiveProperty'
+    state: 'ReactiveVar'
 
   onDependenciesReady: ->
     super()

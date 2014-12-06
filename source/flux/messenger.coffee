@@ -10,7 +10,9 @@ class Space.ui.Messenger
 
   constructor: -> @actions = {}
 
-  onDependenciesReady: -> @_registerAsMessageHandler()
+  onDependenciesReady: ->
+    if @configure? then @configure()
+    @_registerAsMessageHandler()
 
   bindActions: ->
 

@@ -118,8 +118,8 @@ Class('TodoMVC.TodosStore', {
   setInitialState: function() {
     return {
       todos: this.todos.find(),
-      completedTodos: this.todos.find isCompleted: true,
-      activeTodos: this.todos.find isCompleted: false,
+      completedTodos: this.todos.find({ isCompleted: true }),
+      activeTodos: this.todos.find({ isCompleted: false }),
       activeFilter: this.FILTERS.ALL
     };
   }

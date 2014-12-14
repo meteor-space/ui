@@ -24,20 +24,27 @@ class Space.ui.Messenger
     for type, index in actions by 2
       @actions[type] = actions[index+1]
 
-    # create handle actions method
-    @handleActions = (action) =>
-
-      method = @actions[action.type]
-      if method? then this[method](action.data)
-
     @_registerAsMessageHandler()
+
+  listenTo: ->
+
+    actions = Array.prototype.slice.call arguments
+
+    if actions.length % 2 != 0
+      throw new Error "listenTo takes an even number of arguments."
+
+    for action, index in actions by 2
+      @actions[action.type] = @underscore.bind actions[index+1], this
+
+  handleActions: (action) =>
+
+    method = @actions[action.type]
+
+    if @underscore.isString(method) then this[method](action.data)
+    else method(action.data)
 
   dispatch: (type, data) -> @dispatcher.dispatch { type: type, data: data }
 
   _registerAsMessageHandler: ->
 
-    isNotYetRegistered = !@dispatcherId?
-    canHandleActions = @handleActions? and @underscore.isFunction(@handleActions)
-
-    if isNotYetRegistered and canHandleActions
-      @dispatcherId = @dispatcher.register @handleActions
+    if !@dispatcherId? then @dispatcherId = @dispatcher.register @handleActions

@@ -16,3 +16,4 @@ class Space.ui extends Space.Module
 
       @injector.map(Space.ui.Dispatcher).asSingleton()
       @injector.map(Space.ui.TemplateMediatorMap).asSingleton()
+      @injector.map(Space.ui.ActionFactory).asSingleton()

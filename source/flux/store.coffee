@@ -7,7 +7,6 @@ class Space.ui.Store extends Space.ui.Messenger
   onDependenciesReady: ->
     super()
     if @setInitialState? then @setState @setInitialState()
-    if @configure? then @configure()
 
   getState: -> @state.get()
 

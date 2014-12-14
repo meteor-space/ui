@@ -15,9 +15,9 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     editingTodoId: @editingTodoId.get()
   }
 
-  toggleTodo: (todo) -> @dispatch @actions.TOGGLE_TODO, todo
+  toggleTodo: (todo) -> @actions.toggleTodo todo
 
-  destroyTodo: (todo) -> @dispatch @actions.DESTROY_TODO, todo
+  destroyTodo: (todo) -> @actions.destroyTodo todo
 
   startEditingTodo: (todo) -> @editingTodoId.set todo._id
 
@@ -26,7 +26,7 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
   stopEditing: -> @editingTodoId.set null
 
   changeTodoTitle: (data) ->
-    @dispatch @actions.CHANGE_TODO_TITLE, data
+    @actions.changeTodoTitle(data)
     @stopEditing()
 
-  toggleAll: -> @dispatch @actions.TOGGLE_ALL_TODOS
+  toggleAll: -> @actions.toggleAllTodos()

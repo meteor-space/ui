@@ -53,7 +53,7 @@ retry@1.0.1
 routepolicy@1.0.2
 session@1.0.4
 space:base@1.1.0
-space:ui@3.1.1
+space:ui@3.2.0
 spacebars-compiler@1.0.3
 spacebars@1.0.3
 templating@1.0.9

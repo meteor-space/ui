@@ -4,7 +4,6 @@ class TodoMVC.IndexController extends Space.ui.RouteController
   Dependencies:
     actions: 'Actions'
     tracker: 'Tracker'
-    dispatcher: 'Space.ui.Dispatcher'
 
   configure: ->
 
@@ -25,4 +24,4 @@ class TodoMVC.IndexController extends Space.ui.RouteController
         @next()
     }
 
-  _setFilter: (filter) => @dispatch @actions.SET_FILTER, filter
+  _setFilter: (filter) => @actions.setTodosFilter filter

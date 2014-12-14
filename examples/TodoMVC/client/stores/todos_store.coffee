@@ -20,17 +20,15 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
   configure: ->
 
-    @bindActions(
-      @actions.TOGGLE_TODO, '_toggleTodo'
-      @actions.CREATE_TODO, '_createTodo'
-      @actions.DESTROY_TODO, '_destroyTodo'
-      @actions.CHANGE_TODO_TITLE, '_changeTodoTitle'
-      @actions.TOGGLE_ALL_TODOS, '_toggleAll'
-      @actions.CLEAR_COMPLETED_TODOS, '_clearCompleted'
-      @actions.SET_FILTER, '_setFilter'
+    @listenTo(
+      @actions.toggleTodo, @_toggleTodo
+      @actions.createTodo, @_createTodo
+      @actions.destroyTodo, @_destroyTodo
+      @actions.changeTodoTitle, @_changeTodoTitle
+      @actions.toggleAllTodos, @_toggleAllTodos
+      @actions.clearCompletedTodos, @_clearCompletedTodos
+      @actions.setTodosFilter, @_setTodosFilter
     )
-
-  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
 
   _createTodo: (title) -> @todos.insert title: title, isCompleted: false
 
@@ -38,11 +36,13 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
   _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
 
-  _toggleAll: -> @meteor.call 'toggleAllTodos'
+  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
 
-  _clearCompleted: -> @meteor.call 'clearCompletedTodos'
+  _toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
-  _setFilter: (filter) ->
+  _clearCompletedTodos: -> @meteor.call 'clearCompletedTodos'
+
+  _setTodosFilter: (filter) ->
 
     # only continue if it changed
     if @getState('activeFilter') is filter then return

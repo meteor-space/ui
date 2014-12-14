@@ -23,4 +23,4 @@ class TodoMVC.FooterMediator extends Space.ui.Mediator
       availableFilters: filters
     }
 
-  clearCompleted: -> @dispatch @actions.CLEAR_COMPLETED_TODOS
+  clearCompleted: -> @actions.clearCompletedTodos()

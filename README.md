@@ -56,17 +56,15 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
   configure: ->
 
-    @bindActions(
-      @actions.TOGGLE_TODO, '_toggleTodo'
-      @actions.CREATE_TODO, '_createTodo'
-      @actions.DESTROY_TODO, '_destroyTodo'
-      @actions.CHANGE_TODO_TITLE, '_changeTodoTitle'
-      @actions.TOGGLE_ALL_TODOS, '_toggleAll'
-      @actions.CLEAR_COMPLETED_TODOS, '_clearCompleted'
-      @actions.SET_FILTER, '_setFilter'
+    @listenTo(
+      @actions.toggleTodo, @_toggleTodo
+      @actions.createTodo, @_createTodo
+      @actions.destroyTodo, @_destroyTodo
+      @actions.changeTodoTitle, @_changeTodoTitle
+      @actions.toggleAllTodos, @_toggleAllTodos
+      @actions.clearCompletedTodos, @_clearCompletedTodos
+      @actions.setTodosFilter, @_setTodosFilter
     )
-
-  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
 
   _createTodo: (title) -> @todos.insert title: title, isCompleted: false
 
@@ -74,11 +72,13 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
   _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
 
-  _toggleAll: -> @meteor.call 'toggleAllTodos'
+  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
 
-  _clearCompleted: -> @meteor.call 'clearCompletedTodos'
+  _toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
-  _setFilter: (filter) ->
+  _clearCompletedTodos: -> @meteor.call 'clearCompletedTodos'
+
+  _setTodosFilter: (filter) ->
 
     # only continue if it changed
     if @getState('activeFilter') is filter then return
@@ -92,6 +92,7 @@ class TodoMVC.TodosStore extends Space.ui.Store
       else return # only accept valid options
 
     @setState 'activeFilter', filter
+
 ```
 
 **If you prefer JavaScript**:
@@ -155,9 +156,9 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     editingTodoId: @editingTodoId.get()
   }
 
-  toggleTodo: (todo) -> @dispatch @actions.TOGGLE_TODO, todo
+  toggleTodo: (todo) -> @actions.toggleTodo todo
 
-  destroyTodo: (todo) -> @dispatch @actions.DESTROY_TODO, todo
+  destroyTodo: (todo) -> @actions.destroyTodo todo
 
   startEditingTodo: (todo) -> @editingTodoId.set todo._id
 
@@ -166,10 +167,10 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
   stopEditing: -> @editingTodoId.set null
 
   changeTodoTitle: (data) ->
-    @dispatch @actions.CHANGE_TODO_TITLE, data
+    @actions.changeTodoTitle(data)
     @stopEditing()
 
-  toggleAll: -> @dispatch @actions.TOGGLE_ALL_TODOS
+  toggleAll: -> @actions.toggleAllTodos()
 ```
 
 ### Explicit Messaging
@@ -177,7 +178,7 @@ As you can see, the most important addition to the standard Meteor templates are
 provide data to their managed sub-templates and react to events that bubble up. They turn the events into
 business actions and dispatch them to the rest of the application. The stores receive the actions and act.
 This makes the features of your app extremely explicit, you can see everything that the TodoMVC application
-is capable of doing in [7 lines of actions definition](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/actions.coffee).
+is capable of doing in a few lines of code.
 
 Using messaging between the various layers of your application is an effective way to decouple them.
 The stores don't know anything about other parts of the system (core domain). Mediators know
@@ -202,7 +203,6 @@ class TodoMVC.IndexController extends Space.ui.RouteController
   Dependencies:
     actions: 'Actions'
     tracker: 'Tracker'
-    dispatcher: 'Space.ui.Dispatcher'
 
   configure: ->
 
@@ -223,9 +223,7 @@ class TodoMVC.IndexController extends Space.ui.RouteController
         @next()
     }
 
-  _setFilter: (filter) => @dispatch @actions.SET_FILTER, filter
-
-
+  _setFilter: (filter) => @actions.setTodosFilter filter
 ```
 
 You might realize that this is a standard CoffeeScript class which simply extends
@@ -249,12 +247,23 @@ class TodoMVC.Application extends Space.Application
   Dependencies:
     mongo: 'Mongo'
     templateMediatorMap: 'Space.ui.TemplateMediatorMap'
+    actionFactory: 'Space.ui.ActionFactory'
 
   configure: ->
 
+    # ACTIONS
+    @injector.map('Actions').toStaticValue @actionFactory.create [
+      'toggleTodo'
+      'createTodo'
+      'destroyTodo'
+      'changeTodoTitle'
+      'toggleAllTodos'
+      'clearCompletedTodos'
+      'setTodosFilter'
+    ]
+
     # DATA + LOGIC
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('Actions').toStaticValue TodoMVC.ACTIONS
     @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
 
     # ROUTING
@@ -268,13 +277,13 @@ class TodoMVC.Application extends Space.Application
   run: ->
     @injector.create 'TodosStore'
     @injector.create 'IndexController' # start routing
-
 ```
 
 ## Run the tests
 `meteor test-packages ./`
 
 ## Release History
+* 3.2.0 - Adds simplified api for creating and dispatching actions (see TodoMVC example)
 * 3.1.0 - Introduces auto-mapping of mediators and templates via annotations
 * 3.0.0 - Cleans up the mediator API and removed old relicts that are not used anymore
 * 2.0.0 - Update to the latest 1.0.3 verison of iron:router and fast-render packages

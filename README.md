@@ -150,7 +150,7 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     actions: 'Actions'
     editingTodoId: 'ReactiveVar'
 
-  templateHelpers: -> # TEMPLATE HELPERS
+  templateHelpers: ->
 
     mediator = this
 
@@ -170,7 +170,7 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
       return this
 
 
-  templateEvents: -> # TEMPLATE EVENTS
+  templateEvents: ->
 
     'toggled .todo': (event) => @actions.toggleTodo @getEventTarget(event).data
 

@@ -140,6 +140,7 @@ into the managing views. The data would always flow in one direction: **Stores**
 This is the **Mediator** for the todo list of the TodoMVC example:
 
 ```CoffeeScript
+
 class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
   @Template: 'todo_list'
@@ -149,28 +150,48 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     actions: 'Actions'
     editingTodoId: 'ReactiveVar'
 
-  provideState: -> {
-    todos: @store.getState().todos
-    hasAnyTodos: @store.getState().todos.count() > 0
-    allTodosCompleted: @store.getState().activeTodos.count() is 0
-    editingTodoId: @editingTodoId.get()
-  }
+  templateHelpers: -> # TEMPLATE HELPERS
 
-  toggleTodo: (todo) -> @actions.toggleTodo todo
+    mediator = this
 
-  destroyTodo: (todo) -> @actions.destroyTodo todo
+    state: => {
+      todos: @store.getState().todos
+      hasAnyTodos: @store.getState().todos.count() > 0
+      allTodosCompleted: @store.getState().activeTodos.count() is 0
+      editingTodoId: @editingTodoId.get()
+    }
 
-  startEditingTodo: (todo) -> @editingTodoId.set todo._id
+    isToggleChecked: ->
+      # 'this' is the template instance here
+      if @hasAnyTodos and @allTodosCompleted then 'checked' else false
 
-  isEditingTodo: (todoId) -> @editingTodoId.get() is todoId
+    prepareTodoData: ->
+      @isEditing = mediator.editingTodoId.get() is @_id
+      return this
 
-  stopEditing: -> @editingTodoId.set null
 
-  changeTodoTitle: (data) ->
-    @actions.changeTodoTitle(data)
-    @stopEditing()
+  templateEvents: -> # TEMPLATE EVENTS
 
-  toggleAll: -> @actions.toggleAllTodos()
+    'toggled .todo': (event) => @actions.toggleTodo @getEventTarget(event).data
+
+    'destroyed .todo': (event) => @actions.destroyTodo @getEventTarget(event).data
+
+    'doubleClicked .todo': (event) => @editingTodoId.set @getEventTarget(event).data._id
+
+    'editingCanceled .todo': => @_stopEditing()
+
+    'editingCompleted .todo': (event) =>
+
+      todo = @getEventTarget event
+      data = todo: todo.data, newTitle: todo.getTitleValue()
+
+      @actions.changeTodoTitle data
+      @_stopEditing()
+
+    'click #toggle-all': => @actions.toggleAllTodos()
+
+  _stopEditing: -> @editingTodoId.set null
+
 ```
 
 ### Explicit Messaging
@@ -283,6 +304,7 @@ class TodoMVC.Application extends Space.Application
 `meteor test-packages ./`
 
 ## Release History
+* 3.3.0 - Improves the Mediator api for creating template helpers and event handlers
 * 3.2.0 - Adds simplified api for creating and dispatching actions (see TodoMVC example)
 * 3.1.0 - Introduces auto-mapping of mediators and templates via annotations
 * 3.0.0 - Cleans up the mediator API and removed old relicts that are not used anymore

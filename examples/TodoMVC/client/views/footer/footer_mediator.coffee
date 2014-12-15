@@ -8,19 +8,26 @@ class TodoMVC.FooterMediator extends Space.ui.Mediator
     actions: 'Actions'
     _: 'underscore'
 
-  provideState: ->
+  templateHelpers: ->
 
-    state = @store.getState()
+    # make store data available to the template via the 'state' helper
+    state: =>
 
-    filters = @_.map @store.FILTERS, (key) -> {
-      name: key[0].toUpperCase() + key.slice 1
-      path: key
-    }
+      store = @store.getState()
 
-    return {
-      activeTodosCount: state.activeTodos.count()
-      completedTodosCount: state.completedTodos.count()
-      availableFilters: filters
-    }
+      filters = @_.map @store.FILTERS, (key) -> {
+        name: key[0].toUpperCase() + key.slice 1
+        path: key
+      }
 
-  clearCompleted: -> @actions.clearCompletedTodos()
+      return {
+        activeTodosCount: store.activeTodos.count()
+        completedTodosCount: store.completedTodos.count()
+        availableFilters: filters
+      }
+
+    pluralize: (count) -> if count is 1 then 'item' else 'items'
+
+  templateEvents: ->
+
+    'click #clear-completed': => @actions.clearCompletedTodos()

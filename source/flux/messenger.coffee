@@ -10,9 +10,7 @@ class Space.ui.Messenger
 
   constructor: -> @actions = {}
 
-  onDependenciesReady: ->
-    if @configure? then @configure()
-    @_registerAsMessageHandler()
+  onDependenciesReady: -> if @configure? then @configure()
 
   bindActions: ->
 
@@ -36,12 +34,13 @@ class Space.ui.Messenger
     for action, index in actions by 2
       @actions[action.type] = @underscore.bind actions[index+1], this
 
+    @_registerAsMessageHandler()
+
   handleActions: (action) =>
 
     method = @actions[action.type]
-
     if @underscore.isString(method) then this[method](action.data)
-    else method(action.data)
+    else if @underscore.isFunction(method) then method(action.data)
 
   dispatch: (type, data) -> @dispatcher.dispatch { type: type, data: data }
 

@@ -1,20 +1,17 @@
 
 class Space.ui.Mediator extends Space.ui.Messenger
 
-  templateHelpers: -> {}
-  templateEvents: -> {}
+  Dependencies:
+    templates: 'Template'
+
+  configure: ->
+
+    template = @templates[@constructor.Template]
+    if @templateHelpers?  then template.helpers @templateHelpers()
+    if @templateEvents? then template.events @templateEvents()
 
   # the managed blaze template was created
   templateCreated: (@template) ->
-
-    helpers = @templateHelpers()
-
-    unless helpers.state?
-      # default helper to provide data to the managed template
-      helpers.state = => @provideState()
-
-    @template.view.template.helpers helpers
-    @template.view.template.events @templateEvents()
 
   # the managed blaze template was rendered
   templateRendered: (template) ->
@@ -22,4 +19,5 @@ class Space.ui.Mediator extends Space.ui.Messenger
   # the managed blaze template was destroyed
   templateDestroyed: (template) ->
 
+  # sugar to get the Blaze template instance which sent the event
   getEventTarget: (event) -> event.target.$blaze_range.view.templateInstance()

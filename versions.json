@@ -46,7 +46,7 @@
     ],
     [
       "ddp",
-      "1.0.11"
+      "1.0.12"
     ],
     [
       "deps",
@@ -78,35 +78,35 @@
     ],
     [
       "iron:controller",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "iron:core",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "iron:dynamic-template",
-      "1.0.3"
+      "1.0.5"
     ],
     [
       "iron:layout",
-      "1.0.3"
+      "1.0.5"
     ],
     [
       "iron:location",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "iron:middleware-stack",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "iron:router",
-      "1.0.3"
+      "1.0.5"
     ],
     [
       "iron:url",
-      "1.0.3"
+      "1.0.4"
     ],
     [
       "jquery",
@@ -134,7 +134,7 @@
     ],
     [
       "mongo",
-      "1.0.8"
+      "1.0.9"
     ],
     [
       "observe-sequence",

@@ -39,7 +39,10 @@ class Space.ui.Messenger
   handleActions: (action) =>
 
     method = @actions[action.type]
-    if @underscore.isString(method) then this[method](action.data)
+
+    if @underscore.isString(method) and @underscore.isFunction(this[method]) 
+      this[method](action.data)
+
     else if @underscore.isFunction(method) then method(action.data)
 
   dispatch: (type, data) -> @dispatcher.dispatch { type: type, data: data }

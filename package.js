@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Reactive UI based on Iron Router and the Flux architecture.',
   name: 'space:ui',
-  version: '3.3.1',
+  version: '3.3.2',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 

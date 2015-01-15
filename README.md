@@ -6,8 +6,8 @@
 `meteor add space:ui`
 
 ## TodoMVC Example
-If you just want to know if `space:ui` could be interesting for you, take a look at
-the [TodoMVC application](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
+If you want to know if `space:ui` could be interesting, take a look at
+the [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
 
 ## Core Ideas
 Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers a lot of people start spreading logic in the view layer, where becomes hard to test.
@@ -118,8 +118,16 @@ Class('TodoMVC.TodosStore', {
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
 there is no good pattern provided by the core team, so everyone has to come up with custom
-solutions. `space:ui` introduces mediators
+solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its business logic. The changes are reactively (normal meteor `reactive-var`) pushed to mediators that declared their dependency on stores by accessing their data:
 
+```
+╔═════════╗       ╔════════╗  state  ╔═════════════════╗  state    ╔══════════════════╗
+║ Actions ║──────>║ Stores ║────────>║    Mediators    ║ <───────> ║ Meteor Templates ║
+╚═════════╝       ╚════════╝         ╚═════════════════╝  events   ╚══════════════════╝
+     ^                                      │ publish
+     └──────────────────────────────────────┘
+
+```
 
 This is the **Mediator** for the todo list of the TodoMVC example:
 
@@ -138,13 +146,15 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
     mediator = this
 
+    # Provide state to the managed template
     state: => {
-      todos: @store.getState().todos
+      todos: @store.getState().todos # declare reactive dependency on the store
       hasAnyTodos: @store.getState().todos.count() > 0
       allTodosCompleted: @store.getState().activeTodos.count() is 0
       editingTodoId: @editingTodoId.get()
     }
 
+    # Standard template helper (could also be defined like normal)
     isToggleChecked: ->
       # 'this' is the template instance here
       if @hasAnyTodos and @allTodosCompleted then 'checked' else false
@@ -179,28 +189,20 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
 ```
 
 ### Explicit Messaging
-As you can see, the most important addition to the standard Meteor templates are the **Mediators** which
-provide data to their managed sub-templates and react to events that bubble up. They turn the events into
-business actions and dispatch them to the rest of the application. The stores receive the actions and act.
-This makes the features of your app extremely explicit, you can see everything that the TodoMVC application
-is capable of doing in a few lines of code.
-
-Using messaging between the various layers of your application is an effective way to decouple them.
-The stores don't know anything about other parts of the system (core domain). Mediators know
-how to get data from stores and to interpret events from their child templates. Templates don't know
+Using **pub/sub** messaging between the various layers of your application is an effective way to decouple them.
+The stores don't know anything about other parts of the system (business logic). Mediators know
+how to get data from stores and to interpret events from their managed templates. Templates don't know
 anything but to display given data and publish events about user interaction with buttons etc.
 
-Each layer plays an important role and the implementation details can be changed easily. This is how
-you can refactor huge parts of your application without getting crazy.
+Each layer plays an important role and the implementation details can be changed easily.
 
 ### Testability & Dependency Injection
-There is one thing Angular.js got really right: building dependeny injection into the heart of the framework.
-The [Space architecture](https://github.com/CodeAdventure/meteor-space) goes a similar route and `space:ui`
-follows the conventions:
+`space:ui` makes testing UI logic easy since dependeny injection is built right into the heart of the framework.
+With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as foundation the following conventions become important:
 
-1. No global variables
-2. Clear dependency declarations
-3. Don't force me into your coding-style (Biggest mistake of Angular.js)
+1. No global variables in custom code (except libraries)
+2. Clear dependency declarations (`Dependencies` property on prototype)
+3. Don't force me into a coding-style (plain Coffeescript classes / Javascript prototypes)
 
 ```CoffeeScript
 class TodoMVC.IndexController
@@ -233,15 +235,15 @@ class TodoMVC.IndexController
 ```
 
 You might realize that this is a standard CoffeeScript class. You can use any
-other mechanism for creating your "classes" or "instances" when using `space:ui`,
-doesn't force you to directly reference it in your code. The only "magic" that
-happens here, is that you declare your dependencies as a simple property `Dependencies`
-on the function prototype. Nothing special would happen if you directly created an
-instance of this class, because there is no real magic. These are normal properties that
-function as annotations which are used to wire up the stuff you need at runtime.
+other mechanism for creating your "classes" or "instances" when using `space:ui`. 
+The only "magic" that happens here, is that you declare your dependencies 
+as a simple property `Dependencies` on the function prototype. Nothing special 
+would happen if you directly created an instance of this class, because there is 
+no real magic. These are normal properties that function as annotations which are 
+used to wire up the stuff you need at runtime.
 The cool thing is: the instance doesn't need to know where the concrete dependencies
 come from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance)
-(the dependency injection framework included with `space:ui`) or added by your test setup.
+(The dependency injection framework included with `space:ui`) or added by your test setup.
 
 Here you see where the "magic" happens and all the parts of your application are wired up:
 

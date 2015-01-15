@@ -1,38 +1,24 @@
 # space:ui [![Build Status](https://travis-ci.org/CodeAdventure/space-ui.svg?branch=master)](https://travis-ci.org/CodeAdventure/space-ui)
 
-**Meteor UI framework based on concepts from [Facebook Flux](http://facebook.github.io/flux/docs/overview.html).**
+**Meteor UI framework inspired by [React](http://facebook.github.io/react/) and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## Installation
 `meteor add space:ui`
 
 ## TodoMVC Example
-If you just want to know if `space:ui` could be interesting for you take a look at
+If you just want to know if `space:ui` could be interesting for you, take a look at
 the [TodoMVC application](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
-that was built as a reference and idomatic example.
 
 ## Core Ideas
-Meteor is a great platform for building realtime apps with Javascript, but it doesn't really have
-a front-end framework that could compete with [Angular](https://angularjs.org/) or [Ember](http://emberjs.com/).
+Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers a lot of people start spreading logic in the view layer, where becomes hard to test.
 
-The templating package of Meteor is somewhat comparable with [React.js](http://facebook.github.io/react/)
-but lacks a lot of philosophy and good architectural patterns. In big applications things can
-get ugly pretty quickly when using standard templates / managers. They are hard to test and compose, force you
-to do data fetching and processing in the view layer (where it doesn't belong) and sport a horrible syntax
-(`Template.my_view.events()`).
-
-At the same time one can write beautiful and testable Meteor applications when carefully sticking
-to the core ideas of the [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed
-by Facebook. The cool thing is you don't have to add huge amounts of code to provide you with
-all buildings blocks to implement Flux, so its a very lightweight alternative to using Angular or React as your UI layer in Meteor.
+The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed
+by Facebook, solved exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play very well together. `space:ui` is a very thin layer on top of Meteor and Blaze to provide these building blocks for you too!
 
 ### Centralized Logic
-The core idea of Flux is to centralize the places where the application logic lives.
-**Stores** are the only places where data is actually created, mutated and
-deleted. They are what you would call *model* in other frameworks, except that they don't have to map
-directly to the concept of a *thing* (e.g: Todo). Stores represent a business domain within your application.
-The [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC) only has a
-single [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) because the whole business logic of a TodoMVC application easily fits into 60 lines
-of CoffeeScript if you use this pattern:
+The core idea of Flux is to centralize the application logic into **Stores**, the only places where data is actually created, mutated and deleted. They are what you might call *model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores represent a business domain within your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
+
+This doesn't mean that they have to be especially complex, eg. the whole business logic of the TodoMVC application easily fits into 60 lines of CoffeeScript if you use this pattern:
 
 ```CoffeeScript
 class TodoMVC.TodosStore extends Space.ui.Store
@@ -131,11 +117,9 @@ Class('TodoMVC.TodosStore', {
 
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
-there is no good pattern provided by the core team, so everyone painfully has to come up with custom
-solutions. I think this might be the worst part of the whole Meteor platform. Imagine how amazing it would be
-if we had a mature view layer like React.js to compose our Meteor UIs and carefully inject the (immutable) data
-into the managing views. The data would always flow in one direction: **Stores** -> **Mediators** ->
-**Templates** -> (events) -> **Mediators** -> (actions) -> **Dispatcher** -> **Stores** (mutate data and continue cycle).
+there is no good pattern provided by the core team, so everyone has to come up with custom
+solutions. `space:ui` introduces mediators
+
 
 This is the **Mediator** for the todo list of the TodoMVC example:
 

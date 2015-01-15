@@ -118,7 +118,7 @@ Class('TodoMVC.TodosStore', {
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
 there is no good pattern provided by the core team, so everyone has to come up with custom
-solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its business logic. The changes are reactively (normal meteor `reactive-var`) pushed to mediators that declared their dependency on stores by accessing their data:
+solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its business logic. The changes are reactively pushed to mediators that declared their dependency on stores by accessing their data:
 
 ```
 ╔═════════╗       ╔════════╗  state  ╔════════════════╗  state   ╔══════════════════╗

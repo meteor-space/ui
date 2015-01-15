@@ -1,7 +1,7 @@
 Package.describe({
-  summary: 'Reactive UI based on Iron Router and the Flux architecture.',
+  summary: 'Meteor UI framework inspired by React and Flux.',
   name: 'space:ui',
-  version: '3.4.0',
+  version: '3.4.1',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 

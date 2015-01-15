@@ -25,7 +25,8 @@ class TodoMVC.Application extends Space.Application
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
     @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
 
-    # ROUTING
+    # IRON ROUTER
+    @injector.map('Router').toStaticValue Router
     @injector.map('IndexController').toSingleton TodoMVC.IndexController
 
     # TEMPLATE MEDIATORS

@@ -8,10 +8,6 @@ class Space.ui extends Space.Module
 
   configure: ->
 
-    # map public api of iron-router
-    @injector.map('Space.ui.Router').toStaticValue Router
-    @injector.map('Space.ui.RouteController').toStaticValue RouteController
-
     if @meteor.isClient
 
       @injector.map(Space.ui.Dispatcher).asSingleton()

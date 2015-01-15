@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Reactive UI based on Iron Router and the Flux architecture.',
   name: 'space:ui',
-  version: '3.3.2',
+  version: '3.4.0',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 
@@ -13,9 +13,7 @@ Package.onUse(function(api) {
     'coffeescript',
     'templating',
     'reactive-var',
-
     'space:base@1.1.0',
-    'iron:router@1.0.3',
   ]);
 
   api.addFiles([
@@ -37,9 +35,6 @@ Package.onUse(function(api) {
     'source/mediators/template.html',
     'source/mediators/template.coffee',
 
-    // ROUTING
-    'source/routing/route_controller.coffee',
-
   ], 'client');
 
 });
@@ -50,28 +45,15 @@ Package.onTest(function(api) {
     'coffeescript',
     'templating',
     'reactive-var',
-
-    // needed to test mappings
-    'iron:router',
-
     'space:ui',
     'spacejamio:munit@2.0.2',
   ]);
 
   api.addFiles([
-    'tests/configuration.coffee'
-  ]);
-
-  api.addFiles([
-    'tests/routing/route_controller.unit.coffee',
     'tests/mediators/template_mediator_mapping.unit.coffee',
     'tests/mediators/template_mediator_map.unit.coffee',
     'tests/mediators/greeting_template.integration.html',
     'tests/mediators/template_mediator_map.integration.coffee'
   ], 'client');
-
-  api.addFiles([
-    'tests/routing/iron_router.integration.coffee',
-  ]);
 
 });

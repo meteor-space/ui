@@ -1,14 +1,14 @@
 
-class TodoMVC.IndexController extends Space.ui.RouteController
+class TodoMVC.IndexController
 
   Dependencies:
     actions: 'Actions'
     tracker: 'Tracker'
+    router: 'Router'
 
-  configure: ->
+  onDependenciesReady: ->
 
     self = this
-
     # redirect to show all todos by default
     @router.route '/', -> @redirect '/all'
 

@@ -8,4 +8,5 @@ autopublish
 insecure
 coffeescript
 
-space:ui@3.3.2
+iron:router@1.0.5
+space:ui@3.4.0

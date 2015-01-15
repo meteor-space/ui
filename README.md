@@ -219,13 +219,14 @@ follows the conventions:
 3. Don't force me into your coding-style (Biggest mistake of Angular.js)
 
 ```CoffeeScript
-class TodoMVC.IndexController extends Space.ui.RouteController
+class TodoMVC.IndexController
 
   Dependencies:
     actions: 'Actions'
     tracker: 'Tracker'
+    router: 'Router'
 
-  configure: ->
+  onDependenciesReady: ->
 
     self = this
 
@@ -287,7 +288,8 @@ class TodoMVC.Application extends Space.Application
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
     @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
 
-    # ROUTING
+    # ROUTING WITH IRON-ROUTER
+    @injector.map('Router').toStaticValue Router
     @injector.map('IndexController').toSingleton TodoMVC.IndexController
 
     # TEMPLATE MEDIATORS
@@ -303,7 +305,11 @@ class TodoMVC.Application extends Space.Application
 ## Run the tests
 `meteor test-packages ./`
 
+## Run the example TodoMVC
+`cd examples/TodoMVC && meteor`
+
 ## Release History
+* 3.4.0 - Removes iron-router suppport and its dependency on it.
 * 3.3.0 - Improves the Mediator api for creating template helpers and event handlers
 * 3.2.0 - Adds simplified api for creating and dispatching actions (see TodoMVC example)
 * 3.1.0 - Introduces auto-mapping of mediators and templates via annotations
@@ -312,5 +318,5 @@ class TodoMVC.Application extends Space.Application
 * 1.0.0 - Publish first version to Meteor package system
 
 ## License
-Copyright (c) 2014 Code Adventure
+Copyright (c) 2015 Code Adventure
 Licensed under the MIT license.

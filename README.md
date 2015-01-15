@@ -248,15 +248,15 @@ class TodoMVC.IndexController
   _setFilter: (filter) => @actions.setTodosFilter filter
 ```
 
-You might realize that this is a standard CoffeeScript class which simply extends
-a core class of the package. You will never see anything else while working with `space:ui`,
-because I think the biggest mistake a lot of frameworks make, is to force you into a specific way
-to write your code. The only "magic" that happens here, is that you declare your dependencies
-as a simple property `Dependencies` on the class prototype. Nothing would happen if you directly
-created an instance of this class, because there is no real magic. These special properties are
-like annotations that can be used by other parts of the application to wire up the stuff you need
-at runtime. The cool thing is: the instance doesn't need to know where the concrete dependencies
-came from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance)
+You might realize that this is a standard CoffeeScript class. You can use any
+other mechanism for creating your "classes" or "instances" when using `space:ui`,
+doesn't force you to directly reference it in your code. The only "magic" that
+happens here, is that you declare your dependencies as a simple property `Dependencies`
+on the function prototype. Nothing special would happen if you directly created an
+instance of this class, because there is no real magic. These are normal properties that
+function as annotations which are used to wire up the stuff you need at runtime.
+The cool thing is: the instance doesn't need to know where the concrete dependencies
+come from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance)
 (the dependency injection framework included with `space:ui`) or added by your test setup.
 
 Here you see where the "magic" happens and all the parts of your application are wired up:

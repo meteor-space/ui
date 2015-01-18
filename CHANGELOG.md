@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 3.4.2
+
+Upgrades to `space:base@1.2.4`
+
 ### 3.4.0
 
 Removes iron-router suppport and its dependency on it.

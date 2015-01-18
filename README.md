@@ -235,11 +235,11 @@ class TodoMVC.IndexController
 ```
 
 You might realize that this is a standard CoffeeScript class. You can use any
-other mechanism for creating your "classes" or "instances" when using `space:ui`. 
-The only "magic" that happens here, is that you declare your dependencies 
-as a simple property `Dependencies` on the function prototype. Nothing special 
-would happen if you directly created an instance of this class, because there is 
-no real magic. These are normal properties that function as annotations which are 
+other mechanism for creating your "classes" or "instances" when using `space:ui`.
+The only "magic" that happens here, is that you declare your dependencies
+as a simple property `Dependencies` on the function prototype. Nothing special
+would happen if you directly created an instance of this class, because there is
+no real magic. These are normal properties that function as annotations which are
 used to wire up the stuff you need at runtime.
 The cool thing is: the instance doesn't need to know where the concrete dependencies
 come from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance)
@@ -295,6 +295,7 @@ class TodoMVC.Application extends Space.Application
 `cd examples/TodoMVC && meteor`
 
 ## Release History
+* 3.4.2 - Upgrades to `space:base@1.2.4`
 * 3.4.0 - Removes iron-router suppport and its dependency on it.
 * 3.3.0 - Improves the Mediator api for creating template helpers and event handlers
 * 3.2.0 - Adds simplified api for creating and dispatching actions (see TodoMVC example)

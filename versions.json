@@ -9,14 +9,6 @@
       "2.0.3"
     ],
     [
-      "codeadventure:class",
-      "1.0.0"
-    ],
-    [
-      "codeadventure:dependance",
-      "1.0.0"
-    ],
-    [
       "coffeescript",
       "1.0.4"
     ],
@@ -74,7 +66,7 @@
     ],
     [
       "space:base",
-      "1.1.0"
+      "1.2.4"
     ],
     [
       "templating",

@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Meteor UI framework inspired by React and Flux.',
   name: 'space:ui',
-  version: '3.4.1',
+  version: '3.4.2',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 
@@ -13,7 +13,7 @@ Package.onUse(function(api) {
     'coffeescript',
     'templating',
     'reactive-var',
-    'space:base@1.1.0',
+    'space:base@1.2.4',
   ]);
 
   api.addFiles([
@@ -46,7 +46,7 @@ Package.onTest(function(api) {
     'templating',
     'reactive-var',
     'space:ui',
-    'spacejamio:munit@2.0.2',
+    'practicalmeteor:munit@2.0.2',
   ]);
 
   api.addFiles([

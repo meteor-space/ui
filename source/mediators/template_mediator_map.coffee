@@ -4,7 +4,7 @@ class Space.ui.TemplateMediatorMap
   @toString: -> 'Space.ui.TemplateMediatorMap'
 
   Dependencies:
-    injector: 'Space.Application.Injector'
+    injector: 'Injector'
     templates: 'Template'
 
   ERRORS:

@@ -50,10 +50,13 @@ Package.onTest(function(api) {
   ]);
 
   api.addFiles([
+    // mediators
     'tests/mediators/template_mediator_mapping.unit.coffee',
     'tests/mediators/template_mediator_map.unit.coffee',
     'tests/mediators/greeting_template.integration.html',
-    'tests/mediators/template_mediator_map.integration.coffee'
+    'tests/mediators/template_mediator_map.integration.coffee',
+    // flux
+    'tests/flux/store.spec.coffee',
   ], 'client');
 
 });

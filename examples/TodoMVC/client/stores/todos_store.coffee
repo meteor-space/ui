@@ -45,7 +45,7 @@ class TodoMVC.TodosStore extends Space.ui.Store
   _setTodosFilter: (filter) ->
 
     # only continue if it changed
-    if @getState('activeFilter') is filter then return
+    if @get('activeFilter') is filter then return
 
     switch filter
 
@@ -55,4 +55,4 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
       else return # only accept valid options
 
-    @setState 'activeFilter', filter
+    @set 'activeFilter', filter

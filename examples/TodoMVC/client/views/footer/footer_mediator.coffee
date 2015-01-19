@@ -10,10 +10,8 @@ class TodoMVC.FooterMediator extends Space.ui.Mediator
 
   templateHelpers: ->
 
-    # make store data available to the template via the 'state' helper
+    # Make store data available to the template via the 'state' helper
     state: =>
-
-      store = @store.getState()
 
       filters = @_.map @store.FILTERS, (key) -> {
         name: key[0].toUpperCase() + key.slice 1
@@ -21,8 +19,8 @@ class TodoMVC.FooterMediator extends Space.ui.Mediator
       }
 
       return {
-        activeTodosCount: store.activeTodos.count()
-        completedTodosCount: store.completedTodos.count()
+        activeTodosCount: @store.get('activeTodos').count()
+        completedTodosCount: @store.get('completedTodos').count()
         availableFilters: filters
       }
 

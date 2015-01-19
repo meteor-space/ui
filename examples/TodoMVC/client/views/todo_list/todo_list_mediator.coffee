@@ -13,9 +13,9 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
     mediator = this
 
     state: => {
-      todos: @store.getState().todos
-      hasAnyTodos: @store.getState().todos.count() > 0
-      allTodosCompleted: @store.getState().activeTodos.count() is 0
+      todos: @store.get('todos')
+      hasAnyTodos: @store.get('todos').count() > 0
+      allTodosCompleted: @store.get('activeTodos').count() is 0
       editingTodoId: @editingTodoId.get()
     }
 

@@ -67,7 +67,7 @@ class TodoMVC.TodosStore extends Space.ui.Store
   _setTodosFilter: (filter) ->
 
     # only continue if it changed
-    if @getState('activeFilter') is filter then return
+    if @get('activeFilter') is filter then return
 
     switch filter
 
@@ -148,9 +148,9 @@ class TodoMVC.TodoListMediator extends Space.ui.Mediator
 
     # Provide state to the managed template
     state: => {
-      todos: @store.getState().todos # declare reactive dependency on the store
-      hasAnyTodos: @store.getState().todos.count() > 0
-      allTodosCompleted: @store.getState().activeTodos.count() is 0
+      todos: @store.get().todos # declare reactive dependency on the store
+      hasAnyTodos: @store.get().todos.count() > 0
+      allTodosCompleted: @store.get().activeTodos.count() is 0
       editingTodoId: @editingTodoId.get()
     }
 

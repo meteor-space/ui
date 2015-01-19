@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 3.4.3
+
+Adds tests for store `state` related methods and improves its API
+
 ### 3.4.2
 
 Upgrades to `space:base@1.2.4`

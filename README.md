@@ -295,6 +295,7 @@ class TodoMVC.Application extends Space.Application
 `cd examples/TodoMVC && meteor`
 
 ## Release History
+* 3.4.4 - Upgrades to `space:base@1.2.6`
 * 3.4.3 - Adds tests for store `state` related methods and improves its API
 * 3.4.2 - Upgrades to `space:base@1.2.4`
 * 3.4.0 - Removes iron-router suppport and its dependency on it.

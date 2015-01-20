@@ -7,6 +7,7 @@ describe 'Space.ui.Store', ->
     @state = new ReactiveVar()
     @store = new Store()
     @store.state = @state
+    @store.underscore = _
     @store.onDependenciesReady()
 
   describe 'working with state', ->
@@ -28,3 +29,30 @@ describe 'Space.ui.Store', ->
     it 'has aliases for getting and setting state', ->
       expect(@store.get).to.equal @store.getState
       expect(@store.set).to.equal @store.setState
+
+    it 'replaces the existing state object with a fresh one', ->
+      @store.set 'nested.state', 'test'
+      existingState = @store.get()
+      @store.set 'nested.state', 'bla'
+      newState = @store.get()
+      expect(newState).not.to.equal existingState
+
+    it 'the state can be watched reactively', ->
+      callCount = 0
+      first = null
+      second = {}
+      @store.set first: null, second: second
+
+      computation = Tracker.autorun =>
+        callCount++
+        first = @store.get 'first'
+        second = @store.get 'second'
+
+      newValue = {}
+      @store.set 'first', newValue
+      Tracker.flush()
+      computation.stop()
+      
+      expect(callCount).to.equal 2
+      expect(first).to.equal newValue
+      expect(second).to.equal second

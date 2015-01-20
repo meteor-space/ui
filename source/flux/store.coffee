@@ -6,7 +6,9 @@ class Space.ui.Store extends Space.ui.Messenger
 
   onDependenciesReady: ->
     super()
-    if @setInitialState? then @setState(@setInitialState()) else @setState {}
+    @state.set @setInitialState()
+
+  setInitialState: -> {}
 
   getState: (path) ->
     path = if path? then path.split "." else []
@@ -23,20 +25,22 @@ class Space.ui.Store extends Space.ui.Messenger
       return
 
     # Sets nested property at path
-    modifiedState = @state.get()
+    existingState = @state.get()
+    newState = @underscore.clone existingState
+
     path = path.split "."
-    property = modifiedState
+    property = newState
 
     for name, index in path
 
       if index + 1 < path.length
         # build up missing object path
         property[name] ?= {}
-        property = property[name] 
+        property = property[name]
       else
         property[name] = value
 
-    @state.set modifiedState
+    @state.set newState
 
 Space.ui.Store::get = Space.ui.Store::getState
 Space.ui.Store::set = Space.ui.Store::setState

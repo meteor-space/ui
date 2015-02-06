@@ -10,7 +10,7 @@ If you want to know if `space:ui` could be interesting, take a look at
 the [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
 
 ## Core Ideas
-Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers a lot of people start spreading logic in the view layer, where becomes hard to test.
+Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to test.
 
 The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed
 by Facebook, solved exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play very well together. `space:ui` is a very thin layer on top of Meteor and Blaze to provide these building blocks for you too!

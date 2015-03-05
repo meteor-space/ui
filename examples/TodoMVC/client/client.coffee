@@ -10,11 +10,11 @@ class @TodoMVC extends Space.Application
   configure: ->
 
     # DATA + LOGIC
-    @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
+    @injector.map('Todos').to new @mongo.Collection 'todos'
     @injector.map('TodosStore').toSingleton TodosStore
 
     # ROUTING WITH IRON-ROUTER
-    @injector.map('Router').toStaticValue Router
+    @injector.map('Router').to Router
     @injector.map('IndexController').toSingleton IndexController
 
     # DEFINE HOW MEDIATORS ARE CREATED

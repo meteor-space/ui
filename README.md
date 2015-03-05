@@ -21,7 +21,7 @@ The core idea of Flux is to centralize the application logic into **Stores**, th
 This doesn't mean that they have to be especially complex, eg. the whole business logic of the TodoMVC application easily fits into 60 lines of CoffeeScript if you use this pattern:
 
 ```CoffeeScript
-class TodoMVC.TodosStore extends Space.ui.Store
+class TodosStore extends Space.ui.Store
 
   Dependencies:
     todos: 'Todos'
@@ -86,7 +86,7 @@ I would highly recommend using some simple library to make classical inheritance
 [class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
 
 ```JavaScript
-Class('TodoMVC.TodosStore', {
+Class('TodosStore', {
 
   Extends: Space.ui.Store,
 
@@ -133,7 +133,7 @@ This is the **Mediator** for the todo list of the TodoMVC example:
 
 ```CoffeeScript
 
-class TodoMVC.TodoListMediator extends Space.ui.Mediator
+class TodoListMediator extends Space.ui.Mediator
 
   @Template: 'todo_list'
 
@@ -205,7 +205,7 @@ With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as 
 3. Don't force me into a coding-style (plain Coffeescript classes / Javascript prototypes)
 
 ```CoffeeScript
-class TodoMVC.IndexController
+class IndexController
 
   Dependencies:
     actions: 'Actions'
@@ -248,7 +248,7 @@ come from. They could be injected by [Dependance](https://github.com/CodeAdventu
 Here you see where the "magic" happens and all the parts of your application are wired up:
 
 ```CoffeeScript
-class TodoMVC.Application extends Space.Application
+class Application extends Space.Application
 
   RequiredModules: ['Space.ui']
 
@@ -272,16 +272,16 @@ class TodoMVC.Application extends Space.Application
 
     # DATA + LOGIC
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
+    @injector.map('TodosStore').toSingleton TodosStore
 
     # ROUTING WITH IRON-ROUTER
     @injector.map('Router').toStaticValue Router
-    @injector.map('IndexController').toSingleton TodoMVC.IndexController
+    @injector.map('IndexController').toSingleton IndexController
 
     # TEMPLATE MEDIATORS
-    @templateMediatorMap.autoMap 'TodoListMediator', TodoMVC.TodoListMediator
-    @templateMediatorMap.autoMap 'InputMediator', TodoMVC.InputMediator
-    @templateMediatorMap.autoMap 'FooterMediator', TodoMVC.FooterMediator
+    @templateMediatorMap.autoMap 'TodoListMediator', TodoListMediator
+    @templateMediatorMap.autoMap 'InputMediator', InputMediator
+    @templateMediatorMap.autoMap 'FooterMediator', FooterMediator
 
   run: ->
     @injector.create 'TodosStore'

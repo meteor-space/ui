@@ -14,26 +14,15 @@ Package.onUse(function(api) {
     'templating',
     'reactive-var',
     'space:base@1.2.6',
+    'space:messaging@0.1.0',
   ]);
 
   api.addFiles([
     'source/module.coffee',
-  ]);
-
-  api.addFiles([
-
-    // FLUX
-    'source/flux/dispatcher.coffee',
-    'source/flux/messenger.coffee',
-    'source/flux/store.coffee',
-    'source/flux/action_factory.coffee',
-
-    // MEDIATORS
-    'source/mediators/mediator.coffee',
-    'source/mediators/template_mediator_mapping.coffee',
-    'source/mediators/template_mediator_map.coffee',
-    'source/mediators/template.html',
-    'source/mediators/template.coffee',
+    'source/store.coffee',
+    'source/mediator.coffee',
+    'source/template_mediator_mapping.coffee',
+    'source/template_mediator_map.coffee',
 
   ], 'client');
 
@@ -50,13 +39,12 @@ Package.onTest(function(api) {
   ]);
 
   api.addFiles([
-    // mediators
-    'tests/mediators/template_mediator_mapping.unit.coffee',
-    'tests/mediators/template_mediator_map.unit.coffee',
-    'tests/mediators/greeting_template.integration.html',
-    'tests/mediators/template_mediator_map.integration.coffee',
-    // flux
-    'tests/flux/store.spec.coffee',
+    'tests/store.spec.coffee',
+    'tests/mediator.spec.coffee',
+    'tests/template_mediator_mapping.unit.coffee',
+    'tests/template_mediator_map.unit.coffee',
+    'tests/greeting_template.integration.html',
+    'tests/template_mediator_map.integration.coffee',
   ], 'client');
 
 });

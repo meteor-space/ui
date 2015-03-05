@@ -1,38 +1,31 @@
 
-class TodoMVC.Application extends Space.Application
+class @TodoMVC extends Space.Application
 
   RequiredModules: ['Space.ui']
 
   Dependencies:
     mongo: 'Mongo'
-    templateMediatorMap: 'Space.ui.TemplateMediatorMap'
-    actionFactory: 'Space.ui.ActionFactory'
+    templates: 'Space.ui.TemplateMediatorMap'
 
   configure: ->
 
-    # ACTIONS
-    @injector.map('Actions').toStaticValue @actionFactory.create [
-      'toggleTodo'
-      'createTodo'
-      'destroyTodo'
-      'changeTodoTitle'
-      'toggleAllTodos'
-      'clearCompletedTodos'
-      'setTodosFilter'
-    ]
-
     # DATA + LOGIC
     @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('TodosStore').toSingleton TodoMVC.TodosStore
+    @injector.map('TodosStore').toSingleton TodosStore
 
     # ROUTING WITH IRON-ROUTER
     @injector.map('Router').toStaticValue Router
-    @injector.map('IndexController').toSingleton TodoMVC.IndexController
+    @injector.map('IndexController').toSingleton IndexController
 
-    # TEMPLATE MEDIATORS
-    @templateMediatorMap.autoMap 'TodoListMediator', TodoMVC.TodoListMediator
-    @templateMediatorMap.autoMap 'InputMediator', TodoMVC.InputMediator
-    @templateMediatorMap.autoMap 'FooterMediator', TodoMVC.FooterMediator
+    # DEFINE HOW MEDIATORS ARE CREATED
+    @injector.map('InputMediator').asSingleton()
+    @injector.map('TodoListMediator').asSingleton()
+    @injector.map('FooterMediator').asSingleton()
+
+    # MAP TEMPLATES TO MEDIATORS
+    @templates.map(Template['todo_list']).toMediator 'TodoListMediator'
+    @templates.map(Template['input']).toMediator 'InputMediator'
+    @templates.map(Template['footer']).toMediator 'FooterMediator'
 
   run: ->
     @injector.create 'TodosStore'

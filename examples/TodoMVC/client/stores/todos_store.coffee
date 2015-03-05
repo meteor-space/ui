@@ -1,58 +1,47 @@
 
-class TodoMVC.TodosStore extends Space.ui.Store
+class @TodosStore extends Space.ui.Store
 
   Dependencies:
     todos: 'Todos'
-    actions: 'Actions'
-    meteor: 'Meteor'
 
   FILTERS:
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
-  setInitialState: -> {
+  setInitialState: ->
     todos: @todos.find()
     completedTodos: @todos.find isCompleted: true
     activeTodos: @todos.find isCompleted: false
     activeFilter: @FILTERS.ALL
-  }
 
-  configure: ->
+  @handle TodoCreated, on: (event) ->
+    @todos.insert title: event.title, isCompleted: false
 
-    @listenTo(
-      @actions.toggleTodo, @_toggleTodo
-      @actions.createTodo, @_createTodo
-      @actions.destroyTodo, @_destroyTodo
-      @actions.changeTodoTitle, @_changeTodoTitle
-      @actions.toggleAllTodos, @_toggleAllTodos
-      @actions.clearCompletedTodos, @_clearCompletedTodos
-      @actions.setTodosFilter, @_setTodosFilter
-    )
+  @handle TodoDeleted, on: (event) -> @todos.remove event.todoId
 
-  _createTodo: (title) -> @todos.insert title: title, isCompleted: false
+  @handle TodoTitleChanged, on: (event) ->
+    @todos.update event.todoId, $set: title: event.newTitle
 
-  _destroyTodo: (todo) -> @todos.remove todo._id
+  @handle TodoToggled, on: (event) ->
+    isCompleted = @todos.findOne(event.todoId).isCompleted
+    @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-  _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
+  @handle AllTodosToggled, on: -> @commandBus.send new ToggleAllTodos()
 
-  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
+  @handle CompletedTodosCleared, on: -> @commandBus.send new ClearCompletedTodos()
 
-  _toggleAllTodos: -> @meteor.call 'toggleAllTodos'
-
-  _clearCompletedTodos: -> @meteor.call 'clearCompletedTodos'
-
-  _setTodosFilter: (filter) ->
+  @handle FilterChanged, on: (event) ->
 
     # only continue if it changed
-    if @get('activeFilter') is filter then return
+    if @get('activeFilter') is event.filter then return
 
-    switch filter
+    switch event.filter
 
-      when @FILTERS.ALL then @setState 'todos', @todos.find()
-      when @FILTERS.ACTIVE then @setState 'todos', @todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @setState 'todos', @todos.find isCompleted: true
+      when @FILTERS.ALL then @set 'todos', @todos.find()
+      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
 
       else return # only accept valid options
 
-    @set 'activeFilter', filter
+    @set 'activeFilter', event.filter

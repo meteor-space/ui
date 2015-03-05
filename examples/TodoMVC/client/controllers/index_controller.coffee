@@ -1,10 +1,10 @@
 
-class TodoMVC.IndexController
+class @IndexController
 
   Dependencies:
-    actions: 'Actions'
     tracker: 'Tracker'
     router: 'Router'
+    eventBus: 'Space.messaging.EventBus'
 
   onDependenciesReady: ->
 
@@ -13,15 +13,9 @@ class TodoMVC.IndexController
     @router.route '/', -> @redirect '/all'
 
     # handles filtering of todos
-    @router.route '/:_filter', {
+    @router.route '/:_filter', name: 'index', onBeforeAction: ->
+      # dispatch action non-reactivly to prevent multiple calls
+      self.tracker.nonreactive => self._setFilter @params._filter
+      @next()
 
-      name: 'index'
-
-      onBeforeAction: ->
-        filter = @params._filter
-        # dispatch action non-reactivly to prevent endless-loops
-        self.tracker.nonreactive -> self._setFilter filter
-        @next()
-    }
-
-  _setFilter: (filter) => @actions.setTodosFilter filter
+  _setFilter: (filter) => @eventBus.publish new FilterChanged filter: filter

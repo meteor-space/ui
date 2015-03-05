@@ -7,7 +7,7 @@ describe 'Space.ui.Store', ->
     @state = new ReactiveVar()
     @store = new Store()
     @store.state = @state
-    @store.underscore = _
+    @store._ = _
     @store.onDependenciesReady()
 
   describe 'working with state', ->
@@ -52,7 +52,7 @@ describe 'Space.ui.Store', ->
       @store.set 'first', newValue
       Tracker.flush()
       computation.stop()
-      
+
       expect(callCount).to.equal 2
       expect(first).to.equal newValue
       expect(second).to.equal second

@@ -1,8 +1,4 @@
 
-mediator = -> Template.instance().mediator
-getEventTarget = (event) -> event.target.$blaze_range.view.templateInstance()
-getTodo = (event) -> getEventTarget(event).data
-
 Template.todo_list.helpers
 
   state: -> mediator().getState()
@@ -29,3 +25,8 @@ Template.todo_list.events
     mediator().submitNewTitle getTodo(event), newTitle
 
   'click #toggle-all': -> mediator().toggleAllTodos()
+
+# Helper functions to work with Meteor templates
+mediator = -> Template.instance().mediator
+getEventTarget = (event) -> event.target.$blaze_range.view.templateInstance()
+getTodo = (event) -> getEventTarget(event).data

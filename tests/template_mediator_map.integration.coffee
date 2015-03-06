@@ -8,7 +8,7 @@ describe 'Space.ui (Integration)', ->
 
     # SIMPLE MEDIATOR -> TEMPLATE MAPPING APP
 
-    class GreetingMediator
+    class GreetingMediator extends Space.ui.Mediator
 
       Dependencies:
         greeting: 'ReactiveVar'

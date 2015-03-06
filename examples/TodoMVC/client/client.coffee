@@ -17,15 +17,10 @@ class @TodoMVC extends Space.Application
     @injector.map('Router').to Router
     @injector.map('IndexController').toSingleton IndexController
 
-    # DEFINE HOW MEDIATORS ARE CREATED
-    @injector.map('InputMediator').asSingleton()
-    @injector.map('TodoListMediator').asSingleton()
-    @injector.map('FooterMediator').asSingleton()
-
-    # MAP TEMPLATES TO MEDIATORS
-    @templates.map(Template['todo_list']).toMediator 'TodoListMediator'
-    @templates.map(Template['input']).toMediator 'InputMediator'
-    @templates.map(Template['footer']).toMediator 'FooterMediator'
+    # MAP MEDIATORS TO THEIR TEMPLATES
+    @templates.autoMap 'InputMediator'
+    @templates.autoMap 'TodoListMediator'
+    @templates.autoMap 'FooterMediator'
 
   run: ->
     @injector.create 'TodosStore'

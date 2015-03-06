@@ -5,6 +5,8 @@ class @FooterMediator extends Space.ui.Mediator
     store: 'TodosStore'
     _: 'underscore'
 
+  @Template: 'footer'
+
   getState: ->
 
     filters = @_.map @store.FILTERS, (key) ->

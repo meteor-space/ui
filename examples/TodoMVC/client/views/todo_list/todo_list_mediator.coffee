@@ -5,6 +5,8 @@ class @TodoListMediator extends Space.ui.Mediator
     store: 'TodosStore'
     editingTodoId: 'ReactiveVar'
 
+  @Template: 'todo_list'
+
   getState: ->
     todos: @store.get('todos')
     hasAnyTodos: @store.get('todos').count() > 0

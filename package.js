@@ -13,8 +13,8 @@ Package.onUse(function(api) {
     'coffeescript',
     'templating',
     'reactive-var',
-    'space:base@1.2.6',
-    'space:messaging@0.1.0',
+    'space:base@1.3.0',
+    'space:messaging@0.2.0',
   ]);
 
   api.addFiles([
@@ -23,7 +23,7 @@ Package.onUse(function(api) {
     'source/mediator.coffee',
     'source/template_mediator_mapping.coffee',
     'source/template_mediator_map.coffee',
-
+    'source/helpers.coffee',
   ], 'client');
 
 });

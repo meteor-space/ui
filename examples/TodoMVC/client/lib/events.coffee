@@ -1,23 +1,18 @@
 
 # Application events with runtime-checked structure
 
-class @TodoCreated extends Space.messaging.Event
-  @type 'TodoCreated', -> title: String
+Space.ui.createEvents
 
-class @TodoDeleted extends Space.messaging.Event
-  @type 'TodoDeleted', -> todoId: String
+  TodoCreated: title: String
 
-class @TodoTitleChanged extends Space.messaging.Event
-  @type 'TodoTitleChanged', -> todoId: String, newTitle: String
+  TodoDeleted: todoId: String
 
-class @TodoToggled extends Space.messaging.Event
-  @type 'TodoToggled', -> todoId: String
+  TodoTitleChanged: todoId: String, newTitle: String
 
-class @AllTodosToggled extends Space.messaging.Event
-  @type 'AllTodosToggled'
+  TodoToggled: todoId: String
 
-class @CompletedTodosCleared extends Space.messaging.Event
-  @type 'CompletedTodosCleared'
+  AllTodosToggled: {}
 
-class @FilterChanged extends Space.messaging.Event
-  @type 'FilterChanged', -> filter: String
+  CompletedTodosCleared: {}
+
+  FilterChanged: filter: String

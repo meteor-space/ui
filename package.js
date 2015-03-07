@@ -14,7 +14,7 @@ Package.onUse(function(api) {
     'templating',
     'reactive-var',
     'space:base@1.3.0',
-    'space:messaging@0.2.0',
+    'space:messaging@0.3.0',
   ]);
 
   api.addFiles([

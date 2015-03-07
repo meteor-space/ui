@@ -15,3 +15,5 @@ Space.ui.createEvents = (namespace, events) ->
 
 Space.ui.getEventTarget = (event) ->
   event.target.$blaze_range.view.templateInstance()
+
+Space.ui.getMediator = -> Template.instance().mediator

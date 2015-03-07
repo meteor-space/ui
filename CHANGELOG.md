@@ -1,6 +1,18 @@
 Changelog
 =========
 
+### 4.0.0
+
+Upgrades:
+---------
+- Upgrades to `space:base@1.3.0`
+
+Breaking Changes:
+----------------
+Replace the flux dispatcher and actions with more solid event architecture
+called `space:messaging`. This also introduces type-checked events. Please
+have a look at the TodoMVC example to see how the new system works.
+
 ### 3.4.4
 Upgrades to `space:base@1.2.6`
 

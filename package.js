@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Meteor UI framework inspired by React and Flux.',
   name: 'space:ui',
-  version: '3.4.4',
+  version: '4.0.0',
   git: 'https://github.com/CodeAdventure/space-ui.git'
 });
 

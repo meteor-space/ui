@@ -1,6 +1,9 @@
 Changelog
 =========
 
+### 4.0.1
+Use latest space:messaging release
+
 ### 4.0.0
 
 Upgrades:

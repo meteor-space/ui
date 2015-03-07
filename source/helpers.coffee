@@ -12,3 +12,6 @@ Space.ui.createEvents = (namespace, events) ->
     parent[key] = Space.messaging.Event.extend ->
       @type namespace + '.' + key
       @fields = fields
+
+Space.ui.getEventTarget = (event) ->
+  event.target.$blaze_range.view.templateInstance()

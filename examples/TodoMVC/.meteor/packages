@@ -9,4 +9,4 @@ insecure
 coffeescript
 
 iron:router@1.0.7
-space:ui@3.4.0
+space:ui@4.0.1

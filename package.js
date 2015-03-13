@@ -19,6 +19,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'source/module.coffee',
+    'source/application.coffee',
     'source/store.coffee',
     'source/mediator.coffee',
     'source/template_mediator_mapping.coffee',

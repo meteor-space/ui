@@ -1,27 +1,12 @@
 
-class @TodoMVC extends Space.Application
+class @TodoMVC extends Space.ui.Application
 
   RequiredModules: ['Space.ui']
-
-  Dependencies:
-    mongo: 'Mongo'
-    templates: 'Space.ui.TemplateMediatorMap'
+  Stores: ['TodosStore']
+  Mediators: ['InputMediator', 'TodoListMediator', 'FooterMediator']
+  Controllers: ['IndexController']
 
   configure: ->
-
-    # DATA + LOGIC
-    @injector.map('Todos').to new @mongo.Collection 'todos'
-    @injector.map('TodosStore').toSingleton TodosStore
-
-    # ROUTING WITH IRON-ROUTER
-    @injector.map('Router').to Router
-    @injector.map('IndexController').toSingleton IndexController
-
-    # MAP MEDIATORS TO THEIR TEMPLATES
-    @templates.autoMap 'InputMediator'
-    @templates.autoMap 'TodoListMediator'
-    @templates.autoMap 'FooterMediator'
-
-  run: ->
-    @injector.create 'TodosStore'
-    @injector.create 'IndexController' # start routing
+    super
+    @injector.map('Todos').to new Mongo.Collection 'todos'
+    @injector.map('Router').to Router # Use iron:router for this example app

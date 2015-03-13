@@ -2,6 +2,10 @@ Changelog
 =========
 
 ### 4.0.1
+Adds `Space.ui.Application` class with simplified api for setting up stores,
+mediators and controllers.
+
+### 4.0.1
 Use latest space:messaging release
 
 ### 4.0.0

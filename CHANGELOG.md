@@ -1,7 +1,10 @@
 Changelog
 =========
 
-### 4.0.1
+### 4.1.1
+Fixes bug with reactivity when setting store state via `set`. It is non-reactive now.
+
+### 4.1.0
 Adds `Space.ui.Application` class with simplified api for setting up stores,
 mediators and controllers.
 

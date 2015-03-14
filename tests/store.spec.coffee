@@ -8,6 +8,7 @@ describe 'Space.ui.Store', ->
     @store = new Store()
     @store.state = @state
     @store.underscore = _
+    @store.tracker = Tracker
     @store.onDependenciesReady()
 
   describe 'working with state', ->
@@ -56,3 +57,16 @@ describe 'Space.ui.Store', ->
       expect(callCount).to.equal 2
       expect(first).to.equal newValue
       expect(second).to.equal second
+
+    it 'setting the state doesnt trigger reactivity', ->
+
+      callCount = 0
+
+      computation = Tracker.autorun =>
+        @store.set 'test', 'test'
+        callCount++
+
+      @store.set 'test', 'change'
+      Tracker.flush()
+      computation.stop()
+      expect(callCount).to.equal 1

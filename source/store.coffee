@@ -4,6 +4,7 @@ class Space.ui.Store extends Space.messaging.Controller
   Dependencies:
     state: 'ReactiveVar'
     underscore: 'underscore'
+    tracker: 'Tracker'
 
   onDependenciesReady: ->
     super()
@@ -26,7 +27,7 @@ class Space.ui.Store extends Space.messaging.Controller
       return
 
     # Sets nested property at path
-    existingState = @state.get()
+    existingState = @tracker.nonreactive => @state.get()
     newState = @underscore.clone existingState
 
     path = path.split "."

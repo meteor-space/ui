@@ -7,7 +7,7 @@ describe 'Space.ui.Store', ->
     @state = new ReactiveVar()
     @store = new Store()
     @store.state = @state
-    @store._ = _
+    @store.underscore = _
     @store.onDependenciesReady()
 
   describe 'working with state', ->

@@ -1,6 +1,7 @@
 # space:ui [![Build Status](https://travis-ci.org/CodeAdventure/space-ui.svg?branch=master)](https://travis-ci.org/CodeAdventure/space-ui)
 
-**Meteor UI framework inspired by [React](http://facebook.github.io/react/) and [Flux](http://facebook.github.io/flux/docs/overview.html).**
+**Meteor UI framework inspired by [React](http://facebook.github.io/react/)
+and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## Installation
 `meteor add space:ui`
@@ -10,90 +11,72 @@ If you want to know if `space:ui` could be interesting, take a look at
 the [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
 
 ## Core Ideas
-Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to test.
+Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.
 
-The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed
-by Facebook, solved exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play very well together. `space:ui` is a very thin layer on top of Meteor and Blaze to provide these building blocks for you too!
+The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed by Facebook, solves exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play well together. `space:ui` is a thin layer on top of Meteor and Blaze to provide these building blocks for you!
 
 ### Centralized Logic
-The core idea of Flux is to centralize the application logic into **Stores**, the only places where data is actually created, mutated and deleted. They are what you might call *model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores represent a business domain within your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
+The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
 
-This doesn't mean that they have to be especially complex, eg. the whole business logic of the TodoMVC application easily fits into 60 lines of CoffeeScript if you use this pattern:
+This doesn't mean that they have to be especially complex, eg. the whole logic of the TodoMVC application easily fits into 60 lines of CoffeeScript if you use this pattern:
 
-```CoffeeScript
-class TodosStore extends Space.ui.Store
+```coffeescript
+class @TodosStore extends Space.ui.Store
 
   Dependencies:
     todos: 'Todos'
-    actions: 'Actions'
-    meteor: 'Meteor'
 
   FILTERS:
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
-  setInitialState: -> {
+  setInitialState: ->
     todos: @todos.find()
     completedTodos: @todos.find isCompleted: true
     activeTodos: @todos.find isCompleted: false
     activeFilter: @FILTERS.ALL
-  }
 
-  configure: ->
+  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
 
-    @listenTo(
-      @actions.toggleTodo, @_toggleTodo
-      @actions.createTodo, @_createTodo
-      @actions.destroyTodo, @_destroyTodo
-      @actions.changeTodoTitle, @_changeTodoTitle
-      @actions.toggleAllTodos, @_toggleAllTodos
-      @actions.clearCompletedTodos, @_clearCompletedTodos
-      @actions.setTodosFilter, @_setTodosFilter
-    )
+  @on TodoDeleted, (event) -> @todos.remove event.todoId
 
-  _createTodo: (title) -> @todos.insert title: title, isCompleted: false
+  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
 
-  _destroyTodo: (todo) -> @todos.remove todo._id
+  @on TodoToggled, (event) ->
+    isCompleted = @todos.findOne(event.todoId).isCompleted
+    @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-  _changeTodoTitle: (data) -> @todos.update data.todo._id, $set: title: data.newTitle
+  @on AllTodosToggled, -> @commandBus.send new ToggleAllTodos()
 
-  _toggleTodo: (todo) -> @todos.update todo._id, $set: isCompleted: !todo.isCompleted
+  @on CompletedTodosCleared, -> @commandBus.send new ClearCompletedTodos()
 
-  _toggleAllTodos: -> @meteor.call 'toggleAllTodos'
-
-  _clearCompletedTodos: -> @meteor.call 'clearCompletedTodos'
-
-  _setTodosFilter: (filter) ->
+  @on FilterChanged, (event) ->
 
     # only continue if it changed
-    if @get('activeFilter') is filter then return
+    if @get('activeFilter') is event.filter then return
 
-    switch filter
+    switch event.filter
 
-      when @FILTERS.ALL then @setState 'todos', @todos.find()
-      when @FILTERS.ACTIVE then @setState 'todos', @todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @setState 'todos', @todos.find isCompleted: true
+      when @FILTERS.ALL then @set 'todos', @todos.find()
+      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
 
       else return # only accept valid options
 
-    @setState 'activeFilter', filter
-
+    @set 'activeFilter', event.filter
 ```
 
 **If you prefer JavaScript**:
-I would highly recommend using some simple library to make classical inheritance easier.
-[class](https://github.com/CodeAdventure/meteor-class) is a small but mighty package to help you write code like this:
+`space:ui` is based on `space:base` which provides a very simple but powerful
+[inheritance system](https://github.com/CodeAdventure/meteor-space/wiki/Space.Object) that
+can save you from a lot of typing, also when using Javascript :wink:
 
-```JavaScript
-Class('TodosStore', {
-
-  Extends: Space.ui.Store,
+```javascript
+TodosStore = Space.ui.Store.extend({
 
   Dependencies: {
-    todos: 'Todos',
-    actions: 'Actions',
-    meteor: 'Meteor',
+    todos: 'Todos'
   },
 
   FILTERS: {
@@ -110,15 +93,23 @@ Class('TodosStore', {
       activeFilter: this.FILTERS.ALL
     };
   }
-
-  // ... you get the point ;-)
 });
+
+TodosStore.on(TodoCreated, function (event) {
+  this.todos.insert({
+    title: event.title,
+    isCompleted: false
+  });
+});
+
+// ... you get the point
+
 ```
 
 ### Composable Views
 The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
 there is no good pattern provided by the core team, so everyone has to come up with custom
-solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its business logic. The changes are reactively pushed to mediators that declared their dependency on stores by accessing their data:
+solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its logic. The changes are reactively pushed to mediators that declared their dependency on stores by accessing their data:
 
 ```
 ╔═════════╗       ╔════════╗  state  ╔════════════════╗  state   ╔══════════════════╗
@@ -132,67 +123,73 @@ solutions. `space:ui` introduces **mediators** that manage standard Meteor templ
 This is the **Mediator** for the todo list of the TodoMVC example:
 
 ```CoffeeScript
-
-class TodoListMediator extends Space.ui.Mediator
-
-  @Template: 'todo_list'
+class @TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
-    actions: 'Actions'
     editingTodoId: 'ReactiveVar'
 
-  templateHelpers: ->
+  @Template: 'todo_list'
 
-    mediator = this
+  getState: ->
+    todos: @store.get('todos')
+    hasAnyTodos: @store.get('todos').count() > 0
+    allTodosCompleted: @store.get('activeTodos').count() is 0
+    editingTodoId: @editingTodoId.get()
 
-    # Provide state to the managed template
-    state: => {
-      todos: @store.get().todos # declare reactive dependency on the store
-      hasAnyTodos: @store.get().todos.count() > 0
-      allTodosCompleted: @store.get().activeTodos.count() is 0
-      editingTodoId: @editingTodoId.get()
-    }
+  toggleTodo: (todo) -> @publish new TodoToggled todoId: todo._id
 
-    # Standard template helper (could also be defined like normal)
-    isToggleChecked: ->
-      # 'this' is the template instance here
-      if @hasAnyTodos and @allTodosCompleted then 'checked' else false
+  deleteTodo: (todo) -> @publish new TodoDeleted todoId: todo._id
 
-    prepareTodoData: ->
-      @isEditing = mediator.editingTodoId.get() is @_id
-      return this
+  editTodo: (todo) -> @editingTodoId.set todo._id
 
+  submitNewTitle: (todo, newTitle) ->
+    @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
+    @stopEditing()
 
-  templateEvents: ->
+  toggleAllTodos: -> @publish new AllTodosToggled()
 
-    'toggled .todo': (event) => @actions.toggleTodo @getEventTarget(event).data
+  stopEditing: -> @editingTodoId.set null
+```
 
-    'destroyed .todo': (event) => @actions.destroyTodo @getEventTarget(event).data
+And it connects to a standard Meteor template view:
 
-    'doubleClicked .todo': (event) => @editingTodoId.set @getEventTarget(event).data._id
+```coffeescript
+Template.todo_list.helpers
 
-    'editingCanceled .todo': => @_stopEditing()
+  state: -> mediator().getState()
 
-    'editingCompleted .todo': (event) =>
+  isToggleChecked: ->
+    if @hasAnyTodos and @allTodosCompleted then 'checked' else false
 
-      todo = @getEventTarget event
-      data = todo: todo.data, newTitle: todo.getTitleValue()
+  prepareTodoData: ->
+    @isEditing = mediator().editingTodoId.get() is @_id
+    return this
 
-      @actions.changeTodoTitle data
-      @_stopEditing()
+Template.todo_list.events
 
-    'click #toggle-all': => @actions.toggleAllTodos()
+  'toggled .todo': (event) -> mediator().toggleTodo getTodo(event)
 
-  _stopEditing: -> @editingTodoId.set null
+  'destroyed .todo': (event) -> mediator().deleteTodo getTodo(event)
 
+  'doubleClicked .todo': (event) -> mediator().editTodo getTodo(event)
+
+  'editingCanceled .todo': -> mediator().stopEditing()
+
+  'editingCompleted .todo': (event) ->
+    newTitle = getEventTarget(event).getTitleValue()
+    mediator().submitNewTitle getTodo(event), newTitle
+
+  'click #toggle-all': -> mediator().toggleAllTodos()
+
+# Helper functions to work with Meteor templates
+mediator = -> Template.instance().mediator
+getEventTarget = (event) -> event.target.$blaze_range.view.templateInstance()
+getTodo = (event) -> getEventTarget(event).data
 ```
 
 ### Explicit Messaging
-Using **pub/sub** messaging between the various layers of your application is an effective way to decouple them.
-The stores don't know anything about other parts of the system (business logic). Mediators know
-how to get data from stores and to interpret events from their managed templates. Templates don't know
-anything but to display given data and publish events about user interaction with buttons etc.
+Using **pub/sub** messaging between the various layers of your application is an effective way to decouple them. The stores don't know anything about other parts of the system (business logic). Mediators know how to get data from stores and provide an api to their managed templates. Templates don't know anything but to display given data and tell their mediator about user interaction with buttons etc.
 
 Each layer plays an important role and the implementation details can be changed easily.
 
@@ -200,38 +197,31 @@ Each layer plays an important role and the implementation details can be changed
 `space:ui` makes testing UI logic easy since dependeny injection is built right into the heart of the framework.
 With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as foundation the following conventions become important:
 
-1. No global variables in custom code (except libraries)
-2. Clear dependency declarations (`Dependencies` property on prototype)
-3. Don't force me into a coding-style (plain Coffeescript classes / Javascript prototypes)
+1. Dependencies in your code are explicit
+2. You have full control over configuration and initialization
+3. Testing your stuff is easy
 
 ```CoffeeScript
-class IndexController
+class @IndexController
 
   Dependencies:
-    actions: 'Actions'
     tracker: 'Tracker'
     router: 'Router'
+    eventBus: 'Space.messaging.EventBus'
 
   onDependenciesReady: ->
 
     self = this
-
     # redirect to show all todos by default
     @router.route '/', -> @redirect '/all'
 
     # handles filtering of todos
-    @router.route '/:_filter', {
+    @router.route '/:_filter', name: 'index', onBeforeAction: ->
+      # dispatch action non-reactivly to prevent multiple calls
+      self.tracker.nonreactive => self._setFilter @params._filter
+      @next()
 
-      name: 'index'
-
-      onBeforeAction: ->
-        filter = @params._filter
-        # dispatch action non-reactivly to prevent endless-loops
-        self.tracker.nonreactive -> self._setFilter filter
-        @next()
-    }
-
-  _setFilter: (filter) => @actions.setTodosFilter filter
+  _setFilter: (filter) => @eventBus.publish new FilterChanged filter: filter
 ```
 
 You might realize that this is a standard CoffeeScript class. You can use any
@@ -240,52 +230,23 @@ The only "magic" that happens here, is that you declare your dependencies
 as a simple property `Dependencies` on the function prototype. Nothing special
 would happen if you directly created an instance of this class, because there is
 no real magic. These are normal properties that function as annotations which are
-used to wire up the stuff you need at runtime.
-The cool thing is: the instance doesn't need to know where the concrete dependencies
-come from. They could be injected by [Dependance](https://github.com/CodeAdventure/meteor-dependance)
-(The dependency injection framework included with `space:ui`) or added by your test setup.
+used to wire up the stuff you need at runtime. The cool thing is: the instance doesn't need to know where the concrete dependencies come from. `space:base`
+provides a rock solid implementation of a [simple dependency injector](https://github.com/CodeAdventure/meteor-space/wiki/Space.Injector)
 
 Here you see where the "magic" happens and all the parts of your application are wired up:
 
 ```CoffeeScript
-class Application extends Space.Application
+class @TodoMVC extends Space.ui.Application
 
   RequiredModules: ['Space.ui']
-
-  Dependencies:
-    mongo: 'Mongo'
-    templateMediatorMap: 'Space.ui.TemplateMediatorMap'
-    actionFactory: 'Space.ui.ActionFactory'
+  Stores: ['TodosStore']
+  Mediators: ['InputMediator', 'TodoListMediator', 'FooterMediator']
+  Controllers: ['IndexController']
 
   configure: ->
-
-    # ACTIONS
-    @injector.map('Actions').toStaticValue @actionFactory.create [
-      'toggleTodo'
-      'createTodo'
-      'destroyTodo'
-      'changeTodoTitle'
-      'toggleAllTodos'
-      'clearCompletedTodos'
-      'setTodosFilter'
-    ]
-
-    # DATA + LOGIC
-    @injector.map('Todos').toStaticValue new @mongo.Collection 'todos'
-    @injector.map('TodosStore').toSingleton TodosStore
-
-    # ROUTING WITH IRON-ROUTER
-    @injector.map('Router').toStaticValue Router
-    @injector.map('IndexController').toSingleton IndexController
-
-    # TEMPLATE MEDIATORS
-    @templateMediatorMap.autoMap 'TodoListMediator', TodoListMediator
-    @templateMediatorMap.autoMap 'InputMediator', InputMediator
-    @templateMediatorMap.autoMap 'FooterMediator', FooterMediator
-
-  run: ->
-    @injector.create 'TodosStore'
-    @injector.create 'IndexController' # start routing
+    super
+    @injector.map('Todos').to new Mongo.Collection 'todos'
+    @injector.map('Router').to Router # Use iron:router for this example app
 ```
 
 ## Run the tests
@@ -295,16 +256,7 @@ class Application extends Space.Application
 `cd examples/TodoMVC && meteor`
 
 ## Release History
-* 3.4.4 - Upgrades to `space:base@1.2.6`
-* 3.4.3 - Adds tests for store `state` related methods and improves its API
-* 3.4.2 - Upgrades to `space:base@1.2.4`
-* 3.4.0 - Removes iron-router suppport and its dependency on it.
-* 3.3.0 - Improves the Mediator api for creating template helpers and event handlers
-* 3.2.0 - Adds simplified api for creating and dispatching actions (see TodoMVC example)
-* 3.1.0 - Introduces auto-mapping of mediators and templates via annotations
-* 3.0.0 - Cleans up the mediator API and removed old relicts that are not used anymore
-* 2.0.0 - Update to the latest 1.0.3 verison of iron:router and fast-render packages
-* 1.0.0 - Publish first version to Meteor package system
+You can find the complete release history in the [changelog](https://github.com/CodeAdventure/space-ui/blob/master/CHANGELOG.md)
 
 ## License
 Copyright (c) 2015 Code Adventure

@@ -15,23 +15,21 @@ class @TodosStore extends Space.ui.Store
     activeTodos: @todos.find isCompleted: false
     activeFilter: @FILTERS.ALL
 
-  @handle TodoCreated, on: (event) ->
-    @todos.insert title: event.title, isCompleted: false
+  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
 
-  @handle TodoDeleted, on: (event) -> @todos.remove event.todoId
+  @on TodoDeleted, (event) -> @todos.remove event.todoId
 
-  @handle TodoTitleChanged, on: (event) ->
-    @todos.update event.todoId, $set: title: event.newTitle
+  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
 
-  @handle TodoToggled, on: (event) ->
+  @on TodoToggled, (event) ->
     isCompleted = @todos.findOne(event.todoId).isCompleted
     @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-  @handle AllTodosToggled, on: -> @commandBus.send new ToggleAllTodos()
+  @on AllTodosToggled, -> @commandBus.send new ToggleAllTodos()
 
-  @handle CompletedTodosCleared, on: -> @commandBus.send new ClearCompletedTodos()
+  @on CompletedTodosCleared, -> @commandBus.send new ClearCompletedTodos()
 
-  @handle FilterChanged, on: (event) ->
+  @on FilterChanged, (event) ->
 
     # only continue if it changed
     if @get('activeFilter') is event.filter then return

@@ -4,13 +4,9 @@ class @TodosController extends Space.messaging.Controller
   Dependencies:
     todos: 'Todos'
 
-  @handle ToggleAllTodos, allowClient: true, on: (command) ->
+  @on ToggleAllTodos, {allowClient: true}, ->
+    @todos.update {}, {$set: isCompleted: !@_allTodosCompleted()}, multi: true
 
-    if @todos.find(isCompleted: false).count() is 0 # all todos completed
-      @todos.update {}, { $set: isCompleted: false }, multi: true
-    else
-      @todos.update {}, { $set: isCompleted: true }, multi: true
+  @on ClearCompletedTodos, {allowClient: true}, -> @todos.remove isCompleted: true
 
-  @handle ClearCompletedTodos, allowClient: true, on: (command) ->
-
-    @todos.remove isCompleted: true
+  _allTodosCompleted: -> @todos.find(isCompleted: false).count() is 0

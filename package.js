@@ -13,8 +13,8 @@ Package.onUse(function(api) {
     'coffeescript',
     'templating',
     'reactive-var',
-    'space:base@1.3.0',
-    'space:messaging@0.3.0',
+    'space:base@1.3.2',
+    'space:messaging@0.3.2',
   ]);
 
   api.addFiles([

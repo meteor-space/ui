@@ -36,7 +36,7 @@ Package.onTest(function(api) {
     'templating',
     'reactive-var',
     'space:ui',
-    'practicalmeteor:munit@2.0.2',
+    'practicalmeteor:munit@2.1.4',
   ]);
 
   api.addFiles([

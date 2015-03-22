@@ -18,7 +18,7 @@ The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) devel
 ### Centralized Logic
 The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
 
-This doesn't mean that they have to be especially complex, eg. the whole logic of the TodoMVC application easily fits into 60 lines of CoffeeScript if you use this pattern:
+This doesn't mean that they have to be especially complex, eg. the whole logic of the TodoMVC application easily fits into 45 lines of CoffeeScript if you use this pattern:
 
 ```coffeescript
 class @TodosStore extends Space.ui.Store
@@ -113,7 +113,7 @@ solutions. `space:ui` introduces **mediators** that manage standard Meteor templ
 
 ```
 ╔═════════╗       ╔════════╗  state  ╔════════════════╗  state   ╔══════════════════╗
-║ Actions ║──────>║ Stores ║────────>║    Mediators   ║ <──────> ║ Meteor Templates ║
+║  Events ║──────>║ Stores ║────────>║    Mediators   ║ <──────> ║ Meteor Templates ║
 ╚═════════╝       ╚════════╝         ╚════════════════╝  events  ╚══════════════════╝
      ^                                      │ publish
      └──────────────────────────────────────┘
@@ -124,12 +124,12 @@ This is the **Mediator** for the todo list of the TodoMVC example:
 
 ```CoffeeScript
 class @TodoListMediator extends Space.ui.Mediator
+  
+  @Template: 'todo_list'
 
   Dependencies:
     store: 'TodosStore'
     editingTodoId: 'ReactiveVar'
-
-  @Template: 'todo_list'
 
   getState: ->
     todos: @store.get('todos')
@@ -259,5 +259,5 @@ class @TodoMVC extends Space.ui.Application
 You can find the complete release history in the [changelog](https://github.com/CodeAdventure/space-ui/blob/master/CHANGELOG.md)
 
 ## License
-Copyright (c) 2015 Code Adventure
+Copyright (c) 2015 [Code Adventure](http://www.codeadventure.com/)
 Licensed under the MIT license.

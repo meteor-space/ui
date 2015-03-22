@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 4.2.0
+Updates to latest space package dependencies, especially to `space:messaging`
+which introduced a simpler controller api for handling messages.
+
 ### 4.1.1
 Fixes bug with reactivity when setting store state via `set`. It is non-reactive now.
 

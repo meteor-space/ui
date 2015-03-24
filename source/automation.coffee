@@ -1,6 +1,8 @@
 
+class Space.ui.Module extends Space.Module
 class Space.ui.Application extends Space.Application
-
+  
+automatedMappings =
   Stores: []
   Mediators: []
   Controllers: []
@@ -16,3 +18,6 @@ class Space.ui.Application extends Space.Application
   run: ->
     @injector.create(store) for store in @Stores
     @injector.create(controller) for controller in @Controllers
+
+_.extend Space.ui.Module.prototype, automatedMappings
+_.extend Space.ui.Application.prototype, automatedMappings

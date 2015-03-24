@@ -11,6 +11,7 @@ Package.onUse(function(api) {
 
   api.use([
     'coffeescript',
+    'underscore',
     'templating',
     'reactive-var',
     'space:base@1.3.2',
@@ -19,7 +20,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'source/module.coffee',
-    'source/application.coffee',
+    'source/automation.coffee',
     'source/store.coffee',
     'source/mediator.coffee',
     'source/template_mediator_mapping.coffee',

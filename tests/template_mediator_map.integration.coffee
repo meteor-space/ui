@@ -10,11 +10,9 @@ describe 'Space.ui (Integration)', ->
 
     class GreetingMediator extends Space.ui.Mediator
 
-      Dependencies:
-        greeting: 'ReactiveVar'
+      Dependencies: greeting: 'ReactiveVar'
 
       templateCreated: (template) ->
-
         @greeting.set defaultGreeting
         template.view.template.helpers greeting: => @greeting.get()
 

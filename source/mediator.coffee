@@ -1,9 +1,13 @@
 
-class Space.ui.Mediator
+class Space.ui.Mediator extends Space.Object
 
   Dependencies:
     templates: 'Template'
     eventBus: 'Space.messaging.EventBus'
+
+  onDependenciesReady: -> @state.set @setInitialState()
+
+  setInitialState: -> {}
 
   # The managed blaze template was created
   templateCreated: (@template) ->
@@ -15,3 +19,5 @@ class Space.ui.Mediator
   templateDestroyed: (template) ->
 
   publish: (event) -> @eventBus.publish event
+
+Space.ui.Mediator.mixin Space.ui.Stateful

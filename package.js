@@ -14,13 +14,14 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'reactive-var',
-    'space:base@1.3.2',
+    'space:base@1.4.1',
     'space:messaging@0.3.2',
   ]);
 
   api.addFiles([
     'source/module.coffee',
     'source/automation.coffee',
+    'source/stateful.coffee',
     'source/store.coffee',
     'source/mediator.coffee',
     'source/template_mediator_mapping.coffee',
@@ -34,13 +35,16 @@ Package.onTest(function(api) {
 
   api.use([
     'coffeescript',
+    'underscore',
     'templating',
     'reactive-var',
     'space:ui',
     'practicalmeteor:munit@2.1.4',
+    'space:testing@1.3.0'
   ]);
 
   api.addFiles([
+    'tests/stateful.spec.coffee',
     'tests/store.spec.coffee',
     'tests/mediator.spec.coffee',
     'tests/template_mediator_mapping.unit.coffee',

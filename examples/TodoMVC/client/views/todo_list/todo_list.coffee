@@ -7,7 +7,7 @@ Template.todo_list.helpers
     if @hasAnyTodos and @allTodosCompleted then 'checked' else false
 
   prepareTodoData: ->
-    @isEditing = mediator().editingTodoId.get() is @_id
+    @isEditing = mediator().get('editingTodoId') is @_id
     return this
 
 Template.todo_list.events

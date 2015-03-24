@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 4.2.1
+Introduce Space.ui.Module with same mapping automation features as the previously
+added Space.ui.Application
+
 ### 4.2.0
 Updates to latest space package dependencies, especially to `space:messaging`
 which introduced a simpler controller api for handling messages.

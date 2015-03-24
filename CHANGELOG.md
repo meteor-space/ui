@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 4.3.0
+Use the new `Space.Object.mixin` capabilities to introduce the `Space.ui.Stateful`
+mixin that encapsulates the state setting functionality that the store had and make
+it available on mediators too.
+
 ### 4.2.1
 Introduce Space.ui.Module with same mapping automation features as the previously
 added Space.ui.Application

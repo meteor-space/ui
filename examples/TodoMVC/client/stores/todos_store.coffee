@@ -31,7 +31,7 @@ class @TodosStore extends Space.ui.Store
 
   @on FilterChanged, (event) ->
 
-    # only continue if it changed
+    # only continue if it actually changed
     if @get('activeFilter') is event.filter then return
 
     switch event.filter

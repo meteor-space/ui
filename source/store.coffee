@@ -3,7 +3,9 @@ class Space.ui.Store extends Space.messaging.Controller
 
   onDependenciesReady: ->
     super
-    @state.set @setInitialState()
+    # Make the initial state setting also reactive
+    # so that one can use Collection#findOne without problems
+    @tracker.autorun => @state.set @setInitialState()
 
   setInitialState: -> {}
 

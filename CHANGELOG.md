@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 4.3.1
+Make setting the initial state of stores and mediators reactive. This has the
+benefit that one can take advantage of `Mongo.Collection#findOne` and other reactivity
+features when initializing the state.
+
 ### 4.3.0
 Use the new `Space.Object.mixin` capabilities to introduce the `Space.ui.Stateful`
 mixin that encapsulates the state setting functionality that the store had and make

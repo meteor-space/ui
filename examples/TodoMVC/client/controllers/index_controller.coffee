@@ -9,13 +9,21 @@ class @IndexController
   onDependenciesReady: ->
 
     self = this
-    # redirect to show all todos by default
+    # Redirect to show all todos by default
     @router.route '/', -> @redirect '/all'
 
-    # handles filtering of todos
-    @router.route '/:_filter', name: 'index', onBeforeAction: ->
-      # dispatch action non-reactivly to prevent multiple calls
-      self.tracker.nonreactive => self._setFilter @params._filter
-      @next()
+    # Handles filtering of todos
+    @router.route '/:_filter',
+
+      name: 'index'
+
+      onAfterAction: ->
+        # Dispatch action non-reactivly to prevent multiple calls
+        # this is a drawback of using iron:router TODO: switch to flow-router?
+        self.tracker.nonreactive => self._setFilter @params._filter
+
+      subscriptions: ->
+        # Subscribe to the filetered data based on the route parameter
+        Meteor.subscribe 'todos', @params._filter
 
   _setFilter: (filter) => @eventBus.publish new FilterChanged filter: filter

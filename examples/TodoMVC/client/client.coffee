@@ -8,5 +8,4 @@ class @TodoMVC extends Space.ui.Application
 
   configure: ->
     super
-    @injector.map('Todos').to new Mongo.Collection 'todos'
     @injector.map('Router').to Router # Use iron:router for this example app

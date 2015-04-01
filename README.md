@@ -23,33 +23,26 @@ This doesn't mean that they have to be especially complex, eg. the whole logic o
 ```coffeescript
 class @TodosStore extends Space.ui.Store
 
-  Dependencies:
-    todos: 'Todos'
-
   FILTERS:
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
   setInitialState: ->
-    todos: @todos.find()
-    completedTodos: @todos.find isCompleted: true
-    activeTodos: @todos.find isCompleted: false
+    todos: Todos.find()
+    completedTodos: Todos.find isCompleted: true
+    activeTodos: Todos.find isCompleted: false
     activeFilter: @FILTERS.ALL
 
-  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
+  @on TodoCreated, (event) -> Todos.insert title: event.title, isCompleted: false
 
-  @on TodoDeleted, (event) -> @todos.remove event.todoId
+  @on TodoDeleted, (event) -> Todos.remove event.todoId
 
-  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
+  @on TodoTitleChanged, (event) -> Todos.update event.todoId, $set: title: event.newTitle
 
   @on TodoToggled, (event) ->
-    isCompleted = @todos.findOne(event.todoId).isCompleted
-    @todos.update event.todoId, $set: isCompleted: !isCompleted
-
-  @on AllTodosToggled, -> @commandBus.send new ToggleAllTodos()
-
-  @on CompletedTodosCleared, -> @commandBus.send new ClearCompletedTodos()
+    isCompleted = Todos.findOne(event.todoId).isCompleted
+    Todos.update event.todoId, $set: isCompleted: !isCompleted
 
   @on FilterChanged, (event) ->
 
@@ -58,9 +51,9 @@ class @TodosStore extends Space.ui.Store
 
     switch event.filter
 
-      when @FILTERS.ALL then @set 'todos', @todos.find()
-      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
+      when @FILTERS.ALL then @set 'todos', Todos.find()
+      when @FILTERS.ACTIVE then @set 'todos', Todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @set 'todos', Todos.find isCompleted: true
 
       else return # only accept valid options
 
@@ -75,10 +68,6 @@ can save you from a lot of typing, also when using Javascript :wink:
 ```javascript
 TodosStore = Space.ui.Store.extend({
 
-  Dependencies: {
-    todos: 'Todos'
-  },
-
   FILTERS: {
     ALL: 'all',
     ACTIVE: 'active',
@@ -87,16 +76,16 @@ TodosStore = Space.ui.Store.extend({
 
   setInitialState: function() {
     return {
-      todos: this.todos.find(),
-      completedTodos: this.todos.find({ isCompleted: true }),
-      activeTodos: this.todos.find({ isCompleted: false }),
+      todos: Todos.find(),
+      completedTodos: Todos.find({ isCompleted: true }),
+      activeTodos: Todos.find({ isCompleted: false }),
       activeFilter: this.FILTERS.ALL
     };
   }
 });
 
 TodosStore.on(TodoCreated, function (event) {
-  this.todos.insert({
+  Todos.insert({
     title: event.title,
     isCompleted: false
   });
@@ -124,32 +113,32 @@ This is the **Mediator** for the todo list of the TodoMVC example:
 
 ```CoffeeScript
 class @TodoListMediator extends Space.ui.Mediator
-  
+
   @Template: 'todo_list'
 
   Dependencies:
     store: 'TodosStore'
-    editingTodoId: 'ReactiveVar'
+    commandBus: 'Space.messaging.CommandBus'
 
-  getState: ->
+  setInitialState: ->
     todos: @store.get('todos')
     hasAnyTodos: @store.get('todos').count() > 0
     allTodosCompleted: @store.get('activeTodos').count() is 0
-    editingTodoId: @editingTodoId.get()
+    editingTodoId: null
 
   toggleTodo: (todo) -> @publish new TodoToggled todoId: todo._id
 
   deleteTodo: (todo) -> @publish new TodoDeleted todoId: todo._id
 
-  editTodo: (todo) -> @editingTodoId.set todo._id
+  editTodo: (todo) -> @set 'editingTodoId', todo._id
 
   submitNewTitle: (todo, newTitle) ->
     @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
     @stopEditing()
 
-  toggleAllTodos: -> @publish new AllTodosToggled()
+  toggleAllTodos: -> @commandBus.send new ToggleAllTodos()
 
-  stopEditing: -> @editingTodoId.set null
+  stopEditing: -> @set 'editingTodoId', null
 ```
 
 And it connects to a standard Meteor template view:
@@ -212,14 +201,22 @@ class @IndexController
   onDependenciesReady: ->
 
     self = this
-    # redirect to show all todos by default
+    # Redirect to show all todos by default
     @router.route '/', -> @redirect '/all'
 
-    # handles filtering of todos
-    @router.route '/:_filter', name: 'index', onBeforeAction: ->
-      # dispatch action non-reactivly to prevent multiple calls
-      self.tracker.nonreactive => self._setFilter @params._filter
-      @next()
+    # Handles filtering of todos
+    @router.route '/:_filter',
+
+      name: 'index'
+
+      onAfterAction: ->
+        # Dispatch action non-reactivly to prevent multiple calls
+        # this is a drawback of using iron:router TODO: switch to flow-router?
+        self.tracker.nonreactive => self._setFilter @params._filter
+
+      subscriptions: ->
+        # Subscribe to the filetered data based on the route parameter
+        Meteor.subscribe 'todos', @params._filter
 
   _setFilter: (filter) => @eventBus.publish new FilterChanged filter: filter
 ```
@@ -245,7 +242,6 @@ class @TodoMVC extends Space.ui.Application
 
   configure: ->
     super
-    @injector.map('Todos').to new Mongo.Collection 'todos'
     @injector.map('Router').to Router # Use iron:router for this example app
 ```
 

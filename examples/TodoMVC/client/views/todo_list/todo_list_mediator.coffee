@@ -1,11 +1,11 @@
 
 class @TodoListMediator extends Space.ui.Mediator
 
+  @Template: 'todo_list'
+
   Dependencies:
     store: 'TodosStore'
     commandBus: 'Space.messaging.CommandBus'
-
-  @Template: 'todo_list'
 
   setInitialState: ->
     todos: @store.get('todos')

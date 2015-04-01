@@ -3,6 +3,7 @@ class @FooterMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
+    commandBus: 'Space.messaging.CommandBus'
     _: 'underscore'
 
   @Template: 'footer'
@@ -19,4 +20,4 @@ class @FooterMediator extends Space.ui.Mediator
       availableFilters: filters
     }
 
-  onClearCompletedTodos: -> @publish new CompletedTodosCleared()
+  onClearCompletedTodos: -> @commandBus.send new ClearCompletedTodos()

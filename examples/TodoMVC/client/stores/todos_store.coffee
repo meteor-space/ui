@@ -25,10 +25,6 @@ class @TodosStore extends Space.ui.Store
     isCompleted = @todos.findOne(event.todoId).isCompleted
     @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-  @on AllTodosToggled, -> @commandBus.send new ToggleAllTodos()
-
-  @on CompletedTodosCleared, -> @commandBus.send new ClearCompletedTodos()
-
   @on FilterChanged, (event) ->
 
     # only continue if it actually changed

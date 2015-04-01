@@ -3,6 +3,7 @@ class @TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
+    commandBus: 'Space.messaging.CommandBus'
 
   @Template: 'todo_list'
 
@@ -22,6 +23,6 @@ class @TodoListMediator extends Space.ui.Mediator
     @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
     @stopEditing()
 
-  toggleAllTodos: -> @publish new AllTodosToggled()
+  toggleAllTodos: -> @commandBus.send new ToggleAllTodos()
 
   stopEditing: -> @set 'editingTodoId', null

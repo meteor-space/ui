@@ -1,5 +1,6 @@
 
-# Application events with runtime-checked structure
+# Application events with runtime-checked shape
+# using Meteor's check and Match API.
 
 Space.ui.createEvents
 
@@ -10,9 +11,5 @@ Space.ui.createEvents
   TodoTitleChanged: todoId: String, newTitle: String
 
   TodoToggled: todoId: String
-
-  AllTodosToggled: {}
-
-  CompletedTodosCleared: {}
 
   FilterChanged: filter: String

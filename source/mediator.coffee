@@ -4,13 +4,8 @@ class Space.ui.Mediator extends Space.Object
   Dependencies:
     templates: 'Template'
     eventBus: 'Space.messaging.EventBus'
-    tracker: 'Tracker'
 
-  # Make the initial state setting also reactive
-  # so that one can use Collection#findOne without problems
-  onDependenciesReady: -> @tracker.autorun => @state.set @setInitialState()
-
-  setInitialState: -> {}
+  onDependenciesReady: -> @setupState()
 
   # The managed blaze template was created
   templateCreated: (@template) ->

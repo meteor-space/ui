@@ -6,11 +6,12 @@ class @TodosStore extends Space.ui.Store
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
+  setDefaultState: -> activeFilter: @FILTERS.ALL
+
   setInitialState: ->
     todos: Todos.find()
     completedTodos: Todos.find isCompleted: true
     activeTodos: Todos.find isCompleted: false
-    activeFilter: @FILTERS.ALL
 
   @on TodoCreated, (event) -> Todos.insert title: event.title, isCompleted: false
 

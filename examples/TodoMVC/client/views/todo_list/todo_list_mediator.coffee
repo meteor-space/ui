@@ -7,11 +7,12 @@ class @TodoListMediator extends Space.ui.Mediator
     store: 'TodosStore'
     commandBus: 'Space.messaging.CommandBus'
 
+  setDefaultState: -> editingTodoId: null
+
   setInitialState: ->
     todos: @store.get('todos')
     hasAnyTodos: @store.get('todos').count() > 0
     allTodosCompleted: @store.get('activeTodos').count() is 0
-    editingTodoId: null
 
   toggleTodo: (todo) -> @publish new TodoToggled todoId: todo._id
 

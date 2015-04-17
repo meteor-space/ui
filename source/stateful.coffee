@@ -6,6 +6,16 @@ Space.ui.Stateful =
     underscore: 'underscore'
     tracker: 'Tracker'
 
+  setupState: ->
+    # Assign the (non-reactive) default state
+    @set @setDefaultState()
+    # Loop over the initial state properties and assign them
+    # reactively so that they don't override the defaults
+    @tracker.autorun => @set(key, value) for key, value of @setInitialState()
+
+  setDefaultState: -> {}
+  setInitialState: -> {}
+
   get: (path) ->
     path = if path? then path.split "." else []
     state = @state.get()

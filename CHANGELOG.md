@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### 4.3.2
+Introduces the concept of non-reactive default state for stores and mediators
+so that state is not always overwritten by default values when some reactive
+dependency triggers a re-run of the `setInitialState` method. If you have default
+values for the state use `setDefaultState` instead. This method is only run once
+when the instance is created, after the dependencies were injected.
+
 ### 4.3.1
 Make setting the initial state of stores and mediators reactive. This has the
 benefit that one can take advantage of `Mongo.Collection#findOne` and other reactivity

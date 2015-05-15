@@ -5,7 +5,7 @@ class @FooterMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
-    commandBus: 'Space.messaging.CommandBus'
+    meteor: 'Meteor'
 
   setDefaultState: -> availableFilters: @_mapAvailableFilters()
 
@@ -13,7 +13,7 @@ class @FooterMediator extends Space.ui.Mediator
     activeTodosCount: @store.get('activeTodos').count()
     completedTodosCount: @store.get('completedTodos').count()
 
-  onClearCompletedTodos: -> @commandBus.send new ClearCompletedTodos()
+  onClearCompletedTodos: -> @meteor.call 'clearCompletedTodos'
 
   _mapAvailableFilters: -> _.map @store.FILTERS, (key) ->
     name: key[0].toUpperCase() + key.slice 1

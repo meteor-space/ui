@@ -5,7 +5,7 @@ class @TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
-    commandBus: 'Space.messaging.CommandBus'
+    meteor: 'Meteor'
 
   setDefaultState: -> editingTodoId: null
 
@@ -24,6 +24,6 @@ class @TodoListMediator extends Space.ui.Mediator
     @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
     @stopEditing()
 
-  toggleAllTodos: -> @commandBus.send new ToggleAllTodos()
+  toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
   stopEditing: -> @set 'editingTodoId', null

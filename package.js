@@ -14,8 +14,8 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'reactive-var',
-    'space:base@1.4.1',
-    'space:messaging@0.3.2',
+    'space:base@2.0.0',
+    'space:messaging@1.0.0',
   ]);
 
   api.addFiles([

@@ -1,2 +1,2 @@
 
-Meteor.startup -> new TodoMVC().run()
+Meteor.startup -> new TodoMVC().start()

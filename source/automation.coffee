@@ -1,7 +1,7 @@
 
 class Space.ui.Module extends Space.Module
 class Space.ui.Application extends Space.Application
-  
+
 automatedMappings =
   Stores: []
   Mediators: []
@@ -15,7 +15,7 @@ automatedMappings =
     @injector.map(store).asSingleton() for store in @Stores
     @injector.map(controller).asSingleton() for controller in @Controllers
 
-  run: ->
+  startup: ->
     @injector.create(store) for store in @Stores
     @injector.create(controller) for controller in @Controllers
 

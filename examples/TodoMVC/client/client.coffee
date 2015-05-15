@@ -7,5 +7,6 @@ class @TodoMVC extends Space.ui.Application
   Controllers: ['IndexController']
 
   configure: ->
-    super
-    @injector.map('Router').to Router # Use iron:router for this example app
+    super()
+    # Use iron:router for this example app
+    @injector.map('Router').to Router

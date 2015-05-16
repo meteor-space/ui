@@ -1,6 +1,21 @@
 Changelog
 =========
 
+### 5.0.0
+Updates to `space:base@2.0.0` and `space:messaging@1.0.0` (checkout breaking
+changes in both packages!). Here is short summary:
+
+#### Upgrade from 4.0
+- replace the app/module `run` hook with `startup`
+- start your application with `start` instead of `run`
+- There is a new `Space.messaging.Api` to define Meteor methods that can be
+tested easily. This **replaces** the functionality from `Space.messaging.CommandBus`
+to send commands from client to server. **This is not possible anymore!**
+Commands are now just the same as events, you can use them on the client side
+and server side the same way, **BUT** if you want "type safety" when sending
+a command from client to server, you have to check it yourself within the server
+method. See the updated TodoMVC example.
+
 ### 4.3.2
 Introduces the concept of non-reactive default state for stores and mediators
 so that state is not always overwritten by default values when some reactive

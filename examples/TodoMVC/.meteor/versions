@@ -50,7 +50,7 @@ routepolicy@1.0.2
 session@1.0.4
 space:base@2.0.0
 space:messaging@1.0.0
-space:ui@4.3.2
+space:ui@5.0.0
 spacebars-compiler@1.0.3
 spacebars@1.0.3
 templating@1.0.9

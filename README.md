@@ -28,11 +28,12 @@ class @TodosStore extends Space.ui.Store
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
+  setDefaultState: -> activeFilter: @FILTERS.ALL
+
   setInitialState: ->
     todos: Todos.find()
     completedTodos: Todos.find isCompleted: true
     activeTodos: Todos.find isCompleted: false
-    activeFilter: @FILTERS.ALL
 
   @on TodoCreated, (event) -> Todos.insert title: event.title, isCompleted: false
 
@@ -74,12 +75,17 @@ TodosStore = Space.ui.Store.extend({
     COMPLETED: 'completed',
   },
 
+  setDefaultState: function() {
+    return {
+      activeFilter: this.FILTERS.ALL
+    };
+  }
+
   setInitialState: function() {
     return {
       todos: Todos.find(),
       completedTodos: Todos.find({ isCompleted: true }),
-      activeTodos: Todos.find({ isCompleted: false }),
-      activeFilter: this.FILTERS.ALL
+      activeTodos: Todos.find({ isCompleted: false })
     };
   }
 });
@@ -118,13 +124,14 @@ class @TodoListMediator extends Space.ui.Mediator
 
   Dependencies:
     store: 'TodosStore'
-    commandBus: 'Space.messaging.CommandBus'
+    meteor: 'Meteor'
+
+  setDefaultState: -> editingTodoId: null
 
   setInitialState: ->
     todos: @store.get('todos')
     hasAnyTodos: @store.get('todos').count() > 0
     allTodosCompleted: @store.get('activeTodos').count() is 0
-    editingTodoId: null
 
   toggleTodo: (todo) -> @publish new TodoToggled todoId: todo._id
 
@@ -136,7 +143,7 @@ class @TodoListMediator extends Space.ui.Mediator
     @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
     @stopEditing()
 
-  toggleAllTodos: -> @commandBus.send new ToggleAllTodos()
+  toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
   stopEditing: -> @set 'editingTodoId', null
 ```
@@ -152,7 +159,7 @@ Template.todo_list.helpers
     if @hasAnyTodos and @allTodosCompleted then 'checked' else false
 
   prepareTodoData: ->
-    @isEditing = mediator().editingTodoId.get() is @_id
+    @isEditing = mediator().get('editingTodoId') is @_id
     return this
 
 Template.todo_list.events
@@ -166,15 +173,14 @@ Template.todo_list.events
   'editingCanceled .todo': -> mediator().stopEditing()
 
   'editingCompleted .todo': (event) ->
-    newTitle = getEventTarget(event).getTitleValue()
-    mediator().submitNewTitle getTodo(event), newTitle
+    todo = Space.ui.getEventTarget(event)
+    newTitle = todo.getTitleValue()
+    mediator().submitNewTitle todo.data, newTitle
 
   'click #toggle-all': -> mediator().toggleAllTodos()
 
-# Helper functions to work with Meteor templates
-mediator = -> Template.instance().mediator
-getEventTarget = (event) -> event.target.$blaze_range.view.templateInstance()
-getTodo = (event) -> getEventTarget(event).data
+mediator = -> Space.ui.getMediator()
+getTodo = (event) -> Space.ui.getEventTarget(event).data
 ```
 
 ### Explicit Messaging
@@ -241,8 +247,9 @@ class @TodoMVC extends Space.ui.Application
   Controllers: ['IndexController']
 
   configure: ->
-    super
-    @injector.map('Router').to Router # Use iron:router for this example app
+    super()
+    # Use iron:router for this example app
+    @injector.map('Router').to Router
 ```
 
 ## Run the tests

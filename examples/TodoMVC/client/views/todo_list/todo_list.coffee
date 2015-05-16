@@ -21,12 +21,11 @@ Template.todo_list.events
   'editingCanceled .todo': -> mediator().stopEditing()
 
   'editingCompleted .todo': (event) ->
-    newTitle = getEventTarget(event).getTitleValue()
-    mediator().submitNewTitle getTodo(event), newTitle
+    todo = Space.ui.getEventTarget(event)
+    newTitle = todo.getTitleValue()
+    mediator().submitNewTitle todo.data, newTitle
 
   'click #toggle-all': -> mediator().toggleAllTodos()
 
-# Helper functions to work with Meteor templates
-mediator = -> Template.instance().mediator
-getEventTarget = (event) -> event.target.$blaze_range.view.templateInstance()
-getTodo = (event) -> getEventTarget(event).data
+mediator = -> Space.ui.getMediator()
+getTodo = (event) -> Space.ui.getEventTarget(event).data

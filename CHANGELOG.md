@@ -1,6 +1,9 @@
 Changelog
 =========
 
+### 5.0.1
+@Sanjo fixed a minor issue #29 with `Space.ui.createEvents`
+
 ### 5.0.0
 Updates to `space:base@2.0.0` and `space:messaging@1.0.0` (checkout breaking
 changes in both packages!). Here is short summary:

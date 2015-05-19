@@ -49,7 +49,7 @@ routepolicy@1.0.5
 session@1.1.0
 space:base@2.0.0
 space:messaging@1.0.0
-space:ui@5.0.2
+space:ui@5.1.0
 spacebars@1.0.6
 spacebars-compiler@1.0.6
 templating@1.1.1

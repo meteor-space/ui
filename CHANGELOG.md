@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 5.1.0
+Introduces support for `blaze-components` via the new class `Space.ui.BlazeComponent`. This works very similar to `Space.ui.Mediator`
+but it also extends `BlazeComponent` with all its capabilities.
+See the TodoMVC example for a basic reference.
+
 ### 5.0.2
 Adds support for Meteor > 1.0 template hooks.
 

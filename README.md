@@ -102,9 +102,14 @@ TodosStore.on(TodoCreated, function (event) {
 ```
 
 ### Composable Views
-The biggest problem with Meteor templates is that they need to get their data from *somewhere*. Unfortunately
-there is no good pattern provided by the core team, so everyone has to come up with custom
-solutions. `space:ui` introduces **mediators** that manage standard Meteor templates by providing application state to them, interpreting (dumb) template events and publishing business actions. The stores listen to published actions and change their internal state according to its logic. The changes are reactively pushed to mediators that declared their dependency on stores by accessing their data:
+The biggest problem with Meteor templates is that they need to get their data
+from *somewhere*. Unfortunately there is no good pattern provided by the core
+team, so everyone has to come up with custom solutions. `space:ui` introduces
+the concepts of **mediators** that manage standard Meteor templates by providing
+application state to them, interpreting (dumb) template events and publishing business
+actions. The stores listen to published actions and change their internal
+state according to its logic. The changes are reactively pushed to mediators
+that declared their dependency on stores by accessing their data:
 
 ```
 ╔═════════╗       ╔════════╗  state  ╔════════════════╗  state   ╔══════════════════╗
@@ -117,7 +122,7 @@ solutions. `space:ui` introduces **mediators** that manage standard Meteor templ
 
 This is the **Mediator** for the todo list of the TodoMVC example:
 
-```CoffeeScript
+```coffeescript
 class @TodoListMediator extends Space.ui.Mediator
 
   @Template: 'todo_list'
@@ -183,6 +188,42 @@ mediator = -> Space.ui.getMediator()
 getTodo = (event) -> Space.ui.getEventTarget(event).data
 ```
 
+You are not limited to the standard Meteor templates, `space:ui` also fully
+integrates with the fantastic [blaze-components](https://github.com/peerlibrary/meteor-blaze-components)
+package via the `Space.ui.BlazeComponent` class.
+
+Here is the footer component of the TodoMVC example:
+
+```coffeescript
+class @FooterComponent extends Space.ui.BlazeComponent
+
+  @register 'footer' # blaze-components specific
+
+  Dependencies:
+    store: 'TodosStore'
+    meteor: 'Meteor'
+
+  setDefaultState: -> availableFilters: @_mapAvailableFilters()
+
+  setReactiveState: ->
+    activeTodosCount: @store.get('activeTodos').count()
+    completedTodosCount: @store.get('completedTodos').count()
+
+  pluralize: (count) -> if count is 1 then 'item' else 'items'
+
+  # Also a blaze-components API
+  events: -> [
+    'click #clear-completed': (event) -> @meteor.call 'clearCompletedTodos'
+  ]
+
+  _mapAvailableFilters: -> _.map @store.FILTERS, (key) ->
+    name: key[0].toUpperCase() + key.slice 1
+    path: key
+```
+
+As you can see, the integration is seamless – you can use the full blaze-components
+API while having dependency injection and state management from `space:ui`
+
 ### Explicit Messaging
 Using **pub/sub** messaging between the various layers of your application is an effective way to decouple them. The stores don't know anything about other parts of the system (business logic). Mediators know how to get data from stores and provide an api to their managed templates. Templates don't know anything but to display given data and tell their mediator about user interaction with buttons etc.
 
@@ -196,7 +237,7 @@ With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as 
 2. You have full control over configuration and initialization
 3. Testing your stuff is easy
 
-```CoffeeScript
+```coffeescript
 class @IndexController
 
   Dependencies:
@@ -238,12 +279,13 @@ provides a rock solid implementation of a [simple dependency injector](https://g
 
 Here you see where the "magic" happens and all the parts of your application are wired up:
 
-```CoffeeScript
+```coffeescript
 class @TodoMVC extends Space.ui.Application
 
   RequiredModules: ['Space.ui']
   Stores: ['TodosStore']
-  Mediators: ['InputMediator', 'TodoListMediator', 'FooterMediator']
+  Mediators: ['TodoListMediator']
+  Components: ['InputComponent', 'FooterComponent']
   Controllers: ['IndexController']
 
   configure: ->

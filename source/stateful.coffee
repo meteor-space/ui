@@ -14,7 +14,9 @@ Space.ui.Stateful =
     @tracker.autorun => @set(key, value) for key, value of @setInitialState()
 
   setDefaultState: -> {}
-  setInitialState: -> {}
+  # TODO: setInitialState is depricated and <setReactiveState> is preferred.
+  setInitialState: -> if @setReactiveState? then @setReactiveState() else {}
+  setReactiveState: -> {}
 
   get: (path) ->
     path = if path? then path.split "." else []

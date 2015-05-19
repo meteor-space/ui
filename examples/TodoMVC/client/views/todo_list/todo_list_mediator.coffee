@@ -9,7 +9,7 @@ class @TodoListMediator extends Space.ui.Mediator
 
   setDefaultState: -> editingTodoId: null
 
-  setInitialState: ->
+  setReactiveState: ->
     todos: @store.get('todos')
     hasAnyTodos: @store.get('todos').count() > 0
     allTodosCompleted: @store.get('activeTodos').count() is 0

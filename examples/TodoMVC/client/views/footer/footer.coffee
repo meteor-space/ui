@@ -9,7 +9,7 @@ class @FooterComponent extends Space.ui.BlazeComponent
 
   setDefaultState: -> availableFilters: @_mapAvailableFilters()
 
-  setInitialState: ->
+  setReactiveState: ->
     activeTodosCount: @store.get('activeTodos').count()
     completedTodosCount: @store.get('completedTodos').count()
 

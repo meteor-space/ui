@@ -116,3 +116,30 @@ describe 'Space.ui.TemplateMediatorMapping', ->
         # simulate Meteor template created callback
         @template.destroyed.call @template
         expect(existingDestroyedCallback).to.have.been.calledOn @template
+
+    describe 'Meteor > 1.0 compatibility', ->
+
+      addCallbackStyleStubs = ->
+        @template.onCreated = sinon.stub()
+        @template.onRendered = sinon.stub()
+        @template.onDestroyed = sinon.stub()
+        @template.onCreated.callsArgOn 0, @template
+
+      it 'uses the onCreated callback style if available', ->
+        addCallbackStyleStubs.call this
+        @mapping.toMediator 'TestMediator'
+        expect(@template.mediator).to.equal @mediator
+        expect(@mediator.templateCreated).to.have.been.calledWith @template
+
+      it 'uses the onRendered callback style if available', ->
+        addCallbackStyleStubs.call this
+        @template.onRendered.callsArgOn 0, @template
+        @mapping.toMediator 'TestMediator'
+        expect(@mediator.templateRendered).to.have.been.calledWith @template
+
+      it 'uses the onDestroyed callback style if available', ->
+        addCallbackStyleStubs.call this
+        @template.onDestroyed.callsArgOn 0, @template
+        @mapping.toMediator 'TestMediator'
+        expect(@template.mediator).not.to.exist
+        expect(@mediator.templateDestroyed).to.have.been.calledWith @template

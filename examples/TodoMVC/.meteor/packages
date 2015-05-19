@@ -7,4 +7,5 @@ meteor-platform
 coffeescript
 
 iron:router@1.0.7
+peerlibrary:blaze-components
 space:ui

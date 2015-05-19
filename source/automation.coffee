@@ -6,6 +6,7 @@ automatedMappings =
   Stores: []
   Mediators: []
   Controllers: []
+  Components: []
 
   Dependencies:
     templates: 'Space.ui.TemplateMediatorMap'
@@ -14,6 +15,9 @@ automatedMappings =
     @templates.autoMap mediator for mediator in @Mediators
     @injector.map(store).asSingleton() for store in @Stores
     @injector.map(controller).asSingleton() for controller in @Controllers
+    for componentPath in @Components
+      component = Space.resolvePath componentPath
+      component.Application = @app
 
   startup: ->
     @injector.create(store) for store in @Stores

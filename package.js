@@ -24,6 +24,7 @@ Package.onUse(function(api) {
     'source/stateful.coffee',
     'source/store.coffee',
     'source/mediator.coffee',
+    'source/blaze_component.coffee',
     'source/template_mediator_mapping.coffee',
     'source/template_mediator_map.coffee',
     'source/helpers.coffee',

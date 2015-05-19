@@ -1,12 +1,15 @@
 
-Template.input.events
+class @InputComponent extends Space.ui.BlazeComponent
 
-  'keyup #new-todo': (event, template) ->
+  @register 'input'
 
-    # When it was the ENTER key
-    if event.keyCode is 13
-      # Tell mediator about it
-      input = template.$('#new-todo').val()
-      template.mediator.onInputSubmitted input
-      # Reset input
-      template.$('#new-todo').val('')
+  events: -> [
+    'keyup #new-todo': (event) ->
+      # When it was the ENTER key
+      if event.keyCode is 13
+        # Tell mediator about it
+        input = @$('#new-todo').val()
+        @publish new TodoCreated title: input
+        # Reset input
+        @$('#new-todo').val('')
+  ]

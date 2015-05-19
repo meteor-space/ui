@@ -1,6 +1,9 @@
 Changelog
 =========
 
+### 5.0.2
+Adds support for Meteor > 1.0 template hooks.
+
 ### 5.0.1
 @Sanjo fixed a minor issue #29 with `Space.ui.createEvents`
 

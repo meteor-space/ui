@@ -188,6 +188,8 @@ mediator = -> Space.ui.getMediator()
 getTodo = (event) -> Space.ui.getEventTarget(event).data
 ```
 
+#### Integration with blaze-components
+
 You are not limited to the standard Meteor templates, `space:ui` also fully
 integrates with the fantastic [blaze-components](https://github.com/peerlibrary/meteor-blaze-components)
 package via the `Space.ui.BlazeComponent` class.

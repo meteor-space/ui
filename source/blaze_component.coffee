@@ -15,7 +15,9 @@ if Package['peerlibrary:blaze-components']? # weak dependency
     Dependencies:
       eventBus: 'Space.messaging.EventBus'
 
-    onCreated: -> @constructor.Application.injector.injectInto this
+    onCreated: ->
+      @constructor.Application.injector.injectInto this
+      @setupState()
 
     publish: (event) -> @eventBus.publish event
 

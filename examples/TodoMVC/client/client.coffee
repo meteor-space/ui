@@ -3,8 +3,8 @@ class @TodoMVC extends Space.ui.Application
 
   RequiredModules: ['Space.ui']
   Stores: ['TodosStore']
-  Mediators: ['TodoListMediator', 'FooterMediator']
-  Components: ['InputComponent']
+  Mediators: ['TodoListMediator']
+  Components: ['InputComponent', 'FooterComponent']
   Controllers: ['IndexController']
 
   configure: ->

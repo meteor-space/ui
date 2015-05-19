@@ -1,12 +1,24 @@
 
-Template.footer.helpers
+class @FooterComponent extends Space.ui.BlazeComponent
 
-  # Make store data available to the template via the 'state' helper
-  state: -> Space.ui.getMediator().getState()
+  @register 'footer'
+
+  Dependencies:
+    store: 'TodosStore'
+    meteor: 'Meteor'
+
+  setDefaultState: -> availableFilters: @_mapAvailableFilters()
+
+  setInitialState: ->
+    activeTodosCount: @store.get('activeTodos').count()
+    completedTodosCount: @store.get('completedTodos').count()
 
   pluralize: (count) -> if count is 1 then 'item' else 'items'
 
-Template.footer.events
+  events: -> [
+    'click #clear-completed': (event) -> @meteor.call 'clearCompletedTodos'
+  ]
 
-  'click #clear-completed': (event, template) ->
-    template.mediator.onClearCompletedTodos()
+  _mapAvailableFilters: -> _.map @store.FILTERS, (key) ->
+    name: key[0].toUpperCase() + key.slice 1
+    path: key

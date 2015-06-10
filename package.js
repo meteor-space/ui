@@ -18,6 +18,10 @@ Package.onUse(function(api) {
     'space:messaging@1.0.0',
   ]);
 
+  api.use([
+    'peerlibrary:blaze-components'
+  ], 'client', {weak: true});
+
   api.addFiles([
     'source/module.coffee',
     'source/automation.coffee',

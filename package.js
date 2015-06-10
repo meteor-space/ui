@@ -19,7 +19,7 @@ Package.onUse(function(api) {
   ]);
 
   api.use([
-    'peerlibrary:blaze-components'
+    'peerlibrary:blaze-components@0.9.2'
   ], 'client', {weak: true});
 
   api.addFiles([

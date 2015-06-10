@@ -1,5 +1,8 @@
 Changelog
 =========
+### 5.1.1
+Adds weak dependency on blaze-components package so that it work in a package
+only app.
 
 ### 5.1.0
 Introduces support for `blaze-components` via the new class `Space.ui.BlazeComponent`. This works very similar to `Space.ui.Mediator`

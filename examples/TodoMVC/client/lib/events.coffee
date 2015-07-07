@@ -4,6 +4,8 @@
 
 Space.ui.createEvents
 
+  FilterRouteTriggered: filterType: String
+
   TodoCreated: title: String
 
   TodoDeleted: todoId: String

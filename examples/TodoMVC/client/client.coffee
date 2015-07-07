@@ -5,9 +5,10 @@ class @TodoMVC extends Space.ui.Application
   Stores: ['TodosStore']
   Mediators: ['TodoListMediator']
   Components: ['InputComponent', 'FooterComponent']
-  Controllers: ['IndexController']
+  Controllers: ['RouteController', 'LayoutController']
+  Singletons: ['TodosTracker']
 
-  configure: ->
-    super()
-    # Use iron:router for this example app
-    @injector.map('Router').to Router
+  Dependencies:
+    eventBus: 'Space.messaging.EventBus'
+
+  publish: (event) -> @eventBus.publish event

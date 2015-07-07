@@ -28,33 +28,39 @@ class @TodosStore extends Space.ui.Store
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
-  setDefaultState: -> activeFilter: @FILTERS.ALL
+  Dependencies:
+    todos: 'Todos'
 
-  setInitialState: ->
-    todos: Todos.find()
-    completedTodos: Todos.find isCompleted: true
-    activeTodos: Todos.find isCompleted: false
+  setDefaultState: -> {
+    activeFilter: @FILTERS.ALL
+  }
 
-  @on TodoCreated, (event) -> Todos.insert title: event.title, isCompleted: false
+  setReactiveState: -> {
+    todos: @todos.find()
+    completedTodos: @todos.find isCompleted: true
+    activeTodos: @todos.find isCompleted: false
+  }
 
-  @on TodoDeleted, (event) -> Todos.remove event.todoId
+  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
 
-  @on TodoTitleChanged, (event) -> Todos.update event.todoId, $set: title: event.newTitle
+  @on TodoDeleted, (event) -> @todos.remove event.todoId
+
+  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
 
   @on TodoToggled, (event) ->
-    isCompleted = Todos.findOne(event.todoId).isCompleted
-    Todos.update event.todoId, $set: isCompleted: !isCompleted
+    isCompleted = @todos.findOne(event.todoId).isCompleted
+    @todos.update event.todoId, $set: isCompleted: !isCompleted
 
   @on FilterChanged, (event) ->
 
-    # only continue if it changed
+    # only continue if it actually changed
     if @get('activeFilter') is event.filter then return
 
     switch event.filter
 
-      when @FILTERS.ALL then @set 'todos', Todos.find()
-      when @FILTERS.ACTIVE then @set 'todos', Todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @set 'todos', Todos.find isCompleted: true
+      when @FILTERS.ALL then @set 'todos', @todos.find()
+      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
 
       else return # only accept valid options
 
@@ -75,6 +81,10 @@ TodosStore = Space.ui.Store.extend({
     COMPLETED: 'completed',
   },
 
+  Dependencies: {
+    todos: 'Todos'
+  },
+
   setDefaultState: function() {
     return {
       activeFilter: this.FILTERS.ALL
@@ -83,15 +93,15 @@ TodosStore = Space.ui.Store.extend({
 
   setInitialState: function() {
     return {
-      todos: Todos.find(),
-      completedTodos: Todos.find({ isCompleted: true }),
-      activeTodos: Todos.find({ isCompleted: false })
+      todos: this.todos.find(),
+      completedTodos: this.todos.find({ isCompleted: true }),
+      activeTodos: this.todos.find({ isCompleted: false })
     };
   }
 });
 
 TodosStore.on(TodoCreated, function (event) {
-  Todos.insert({
+  this.todos.insert({
     title: event.title,
     isCompleted: false
   });
@@ -240,37 +250,15 @@ With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as 
 3. Testing your stuff is easy
 
 ```coffeescript
-class @IndexController
+class @LayoutController extends Space.messaging.Controller
 
   Dependencies:
-    tracker: 'Tracker'
-    router: 'Router'
-    eventBus: 'Space.messaging.EventBus'
+    layout: 'FlowLayout'
 
-  onDependenciesReady: ->
-
-    self = this
-    # Redirect to show all todos by default
-    @router.route '/', -> @redirect '/all'
-
-    # Handles filtering of todos
-    @router.route '/:_filter',
-
-      name: 'index'
-
-      onAfterAction: ->
-        # Dispatch action non-reactivly to prevent multiple calls
-        # this is a drawback of using iron:router TODO: switch to flow-router?
-        self.tracker.nonreactive => self._setFilter @params._filter
-
-      subscriptions: ->
-        # Subscribe to the filetered data based on the route parameter
-        Meteor.subscribe 'todos', @params._filter
-
-  _setFilter: (filter) => @eventBus.publish new FilterChanged filter: filter
+  @on FilterRouteTriggered, (event) -> @layout.render "index"
 ```
 
-You might realize that this is a standard CoffeeScript class. You can use any
+You might realize that this is a standard Coffeescript class. You can use any
 other mechanism for creating your "classes" or "instances" when using `space:ui`.
 The only "magic" that happens here, is that you declare your dependencies
 as a simple property `Dependencies` on the function prototype. Nothing special
@@ -288,12 +276,8 @@ class @TodoMVC extends Space.ui.Application
   Stores: ['TodosStore']
   Mediators: ['TodoListMediator']
   Components: ['InputComponent', 'FooterComponent']
-  Controllers: ['IndexController']
-
-  configure: ->
-    super()
-    # Use iron:router for this example app
-    @injector.map('Router').to Router
+  Controllers: ['RouteController', 'LayoutController']
+  Singletons: ['TodosTracker']
 ```
 
 ## Run the tests

@@ -1,8 +1,12 @@
+class @TodosPublication extends Space.messaging.Publication
 
-Meteor.publish 'todos', (filter) ->
-  # Publish filtered data based on the filter parameter
-  switch filter
-    when 'all' then Todos.find()
-    when 'active' then Todos.find isCompleted: false
-    when 'completed' then Todos.find isCompleted: true
-    else @ready()
+  Dependencies:
+    todosCollection: 'Todos'
+
+  @publish 'todos', (filter) ->
+    # Publish filtered data based on the filter parameter
+    switch filter
+      when 'all' then @todosCollection.find()
+      when 'active' then @todosCollection.find isCompleted: false
+      when 'completed' then @todosCollection.find isCompleted: true
+      else @ready()

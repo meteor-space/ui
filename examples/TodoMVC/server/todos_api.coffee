@@ -1,9 +1,12 @@
 
 class @TodosApi extends Space.messaging.Api
 
+  Dependencies:
+    todos: 'Todos'
+
   @method 'toggleAllTodos', ->
-    Todos.update {}, {$set: isCompleted: !@_allTodosCompleted()}, multi: true
+    @todos.update {}, {$set: isCompleted: !@_allTodosCompleted()}, multi: true
 
-  @method 'clearCompletedTodos', -> Todos.remove isCompleted: true
+  @method 'clearCompletedTodos', -> @todos.remove isCompleted: true
 
-  _allTodosCompleted: -> Todos.find(isCompleted: false).count() is 0
+  _allTodosCompleted: -> @todos.find(isCompleted: false).count() is 0

@@ -6,25 +6,28 @@ class @TodosStore extends Space.ui.Store
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
+  Dependencies:
+    todos: 'Todos'
+
   setDefaultState: -> {
     activeFilter: @FILTERS.ALL
   }
 
   setReactiveState: -> {
-    todos: Todos.find()
-    completedTodos: Todos.find isCompleted: true
-    activeTodos: Todos.find isCompleted: false
+    todos: @todos.find()
+    completedTodos: @todos.find isCompleted: true
+    activeTodos: @todos.find isCompleted: false
   }
 
-  @on TodoCreated, (event) -> Todos.insert title: event.title, isCompleted: false
+  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
 
-  @on TodoDeleted, (event) -> Todos.remove event.todoId
+  @on TodoDeleted, (event) -> @todos.remove event.todoId
 
-  @on TodoTitleChanged, (event) -> Todos.update event.todoId, $set: title: event.newTitle
+  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
 
   @on TodoToggled, (event) ->
-    isCompleted = Todos.findOne(event.todoId).isCompleted
-    Todos.update event.todoId, $set: isCompleted: !isCompleted
+    isCompleted = @todos.findOne(event.todoId).isCompleted
+    @todos.update event.todoId, $set: isCompleted: !isCompleted
 
   @on FilterChanged, (event) ->
 
@@ -33,9 +36,9 @@ class @TodosStore extends Space.ui.Store
 
     switch event.filter
 
-      when @FILTERS.ALL then @set 'todos', Todos.find()
-      when @FILTERS.ACTIVE then @set 'todos', Todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @set 'todos', Todos.find isCompleted: true
+      when @FILTERS.ALL then @set 'todos', @todos.find()
+      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
+      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
 
       else return # only accept valid options
 

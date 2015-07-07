@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     'templating',
     'reactive-var',
     'space:base@2.1.0',
-    'space:messaging@1.4.1',
+    'space:messaging@1.4.2',
   ]);
 
   api.use([

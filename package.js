@@ -24,7 +24,7 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'source/module.coffee',
-    'source/automation.coffee',
+    'source/automation.js',
     'source/stateful.coffee',
     'source/store.coffee',
     'source/mediator.coffee',

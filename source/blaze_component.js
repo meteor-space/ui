@@ -1,5 +1,6 @@
-if(Package['peerlibrary:blaze-components'] !== null) { // weak dependency
-  var BlazeComponent = Package['peerlibrary:blaze-components'].BlazeComponent;
+var BlazeComponentsPackage = Package['peerlibrary:blaze-components'];
+if(BlazeComponentsPackage !== undefined) { // weak dependency
+  var BlazeComponent = BlazeComponentsPackage.BlazeComponent;
 
   Space.ui.BlazeComponent = Space.Object.extend();
 

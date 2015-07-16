@@ -31,7 +31,7 @@ Package.onUse(function(api) {
     'source/blaze_component.js',
     'source/template_mediator_mapping.coffee',
     'source/template_mediator_map.coffee',
-    'source/helpers.coffee',
+    'source/helpers.js',
   ], 'client');
 
 });

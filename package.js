@@ -25,7 +25,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'source/module.js',
     'source/automation.js',
-    'source/stateful.coffee',
+    'source/stateful.js',
     'source/store.coffee',
     'source/mediator.coffee',
     'source/blaze_component.js',

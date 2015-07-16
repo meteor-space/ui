@@ -23,7 +23,7 @@ Package.onUse(function(api) {
   ], 'client', {weak: true});
 
   api.addFiles([
-    'source/module.coffee',
+    'source/module.js',
     'source/automation.js',
     'source/stateful.coffee',
     'source/store.coffee',

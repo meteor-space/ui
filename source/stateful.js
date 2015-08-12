@@ -11,6 +11,8 @@ Space.ui.Stateful = {
     tracker: 'Tracker'
   },
 
+  computation: null,
+
   /**
    * This has to be called once by the receiving class
    * to initialize the default and reactive state.
@@ -28,7 +30,14 @@ Space.ui.Stateful = {
       }
     }
     // Make it reactive via autorun
-    this.tracker.autorun(_.bind(assignReactiveState, this));
+    this.computation = this.tracker.autorun(_.bind(assignReactiveState, this));
+  },
+
+  /**
+   * Stop the computation for the reactive state
+   */
+  cleanupState: function() {
+    this.computation.stop();
   },
 
   /**

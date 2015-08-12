@@ -29,6 +29,10 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
       this.setupState();
     },
 
+    onDestroyed: function() {
+      this.cleanupState();
+    },
+
     publish: function (event) {
       this.eventBus.publish(event);
     }

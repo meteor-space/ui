@@ -14,7 +14,7 @@ class Space.ui.Mediator extends Space.Object
   templateRendered: (template) ->
 
   # The managed blaze template was destroyed
-  templateDestroyed: (template) ->
+  templateDestroyed: (template) -> @cleanupState()
 
   publish: (event) -> @eventBus.publish event
 

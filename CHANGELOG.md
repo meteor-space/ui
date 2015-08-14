@@ -1,5 +1,8 @@
 Changelog
 =========
+### 5.1.2
+Let mediators and blaze components cleanup their state on destruction
+
 ### 5.1.1
 Adds weak dependency on blaze-components package so that it work in a package
 only app.

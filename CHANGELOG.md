@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 5.2.0
+Updates to latest `space:base` and `space:messaging` packages which introduced
+many small debugging and API improvements.
+
 ### 5.1.3
 Throw better errors when blaze components could not be resolved.
 

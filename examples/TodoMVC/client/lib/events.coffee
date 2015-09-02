@@ -2,16 +2,31 @@
 # Application events with runtime-checked shape
 # using Meteor's check and Match API.
 
-Space.ui.createEvents
+Space.messaging.define Space.messaging.Event, {
 
-  FilterRouteTriggered: filterType: String
+  FilterRouteTriggered: {
+    filterType: String
+  }
 
-  TodoCreated: title: String
+  TodoCreated: {
+    title: String
+  }
 
-  TodoDeleted: todoId: String
+  TodoDeleted: {
+    todoId: String
+  }
 
-  TodoTitleChanged: todoId: String, newTitle: String
+  TodoTitleChanged: {
+    todoId: String
+    newTitle: String
+  }
 
-  TodoToggled: todoId: String
+  TodoToggled: {
+    todoId: String
+  }
 
-  FilterChanged: filter: String
+  FilterChanged: {
+    filter: String
+  }
+
+}

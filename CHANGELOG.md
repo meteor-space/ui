@@ -1,5 +1,9 @@
 Changelog
 =========
+
+### 5.1.3
+Throw better errors when blaze components could not be resolved.
+
 ### 5.1.2
 Let mediators and blaze components cleanup their state on destruction
 

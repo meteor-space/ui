@@ -40,6 +40,9 @@ automatedMappings = {
      */
     _.each(this.Components, function setupBlazeComponents(componentPath) {
       var component = Space.resolvePath(componentPath);
+      if(component === null) {
+        throw new Error('Space.Module could not resolve component class <' + componentPath + '>');
+      }
       component.Application = this.app;
     }, this);
   },

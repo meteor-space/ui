@@ -73,7 +73,7 @@ class @TodosStore extends Space.ui.Store
 can save you from a lot of typing, also when using Javascript :wink:
 
 ```javascript
-TodosStore = Space.ui.Store.extend({
+Space.ui.Store.extend(window, 'TodosStore', {
 
   FILTERS: {
     ALL: 'all',
@@ -98,9 +98,9 @@ TodosStore = Space.ui.Store.extend({
       activeTodos: this.todos.find({ isCompleted: false })
     };
   }
-});
+})
 
-TodosStore.on(TodoCreated, function (event) {
+.on(TodoCreated, function (event) {
   this.todos.insert({
     title: event.title,
     isCompleted: false

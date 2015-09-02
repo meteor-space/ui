@@ -1,8 +1,7 @@
 
 # Application events with runtime-checked shape
 # using Meteor's check and Match API.
-
-Space.messaging.define Space.messaging.Event, {
+Space.ui.createEvents {
 
   FilterRouteTriggered: {
     filterType: String

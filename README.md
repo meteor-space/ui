@@ -1,4 +1,4 @@
-# space:ui [![Build Status](https://travis-ci.org/CodeAdventure/space-ui.svg?branch=master)](https://travis-ci.org/CodeAdventure/space-ui)
+# space:ui [![Build Status](https://travis-ci.org/meteor-space/ui.svg?branch=master)](https://travis-ci.org/meteor-space/ui)
 
 **Meteor UI framework inspired by [React](http://facebook.github.io/react/)
 and [Flux](http://facebook.github.io/flux/docs/overview.html).**
@@ -8,7 +8,7 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## TodoMVC Example
 If you want to know if `space:ui` could be interesting, take a look at
-the [TodoMVC example](https://github.com/CodeAdventure/space-ui/tree/master/examples/TodoMVC)
+the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/TodoMVC)
 
 ## Core Ideas
 Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.
@@ -16,7 +16,7 @@ Meteor is a great platform for building realtime apps with Javascript, but for b
 The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed by Facebook, solves exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play well together. `space:ui` is a thin layer on top of Meteor and Blaze to provide these building blocks for you!
 
 ### Centralized Logic
-The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/CodeAdventure/space-ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
+The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/meteor-space/ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
 
 This doesn't mean that they have to be especially complex, eg. the whole logic of the TodoMVC application easily fits into 45 lines of CoffeeScript if you use this pattern:
 
@@ -287,7 +287,7 @@ class @TodoMVC extends Space.ui.Application
 `cd examples/TodoMVC && meteor`
 
 ## Release History
-You can find the complete release history in the [changelog](https://github.com/CodeAdventure/space-ui/blob/master/CHANGELOG.md)
+You can find the complete release history in the [changelog](https://github.com/meteor-space/ui/blob/master/CHANGELOG.md)
 
 ## License
 Copyright (c) 2015 [Code Adventure](http://www.codeadventure.com/)

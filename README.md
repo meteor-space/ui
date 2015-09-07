@@ -290,5 +290,4 @@ class @TodoMVC extends Space.ui.Application
 You can find the complete release history in the [changelog](https://github.com/meteor-space/ui/blob/master/CHANGELOG.md)
 
 ## License
-Copyright (c) 2015 [Code Adventure](http://www.codeadventure.com/)
 Licensed under the MIT license.

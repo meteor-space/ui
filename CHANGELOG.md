@@ -1,6 +1,9 @@
 Changelog
 =========
 
+### 5.3.0
+Updates to latest `space:base` and `space:messaging` packages.
+
 ### 5.2.1
 Updated Github location to point to new home at https://github.com/meteor-space/ui
 

@@ -8,7 +8,7 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## TodoMVC Example
 If you want to know if `space:ui` could be interesting, take a look at
-the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/TodoMVC)
+the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/)
 
 ## Core Ideas
 Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.

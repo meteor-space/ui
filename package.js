@@ -14,12 +14,12 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'reactive-var',
-    'space:base@2.4.0',
-    'space:messaging@1.7.0',
+    'space:base@2.4.2',
+    'space:messaging@1.7.1',
   ]);
 
   api.use([
-    'peerlibrary:blaze-components@0.9.2'
+    'peerlibrary:blaze-components@0.13.0'
   ], 'client', {weak: true});
 
   api.addFiles([

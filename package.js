@@ -13,6 +13,7 @@ Package.onUse(function(api) {
     'coffeescript',
     'underscore',
     'templating',
+    'tracker',
     'reactive-var',
     'space:base@2.4.2',
     'space:messaging@1.7.1',
@@ -43,6 +44,7 @@ Package.onTest(function(api) {
     'underscore',
     'templating',
     'reactive-var',
+    'tracker',
     'space:ui',
     'practicalmeteor:munit@2.1.4',
     'space:testing@1.3.0'

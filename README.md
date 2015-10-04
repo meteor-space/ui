@@ -1,6 +1,6 @@
 # space:ui [![Build Status](https://travis-ci.org/meteor-space/ui.svg?branch=master)](https://travis-ci.org/meteor-space/ui)
 
-**Meteor UI framework inspired by [React](http://facebook.github.io/react/)
+**Flexible Meteor UI framework inspired by [React](http://facebook.github.io/react/)
 and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## Installation
@@ -8,7 +8,8 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## TodoMVC Example
 If you want to know if `space:ui` could be interesting, take a look at
-the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/TodoMVC)
+the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/TodoMVC).
+It is available in Javascript and Coffeescript.
 
 ## Core Ideas
 Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.
@@ -16,9 +17,95 @@ Meteor is a great platform for building realtime apps with Javascript, but for b
 The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed by Facebook, solves exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework, more a set of simple conventions and ideas that play well together. `space:ui` is a thin layer on top of Meteor and Blaze to provide these building blocks for you!
 
 ### Centralized Logic
-The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore](https://github.com/meteor-space/ui/blob/master/examples/TodoMVC/client/stores/todos_store.coffee) that manages a list of todos.
+The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a **TodosStore** (see below) that manages a list of todos.
 
-This doesn't mean that they have to be especially complex, eg. the whole logic of the TodoMVC application easily fits into 45 lines of CoffeeScript if you use this pattern:
+This doesn't mean that they have to be especially complex, here is the whole logic for
+managing the todos in the TodoMVC example:
+
+```javascript
+Space.ui.Store.extend(TodoMVC, 'TodosStore', {
+
+  FILTERS: {
+    ALL: 'all',
+    ACTIVE: 'active',
+    COMPLETED: 'completed',
+  },
+
+  Dependencies: {
+    todos: 'TodoMVC.Todos'
+  },
+
+  setDefaultState: function() {
+    return {
+      activeFilter: this.FILTERS.ALL
+    };
+  },
+
+  setReactiveState: function() {
+    return {
+      todos: this.todos.find(),
+      completedTodos: this.todos.findCompletedTodos(),
+      activeTodos: this.todos.findActiveTodos(),
+    };
+  }
+})
+
+.on(TodoMVC.TodoCreated, function(event) {
+  this.todos.insert({
+    title: event.title,
+    isCompleted: false
+  });
+})
+
+.on(TodoMVC.TodoDeleted, function(event) {
+  this.todos.remove(event.todoId);
+})
+
+.on(TodoMVC.TodoTitleChanged, function(event) {
+  this.todos.update(event.todoId, {
+    $set: {
+      title: event.newTitle
+    }
+  });
+})
+
+.on(TodoMVC.TodoToggled, function(event) {
+  var isCompleted = this.todos.findOne(event.todoId).isCompleted;
+  this.todos.update(event.todoId, {
+    $set: {
+      isCompleted: !isCompleted
+    }
+  });
+})
+
+.on(TodoMVC.FilterChanged, function(event) {
+  if (this.get('activeFilter') === event.filter) { return; }
+  switch (event.filter) {
+    case this.FILTERS.ALL:
+      this.set('todos', this.todos.find());
+      break;
+    case this.FILTERS.ACTIVE:
+      this.set('todos', this.todos.find({
+        isCompleted: false
+      }));
+      break;
+    case this.FILTERS.COMPLETED:
+      this.set('todos', this.todos.find({
+        isCompleted: true
+      }));
+      break;
+  }
+  this.set('activeFilter', event.filter);
+});
+```
+
+**Sidenote about the class system**:
+`space:ui` is based on [space:base](https://github.com/meteor-space/base) which
+provides a very simple but powerful [inheritance system](https://github.com/CodeAdventure/meteor-space/wiki/Space.Object) that
+can save you from a lot of typing when using Javascript :wink:
+
+If you are using Coffeescript, you can just extend the framework classes
+like normal and use the static class-methods for the setup:
 
 ```coffeescript
 class @TodosStore extends Space.ui.Store
@@ -45,69 +132,7 @@ class @TodosStore extends Space.ui.Store
 
   @on TodoDeleted, (event) -> @todos.remove event.todoId
 
-  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
-
-  @on TodoToggled, (event) ->
-    isCompleted = @todos.findOne(event.todoId).isCompleted
-    @todos.update event.todoId, $set: isCompleted: !isCompleted
-
-  @on FilterChanged, (event) ->
-
-    # only continue if it actually changed
-    if @get('activeFilter') is event.filter then return
-
-    switch event.filter
-
-      when @FILTERS.ALL then @set 'todos', @todos.find()
-      when @FILTERS.ACTIVE then @set 'todos', @todos.find isCompleted: false
-      when @FILTERS.COMPLETED then @set 'todos', @todos.find isCompleted: true
-
-      else return # only accept valid options
-
-    @set 'activeFilter', event.filter
-```
-
-**If you prefer JavaScript**:
-`space:ui` is based on `space:base` which provides a very simple but powerful
-[inheritance system](https://github.com/CodeAdventure/meteor-space/wiki/Space.Object) that
-can save you from a lot of typing, also when using Javascript :wink:
-
-```javascript
-Space.ui.Store.extend(window, 'TodosStore', {
-
-  FILTERS: {
-    ALL: 'all',
-    ACTIVE: 'active',
-    COMPLETED: 'completed',
-  },
-
-  Dependencies: {
-    todos: 'Todos'
-  },
-
-  setDefaultState: function() {
-    return {
-      activeFilter: this.FILTERS.ALL
-    };
-  }
-
-  setInitialState: function() {
-    return {
-      todos: this.todos.find(),
-      completedTodos: this.todos.find({ isCompleted: true }),
-      activeTodos: this.todos.find({ isCompleted: false })
-    };
-  }
-})
-
-.on(TodoCreated, function (event) {
-  this.todos.insert({
-    title: event.title,
-    isCompleted: false
-  });
-});
-
-// ... you get the point
+# ... you get the point
 
 ```
 
@@ -130,72 +155,84 @@ that declared their dependency on stores by accessing their data:
 
 ```
 
-This is the **Mediator** for the todo list of the TodoMVC example:
+This is the [TodoListMediator](https://github.com/meteor-space/ui/blob/master/examples/TodoMVC/client/views/todo_list/todo_list_mediator.js) for the todo list of the TodoMVC example:
 
-```coffeescript
-class @TodoListMediator extends Space.ui.Mediator
+```javascript
+Space.ui.Mediator.extend(TodoMVC, 'TodoListMediator', {
 
-  @Template: 'todo_list'
+  Dependencies: {
+    store: 'TodoMVC.TodosStore',
+    meteor: 'Meteor',
+  },
 
-  Dependencies:
-    store: 'TodosStore'
-    meteor: 'Meteor'
+  setDefaultState: function() {
+    return {
+      editingTodoId: null
+    };
+  },
 
-  setDefaultState: -> editingTodoId: null
+  setReactiveState: function() {
+    return {
+      todos: this.store.get('todos'),
+      hasAnyTodos: this.store.get('todos').count() > 0,
+      allTodosCompleted: this.store.get('activeTodos').count() === 0
+    };
+  },
 
-  setInitialState: ->
-    todos: @store.get('todos')
-    hasAnyTodos: @store.get('todos').count() > 0
-    allTodosCompleted: @store.get('activeTodos').count() is 0
+  toggleTodo: function(todo) {
+    this.publish(new TodoMVC.TodoToggled({
+      todoId: todo._id
+    }));
+  },
 
-  toggleTodo: (todo) -> @publish new TodoToggled todoId: todo._id
+  deleteTodo: function(todo) {
+    this.publish(new TodoMVC.TodoDeleted({ todoId: todo._id }));
+  },
 
-  deleteTodo: (todo) -> @publish new TodoDeleted todoId: todo._id
+  // … abbreviated for this example
+});
 
-  editTodo: (todo) -> @set 'editingTodoId', todo._id
-
-  submitNewTitle: (todo, newTitle) ->
-    @publish new TodoTitleChanged todoId: todo._id, newTitle: newTitle
-    @stopEditing()
-
-  toggleAllTodos: -> @meteor.call 'toggleAllTodos'
-
-  stopEditing: -> @set 'editingTodoId', null
+TodoMVC.TodoListMediator.Template = 'todo_list';
 ```
 
 And it connects to a standard Meteor template view:
 
-```coffeescript
-Template.todo_list.helpers
+```javascript
+Template.todo_list.helpers({
+  state: function() {
+    return mediator().getState();
+  },
+  isToggleChecked: function() {
+    if (this.hasAnyTodos && this.allTodosCompleted) {
+      return 'checked';
+    } else {
+      return false;
+    }
+  },
+  prepareTodoData: function() {
+    this.isEditing = mediator().get('editingTodoId') === this._id;
+    return this;
+  }
+});
 
-  state: -> mediator().getState()
+Template.todo_list.events({
+  'toggled .todo': function(event) {
+    return mediator().toggleTodo(getTodo(event));
+  },
+  'destroyed .todo': function(event) {
+    return mediator().deleteTodo(getTodo(event));
+  }
+  // … abbreviated for this example
+});
 
-  isToggleChecked: ->
-    if @hasAnyTodos and @allTodosCompleted then 'checked' else false
+// helpers
+function mediator() {
+  return Space.ui.getMediator();
+}
 
-  prepareTodoData: ->
-    @isEditing = mediator().get('editingTodoId') is @_id
-    return this
-
-Template.todo_list.events
-
-  'toggled .todo': (event) -> mediator().toggleTodo getTodo(event)
-
-  'destroyed .todo': (event) -> mediator().deleteTodo getTodo(event)
-
-  'doubleClicked .todo': (event) -> mediator().editTodo getTodo(event)
-
-  'editingCanceled .todo': -> mediator().stopEditing()
-
-  'editingCompleted .todo': (event) ->
-    todo = Space.ui.getEventTarget(event)
-    newTitle = todo.getTitleValue()
-    mediator().submitNewTitle todo.data, newTitle
-
-  'click #toggle-all': -> mediator().toggleAllTodos()
-
-mediator = -> Space.ui.getMediator()
-getTodo = (event) -> Space.ui.getEventTarget(event).data
+function getTodo(event) {
+  return Space.ui.getEventTarget(event).data;
+}
 ```
 
 #### Integration with blaze-components
@@ -205,6 +242,60 @@ integrates with the fantastic [blaze-components](https://github.com/peerlibrary/
 package via the `Space.ui.BlazeComponent` class.
 
 Here is the footer component of the TodoMVC example:
+
+```javascript
+pace.ui.BlazeComponent.extend(TodoMVC, 'FooterComponent', {
+
+  Dependencies: {
+    store: 'TodoMVC.TodosStore',
+    meteor: 'Meteor'
+  },
+
+  setDefaultState: function() {
+    return {
+      availableFilters: this._mapAvailableFilters()
+    };
+  },
+
+  setReactiveState: function() {
+    return {
+      activeTodosCount: this.store.get('activeTodos').count(),
+      completedTodosCount: this.store.get('completedTodos').count()
+    };
+  },
+
+  pluralize: function(count) {
+    if(count === 1) {
+      return 'item';
+    }
+    else {
+      return 'items';
+    }
+  },
+
+  events: function() {
+    return [{
+      'click #clear-completed': function(event) {
+        this.meteor.call('clearCompletedTodos');
+      }
+    }];
+  },
+
+  _mapAvailableFilters: function() {
+    return _.map(this.store.FILTERS, function(key) {
+      return {
+        name: key[0].toUpperCase() + key.slice(1),
+        path: key
+      };
+    });
+  }
+})
+
+.register('footer'); // BlazeComponent API to register with template
+```
+
+And here the same in Coffeescript, since the BlazeComponents api is optimized
+for that:
 
 ```coffeescript
 class @FooterComponent extends Space.ui.BlazeComponent
@@ -249,13 +340,17 @@ With the [Space architecture](https://github.com/CodeAdventure/meteor-space) as 
 2. You have full control over configuration and initialization
 3. Testing your stuff is easy
 
-```coffeescript
-class @LayoutController extends Space.messaging.Controller
-
-  Dependencies:
+```javascript
+Space.messaging.Controller.extend(TodoMVC, 'LayoutController', {
+  Dependencies: {
     layout: 'FlowLayout'
+  }
+})
 
-  @on FilterRouteTriggered, (event) -> @layout.render "index"
+.on(TodoMVC.FilterRouteTriggered, function(event) {
+  this.layout.render("index");
+});
+
 ```
 
 You might realize that this is a standard Coffeescript class. You can use any
@@ -269,15 +364,24 @@ provides a rock solid implementation of a [simple dependency injector](https://g
 
 Here you see where the "magic" happens and all the parts of your application are wired up:
 
-```coffeescript
-class @TodoMVC extends Space.ui.Application
+```javascript
+TodoMVC = Space.ui.Application.extend('TodoMVC', {
 
-  RequiredModules: ['Space.ui']
-  Stores: ['TodosStore']
-  Mediators: ['TodoListMediator']
-  Components: ['InputComponent', 'FooterComponent']
-  Controllers: ['RouteController', 'LayoutController']
-  Singletons: ['TodosTracker']
+  RequiredModules: ['Space.ui'],
+  Stores: ['TodoMVC.TodosStore'],
+  Mediators: ['TodoMVC.TodoListMediator'],
+  Components: ['TodoMVC.InputComponent', 'TodoMVC.FooterComponent'],
+  Controllers: ['TodoMVC.RouteController', 'TodoMVC.LayoutController'],
+  Singletons: ['TodoMVC.TodosTracker'],
+
+  Dependencies: {
+    eventBus: 'Space.messaging.EventBus'
+  },
+
+  publish: function(event) {
+    this.eventBus.publish(event);
+  }
+});
 ```
 
 ## Run the tests

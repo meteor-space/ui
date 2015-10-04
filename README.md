@@ -8,7 +8,7 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 
 ## TodoMVC Example
 If you want to know if `space:ui` could be interesting, take a look at
-the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/TodoMVC).
+the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/)
 It is available in Javascript and Coffeescript.
 
 ## Core Ideas

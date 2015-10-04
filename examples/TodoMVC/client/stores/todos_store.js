@@ -1,5 +1,5 @@
 
-TodosStore = Space.ui.Store.extend('TodosStore', {
+Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
   FILTERS: {
     ALL: 'all',
@@ -8,7 +8,7 @@ TodosStore = Space.ui.Store.extend('TodosStore', {
   },
 
   Dependencies: {
-    todos: 'Todos'
+    todos: 'TodoMVC.Todos'
   },
 
   setDefaultState: function() {
@@ -26,18 +26,18 @@ TodosStore = Space.ui.Store.extend('TodosStore', {
   }
 })
 
-.on(TodoCreated, function(event) {
+.on(TodoMVC.TodoCreated, function(event) {
   this.todos.insert({
     title: event.title,
     isCompleted: false
   });
 })
 
-.on(TodoDeleted, function(event) {
+.on(TodoMVC.TodoDeleted, function(event) {
   this.todos.remove(event.todoId);
 })
 
-.on(TodoTitleChanged, function(event) {
+.on(TodoMVC.TodoTitleChanged, function(event) {
   this.todos.update(event.todoId, {
     $set: {
       title: event.newTitle
@@ -45,7 +45,7 @@ TodosStore = Space.ui.Store.extend('TodosStore', {
   });
 })
 
-.on(TodoToggled, function(event) {
+.on(TodoMVC.TodoToggled, function(event) {
   var isCompleted = this.todos.findOne(event.todoId).isCompleted;
   this.todos.update(event.todoId, {
     $set: {
@@ -54,7 +54,7 @@ TodosStore = Space.ui.Store.extend('TodosStore', {
   });
 })
 
-.on(FilterChanged, function(event) {
+.on(TodoMVC.FilterChanged, function(event) {
   if (this.get('activeFilter') === event.filter) { return; }
   switch (event.filter) {
     case this.FILTERS.ALL:

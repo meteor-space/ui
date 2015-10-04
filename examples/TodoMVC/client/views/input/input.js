@@ -1,5 +1,5 @@
 
-InputComponent = Space.ui.BlazeComponent.extend('InputComponent', {
+Space.ui.BlazeComponent.extend(TodoMVC, 'InputComponent', {
 
   events: function() {
     return [{
@@ -8,7 +8,7 @@ InputComponent = Space.ui.BlazeComponent.extend('InputComponent', {
         if(event.keyCode === 13) {
           // Tell mediator about it
           var input = this.$('#new-todo').val();
-          this.publish(new TodoCreated({ title: input}));
+          this.publish(new TodoMVC.TodoCreated({ title: input}));
           // Reset input
           this.$('#new-todo').val('');
         }

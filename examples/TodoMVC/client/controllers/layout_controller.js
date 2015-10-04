@@ -1,10 +1,10 @@
 
-LayoutController = Space.messaging.Controller.extend('LayoutController', {
+Space.messaging.Controller.extend(TodoMVC, 'LayoutController', {
   Dependencies: {
     layout: 'FlowLayout'
   }
 })
 
-.on(FilterRouteTriggered, function(event) {
+.on(TodoMVC.FilterRouteTriggered, function(event) {
   this.layout.render("index");
 });

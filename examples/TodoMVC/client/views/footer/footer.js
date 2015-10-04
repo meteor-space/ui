@@ -1,8 +1,8 @@
 
-FooterComponent = Space.ui.BlazeComponent.extend('FooterComponent', {
+Space.ui.BlazeComponent.extend(TodoMVC, 'FooterComponent', {
 
   Dependencies: {
-    store: 'TodosStore',
+    store: 'TodoMVC.TodosStore',
     meteor: 'Meteor'
   },
 
@@ -44,6 +44,6 @@ FooterComponent = Space.ui.BlazeComponent.extend('FooterComponent', {
       };
     });
   }
-});
+})
 
-FooterComponent.register('footer'); // BlazeComponent API to register with template
+.register('footer'); // BlazeComponent API to register with template

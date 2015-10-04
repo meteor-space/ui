@@ -1,7 +1,7 @@
 
 // Application events with runtime-checked shape
 // using Meteor's check and Match API.
-Space.ui.createEvents({
+Space.ui.createEvents('TodoMVC', {
 
   FilterRouteTriggered: {
     filterType: String
@@ -27,5 +27,5 @@ Space.ui.createEvents({
   FilterChanged: {
     filter: String
   }
-  
+
 });

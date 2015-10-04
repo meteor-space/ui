@@ -1,6 +1,6 @@
-TodosPublication = Space.messaging.Publication.extend('TodosPublication', {
+Space.messaging.Publication.extend(TodoMVC, 'TodosPublication', {
   Dependencies: {
-    todosCollection: 'Todos'
+    todosCollection: 'TodoMVC.Todos'
   }
 })
 

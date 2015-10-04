@@ -1,8 +1,8 @@
 
-TodosApi = Space.messaging.Api.extend('TodosApi', {
+Space.messaging.Api.extend(TodoMVC, 'TodosApi', {
 
   Dependencies: {
-    todos: 'Todos'
+    todos: 'TodoMVC.Todos'
   },
 
   _allTodosCompleted: function() {

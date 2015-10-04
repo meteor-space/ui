@@ -1,4 +1,4 @@
-Todos = new Mongo.Collection('todos');
+var Todos = new Mongo.Collection('todos');
 
 Todos.findCompletedTodos = function() {
   return Todos.find({ isCompleted: true });
@@ -14,3 +14,5 @@ Todos.allow({
   update: function() { return true; },
   remove: function() { return true; }
 });
+
+TodoMVC.Todos = Todos;

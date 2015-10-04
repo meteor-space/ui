@@ -1,7 +1,7 @@
-TodosTracker = Space.messaging.Tracker.extend('TodosTracker', {
+Space.messaging.Tracker.extend(TodoMVC, 'TodosTracker', {
 
   Dependencies: {
-    store: 'TodosStore',
+    store: 'TodoMVC.TodosStore',
     meteor: 'Meteor',
   },
 

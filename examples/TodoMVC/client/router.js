@@ -13,7 +13,7 @@ FlowRouter.route('/', {
 // Handles various filter modes of todos
 FlowRouter.route('/:_filter', {
   action: function(params) {
-    TodoMVC.app.publish(new FilterRouteTriggered({
+    TodoMVC.app.publish(new TodoMVC.FilterRouteTriggered({
       filterType: params._filter
     }));
   }

@@ -1,8 +1,8 @@
 
-TodoListMediator = Space.ui.Mediator.extend('TodoListMediator', {
+Space.ui.Mediator.extend(TodoMVC, 'TodoListMediator', {
 
   Dependencies: {
-    store: 'TodosStore',
+    store: 'TodoMVC.TodosStore',
     meteor: 'Meteor',
   },
 
@@ -21,13 +21,13 @@ TodoListMediator = Space.ui.Mediator.extend('TodoListMediator', {
   },
 
   toggleTodo: function(todo) {
-    this.publish(new TodoToggled({
+    this.publish(new TodoMVC.TodoToggled({
       todoId: todo._id
     }));
   },
 
   deleteTodo: function(todo) {
-    this.publish(new TodoDeleted({ todoId: todo._id }));
+    this.publish(new TodoMVC.TodoDeleted({ todoId: todo._id }));
   },
 
   editTodo: function(todo) {
@@ -35,7 +35,7 @@ TodoListMediator = Space.ui.Mediator.extend('TodoListMediator', {
   },
 
   submitNewTitle: function(todo, newTitle) {
-    this.publish(new TodoTitleChanged({
+    this.publish(new TodoMVC.TodoTitleChanged({
       todoId: todo._id,
       newTitle: newTitle
     }));
@@ -51,4 +51,4 @@ TodoListMediator = Space.ui.Mediator.extend('TodoListMediator', {
   }
 });
 
-TodoListMediator.Template = 'todo_list';
+TodoMVC.TodoListMediator.Template = 'todo_list';

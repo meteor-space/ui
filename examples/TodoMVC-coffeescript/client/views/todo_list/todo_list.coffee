@@ -1,11 +1,11 @@
 
-class @TodoList extends Space.ui.BlazeComponent
+class TodoMVC.TodoList extends Space.ui.BlazeComponent
 
   # Register blaze-component for template
   @register 'todo_list'
 
   Dependencies: {
-    store: 'TodosStore'
+    store: 'TodoMVC.TodosStore'
     meteor: 'Meteor'
   }
 

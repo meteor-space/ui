@@ -1,5 +1,5 @@
 
-class @TodosStore extends Space.ui.Store
+class TodoMVC.TodosStore extends Space.ui.Store
 
   FILTERS:
     ALL: 'all'
@@ -7,7 +7,7 @@ class @TodosStore extends Space.ui.Store
     COMPLETED: 'completed'
 
   Dependencies:
-    todos: 'Todos'
+    todos: 'TodoMVC.Todos'
 
   setDefaultState: -> {
     activeFilter: @FILTERS.ALL
@@ -19,17 +19,17 @@ class @TodosStore extends Space.ui.Store
     activeTodos: @todos.find isCompleted: false
   }
 
-  @on TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
+  @on TodoMVC.TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
 
-  @on TodoDeleted, (event) -> @todos.remove event.todoId
+  @on TodoMVC.TodoDeleted, (event) -> @todos.remove event.todoId
 
-  @on TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
+  @on TodoMVC.TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
 
-  @on TodoToggled, (event) ->
+  @on TodoMVC.TodoToggled, (event) ->
     isCompleted = @todos.findOne(event.todoId).isCompleted
     @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-  @on FilterChanged, (event) ->
+  @on TodoMVC.FilterChanged, (event) ->
 
     # only continue if it actually changed
     if @get('activeFilter') is event.filter then return

@@ -1,6 +1,6 @@
 
-class @RouteController extends Space.messaging.Controller
+class TodoMVC.RouteController extends Space.messaging.Controller
 
   # Tell the rest of the application that the expected filter mode changed
-  @on FilterRouteTriggered, (event) ->
-    @publish new FilterChanged filter: event.filterType
+  @on TodoMVC.FilterRouteTriggered, (event) ->
+    @publish new TodoMVC.FilterChanged filter: event.filterType

@@ -1,8 +1,8 @@
 
-class @TodosApi extends Space.messaging.Api
+class TodoMVC.TodosApi extends Space.messaging.Api
 
   Dependencies:
-    todos: 'Todos'
+    todos: 'TodoMVC.Todos'
 
   @method 'toggleAllTodos', ->
     @todos.update {}, {$set: isCompleted: !@_allTodosCompleted()}, multi: true

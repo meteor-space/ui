@@ -1,10 +1,10 @@
 
-class @Footer extends Space.ui.BlazeComponent
+class TodoMVC.Footer extends Space.ui.BlazeComponent
 
   @register 'footer'
 
   Dependencies:
-    store: 'TodosStore'
+    store: 'TodoMVC.TodosStore'
     meteor: 'Meteor'
 
   setDefaultState: -> availableFilters: @_mapAvailableFilters()

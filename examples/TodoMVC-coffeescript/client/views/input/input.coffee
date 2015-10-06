@@ -1,5 +1,5 @@
 
-class @Input extends Space.ui.BlazeComponent
+class TodoMVC.Input extends Space.ui.BlazeComponent
 
   @register 'input'
 
@@ -9,7 +9,7 @@ class @Input extends Space.ui.BlazeComponent
       if event.keyCode is 13
         # Tell mediator about it
         input = @$('#new-todo').val()
-        @publish new TodoCreated title: input
+        @publish new TodoMVC.TodoCreated title: input
         # Reset input
         @$('#new-todo').val('')
   ]

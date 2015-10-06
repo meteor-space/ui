@@ -1,7 +1,7 @@
-@Todos = new Mongo.Collection 'todos'
+TodoMVC.Todos = new Mongo.Collection 'todos'
 
 # Contrived example! Here you could specify your real rules
-@Todos.allow
+TodoMVC.Todos.allow
   insert: -> true
   update: -> true
   remove: -> true

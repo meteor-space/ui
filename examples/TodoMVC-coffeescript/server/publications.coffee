@@ -1,7 +1,7 @@
-class @TodosPublication extends Space.messaging.Publication
+class TodoMVC.TodosPublication extends Space.messaging.Publication
 
   Dependencies:
-    todosCollection: 'Todos'
+    todosCollection: 'TodoMVC.Todos'
 
   @publish 'todos', (context, filter) ->
     # Publish filtered data based on the filter parameter

@@ -2,14 +2,21 @@
 class @TodoMVC extends Space.ui.Application
 
   RequiredModules: ['Space.ui']
-  Stores: ['TodosStore']
-  Components: [
-    'Input'
-    'Footer'
-    'TodoList'
+  Stores: [
+    'TodoMVC.TodosStore'
   ]
-  Controllers: ['RouteController', 'LayoutController']
-  Singletons: ['TodosTracker']
+  Components: [
+    'TodoMVC.Input'
+    'TodoMVC.Footer'
+    'TodoMVC.TodoList'
+  ]
+  Controllers: [
+    'TodoMVC.RouteController'
+    'TodoMVC.LayoutController'
+  ]
+  Singletons: [
+    'TodoMVC.TodosTracker'
+  ]
 
   Dependencies:
     eventBus: 'Space.messaging.EventBus'

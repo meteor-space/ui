@@ -1,17 +1,17 @@
 <template name="footer">
 
   <span id="todo-count">
-    <strong>{{get.activeTodosCount}}</strong> {{pluralize get.activeTodosCount}} left
+    <strong>{{activeTodosCount}}</strong> {{pluralize activeTodosCount}} left
   </span>
 
   <ul id="filters">
-    {{#each get.availableFilters}}
+    {{#each availableFilters}}
     <li><a href="{{path}}">{{name}}</a></li>
     {{/each}}
   </ul>
 
-  {{#if get.completedTodosCount}}
-    <button id="clear-completed">Clear completed ({{get.completedTodosCount}})</button>
+  {{#if completedTodosCount}}
+    <button id="clear-completed">Clear completed ({{completedTodosCount}})</button>
   {{/if}}
 
 </template>

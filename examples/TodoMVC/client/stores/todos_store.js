@@ -1,28 +1,36 @@
 
 Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
+  Dependencies: {
+    todos: 'TodoMVC.Todos'
+  },
+
   FILTERS: {
     ALL: 'all',
     ACTIVE: 'active',
     COMPLETED: 'completed',
   },
 
-  Dependencies: {
-    todos: 'TodoMVC.Todos'
-  },
-
-  setDefaultState: function() {
-    return {
+  reactiveVars: function() {
+    return [{
       activeFilter: this.FILTERS.ALL
-    };
+    }];
   },
 
-  setReactiveState: function() {
-    return {
-      todos: this.todos.find(),
-      completedTodos: this.todos.findCompletedTodos(),
-      activeTodos: this.todos.findActiveTodos(),
-    };
+  filteredTodos: function() {
+    switch (this.activeFilter()) {
+      case this.FILTERS.ALL: return this.todos.find();
+      case this.FILTERS.ACTIVE: return this.todos.find({ isCompleted: false});
+      case this.FILTERS.COMPLETED: return this.todos.find({ isCompleted: true });
+    }
+  },
+
+  completedTodos: function() {
+    return this.todos.findCompletedTodos();
+  },
+
+  activeTodos: function() {
+    return this.todos.findActiveTodos();
   }
 })
 
@@ -55,21 +63,5 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 })
 
 .on(TodoMVC.FilterChanged, function(event) {
-  if (this.get('activeFilter') === event.filter) { return; }
-  switch (event.filter) {
-    case this.FILTERS.ALL:
-      this.set('todos', this.todos.find());
-      break;
-    case this.FILTERS.ACTIVE:
-      this.set('todos', this.todos.find({
-        isCompleted: false
-      }));
-      break;
-    case this.FILTERS.COMPLETED:
-      this.set('todos', this.todos.find({
-        isCompleted: true
-      }));
-      break;
-  }
-  this.set('activeFilter', event.filter);
+  this.activeFilter(event.filter);
 });

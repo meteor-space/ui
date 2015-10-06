@@ -6,17 +6,18 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'Footer', {
     meteor: 'Meteor'
   },
 
-  setDefaultState: function() {
-    return {
+  reactiveVars: function() {
+    return [{
       availableFilters: this._mapAvailableFilters()
-    };
+    }];
   },
 
-  setReactiveState: function() {
-    return {
-      activeTodosCount: this.store.get('activeTodos').count(),
-      completedTodosCount: this.store.get('completedTodos').count()
-    };
+  activeTodosCount: function() {
+    return this.store.activeTodos().count();
+  },
+
+  completedTodosCount: function() {
+    return this.store.completedTodos().count();
   },
 
   pluralize: function(count) {

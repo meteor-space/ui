@@ -21,20 +21,21 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
   Space.ui.BlazeComponent.mixin({
 
     Dependencies: {
-      eventBus: 'Space.messaging.EventBus'
+      eventBus: 'Space.messaging.EventBus',
+      commandBus: 'Space.messaging.CommandBus'
     },
 
     onCreated: function() {
       this.constructor.Application.injector.injectInto(this);
-      this.setupState();
-    },
-
-    onDestroyed: function() {
-      this.cleanupState();
+      this.setupReactiveVars();
     },
 
     publish: function (event) {
       this.eventBus.publish(event);
+    },
+
+    send: function (command) {
+      this.commandBus.send(command);
     }
   });
 

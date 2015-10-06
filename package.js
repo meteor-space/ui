@@ -10,7 +10,6 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'coffeescript',
     'underscore',
     'templating',
     'tracker',
@@ -27,7 +26,7 @@ Package.onUse(function(api) {
     'source/module.js',
     'source/automation.js',
     'source/stateful.js',
-    'source/store.coffee',
+    'source/store.js',
     'source/blaze_component.js',
     'source/helpers.js',
   ], 'client');

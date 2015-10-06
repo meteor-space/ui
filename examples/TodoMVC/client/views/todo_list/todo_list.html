@@ -1,10 +1,10 @@
 <template name="todo_list">
 
-  <input id="toggle-all" type="checkbox" checked={{state.isToggleChecked}}>
+  <input id="toggle-all" type="checkbox" checked={{isToggleChecked}}>
   <label for="toggle-all">Mark all as complete</label>
 
   <ul id="todo-list">
-    {{#each state.todos}}
+    {{#each allTodos}}
       {{> todo prepareTodoData}}
     {{/each}}
   </ul>

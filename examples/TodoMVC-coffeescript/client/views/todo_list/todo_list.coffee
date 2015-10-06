@@ -1,31 +1,58 @@
 
-Template.todo_list.helpers
+class @TodoList extends Space.ui.BlazeComponent
 
-  state: -> mediator().getState()
+  # Register blaze-component for template
+  @register 'todo_list'
+
+  Dependencies: {
+    store: 'TodosStore'
+    meteor: 'Meteor'
+  }
+
+  setDefaultState: -> editingTodoId: null
+
+  allTodos: -> @store.get('todos');
+
+  hasAnyTodos: -> @store.get('todos').count() > 0
+
+  allTodosCompleted: -> @store.get('activeTodos').count() is 0
 
   isToggleChecked: ->
-    if @hasAnyTodos and @allTodosCompleted then 'checked' else false
+    if @hasAnyTodos() && @allTodosCompleted() then 'checked' else false
 
   prepareTodoData: ->
-    @isEditing = mediator().get('editingTodoId') is @_id
-    return this
+    todo = @currentData()
+    todo.isEditing = @get('editingTodoId') is todo._id
+    return todo
 
-Template.todo_list.events
+  events: -> [{
+    'toggled .todo': @toggleTodo
+    'destroyed .todo': @deleteTodo
+    'doubleClicked .todo': @editTodo
+    'editingCanceled .todo': @stopEditing
+    'editingCompleted .todo': @submitNewTitle
+    'click #toggle-all': @toggleAllTodos
+  }]
 
-  'toggled .todo': (event) -> mediator().toggleTodo getTodo(event)
+  toggleTodo: -> @publish new TodoMVC.TodoToggled {
+    todoId: @currentData()._id
+  }
 
-  'destroyed .todo': (event) -> mediator().deleteTodo getTodo(event)
+  deleteTodo: -> @publish new TodoMVC.TodoDeleted {
+    todoId: @currentData()._id
+  }
 
-  'doubleClicked .todo': (event) -> mediator().editTodo getTodo(event)
+  editTodo: -> @set 'editingTodoId', @currentData()._id
 
-  'editingCanceled .todo': -> mediator().stopEditing()
-
-  'editingCompleted .todo': (event) ->
+  submitNewTitle: (event) ->
     todo = Space.ui.getEventTarget(event)
     newTitle = todo.getTitleValue()
-    mediator().submitNewTitle todo.data, newTitle
+    @publish new TodoMVC.TodoTitleChanged {
+      todoId: todo.data._id,
+      newTitle: newTitle
+    }
+    @stopEditing()
 
-  'click #toggle-all': -> mediator().toggleAllTodos()
+  toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
-mediator = -> Space.ui.getMediator()
-getTodo = (event) -> Space.ui.getEventTarget(event).data
+  stopEditing: -> @set 'editingTodoId', null

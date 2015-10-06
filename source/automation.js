@@ -11,20 +11,13 @@ Space.ui.Application = Space.Application.extend();
 
 automatedMappings = {
   Stores: [],
-  Mediators: [],
   Controllers: [],
   Components: [],
-  Dependencies: {
-    templates: 'Space.ui.TemplateMediatorMap'
-  },
   /**
    * This life-cycle hook is called during initialization of the space
    * application and sets up the singleton mappings and UI components.
   **/
   configure: function() {
-    // Map the mediators automatically
-    _.each(this.Mediators, this.templates.autoMap, this.templates);
-
     // Map service-like classes that need to run during the complete
     // life-cycle of a space application as singletons.
     var mapAsSingleton = function(klass) {

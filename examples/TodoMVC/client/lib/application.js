@@ -3,8 +3,11 @@ TodoMVC = Space.ui.Application.extend('TodoMVC', {
 
   RequiredModules: ['Space.ui'],
   Stores: ['TodoMVC.TodosStore'],
-  Mediators: ['TodoMVC.TodoListMediator'],
-  Components: ['TodoMVC.InputComponent', 'TodoMVC.FooterComponent'],
+  Components: [
+    'TodoMVC.Input',
+    'TodoMVC.Footer',
+    'TodoMVC.TodoList'
+  ],
   Controllers: ['TodoMVC.RouteController', 'TodoMVC.LayoutController'],
   Singletons: ['TodoMVC.TodosTracker'],
 

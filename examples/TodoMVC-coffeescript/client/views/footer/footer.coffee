@@ -1,5 +1,5 @@
 
-class @FooterComponent extends Space.ui.BlazeComponent
+class @Footer extends Space.ui.BlazeComponent
 
   @register 'footer'
 

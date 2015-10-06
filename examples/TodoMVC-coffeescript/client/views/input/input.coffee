@@ -1,5 +1,5 @@
 
-class @InputComponent extends Space.ui.BlazeComponent
+class @Input extends Space.ui.BlazeComponent
 
   @register 'input'
 

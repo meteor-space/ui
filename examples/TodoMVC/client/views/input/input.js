@@ -1,5 +1,5 @@
 
-Space.ui.BlazeComponent.extend(TodoMVC, 'InputComponent', {
+Space.ui.BlazeComponent.extend(TodoMVC, 'Input', {
 
   events: function() {
     return [{

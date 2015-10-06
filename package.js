@@ -28,10 +28,7 @@ Package.onUse(function(api) {
     'source/automation.js',
     'source/stateful.js',
     'source/store.coffee',
-    'source/mediator.coffee',
     'source/blaze_component.js',
-    'source/template_mediator_mapping.coffee',
-    'source/template_mediator_map.coffee',
     'source/helpers.js',
   ], 'client');
 
@@ -53,11 +50,6 @@ Package.onTest(function(api) {
   api.addFiles([
     'tests/stateful.spec.coffee',
     'tests/store.spec.coffee',
-    'tests/mediator.spec.coffee',
-    'tests/template_mediator_mapping.unit.coffee',
-    'tests/template_mediator_map.unit.coffee',
-    'tests/greeting_template.integration.html',
-    'tests/template_mediator_map.integration.coffee',
   ], 'client');
 
 });

@@ -47,8 +47,6 @@ Package.onTest(function(api) {
   ]);
 
   api.addFiles([
-    'tests/stateful.spec.coffee',
-    'tests/store.spec.coffee',
   ], 'client');
 
 });

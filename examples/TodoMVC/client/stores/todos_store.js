@@ -1,15 +1,22 @@
 
 Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
+  // The store needs a reference to the todos collection
   Dependencies: {
     todos: 'TodoMVC.Todos'
   },
 
+  // TodoMVC example specific properties
   FILTERS: {
     ALL: 'all',
     ACTIVE: 'active',
     COMPLETED: 'completed',
   },
+
+  // ====== Public reactive data accessors ======= //
+
+  // These methods can be used by other parts of the system to
+  // fetch reactive data and auto-update when store data changes.
 
   reactiveVars: function() {
     return [{
@@ -31,37 +38,53 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
   activeTodos: function() {
     return this.todos.findActiveTodos();
+  },
+
+  // ====== Event handling setup ====== //
+
+  // Map private methods to events coming from the outside
+  // this is the only way state can change within the store.
+
+  events: function() {
+    return [{
+      'TodoMVC.TodoCreated': this._insertNewTodo,
+      'TodoMVC.TodoDeleted': this._removeTodo,
+      'TodoMVC.TodoTitleChanged': this._updateTodoTitle,
+      'TodoMVC.TodoToggled': this._toggleTodo,
+      'TodoMVC.FilterChanged': this._changeActiveFilter
+    }];
+  },
+
+  _insertNewTodo: function(event) {
+    this.todos.insert({
+      title: event.title,
+      isCompleted: false
+    });
+  },
+
+  _removeTodo: function(event) {
+    this.todos.remove(event.todoId);
+  },
+
+  _updateTodoTitle: function(event) {
+    this.todos.update(event.todoId, {
+      $set: {
+        title: event.newTitle
+      }
+    });
+  },
+
+  _toggleTodo: function(event) {
+    var isCompleted = this.todos.findOne(event.todoId).isCompleted;
+    this.todos.update(event.todoId, {
+      $set: {
+        isCompleted: !isCompleted
+      }
+    });
+  },
+
+  _changeActiveFilter: function(event) {
+    this.activeFilter(event.filter);
   }
-})
 
-.on(TodoMVC.TodoCreated, function(event) {
-  this.todos.insert({
-    title: event.title,
-    isCompleted: false
-  });
-})
-
-.on(TodoMVC.TodoDeleted, function(event) {
-  this.todos.remove(event.todoId);
-})
-
-.on(TodoMVC.TodoTitleChanged, function(event) {
-  this.todos.update(event.todoId, {
-    $set: {
-      title: event.newTitle
-    }
-  });
-})
-
-.on(TodoMVC.TodoToggled, function(event) {
-  var isCompleted = this.todos.findOne(event.todoId).isCompleted;
-  this.todos.update(event.todoId, {
-    $set: {
-      isCompleted: !isCompleted
-    }
-  });
-})
-
-.on(TodoMVC.FilterChanged, function(event) {
-  this.activeFilter(event.filter);
 });

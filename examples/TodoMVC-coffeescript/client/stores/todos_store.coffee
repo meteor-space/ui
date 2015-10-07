@@ -23,14 +23,21 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
   activeTodos: -> @todos.find isCompleted: false
 
-  @on TodoMVC.TodoCreated, (event) -> @todos.insert title: event.title, isCompleted: false
+  events: -> [
 
-  @on TodoMVC.TodoDeleted, (event) -> @todos.remove event.todoId
+    'TodoMVC.TodoCreated': (event) -> @todos.insert {
+      title: event.title, isCompleted: false
+    }
 
-  @on TodoMVC.TodoTitleChanged, (event) -> @todos.update event.todoId, $set: title: event.newTitle
+    'TodoMVC.TodoDeleted': (event) -> @todos.remove event.todoId
 
-  @on TodoMVC.TodoToggled, (event) ->
-    isCompleted = @todos.findOne(event.todoId).isCompleted
-    @todos.update event.todoId, $set: isCompleted: !isCompleted
+    'TodoMVC.TodoTitleChanged': (event) -> @todos.update event.todoId, {
+      $set: title: event.newTitle
+    }
 
-  @on TodoMVC.FilterChanged, (event) -> @activeFilter event.filter
+    'TodoMVC.TodoToggled': (event) ->
+      isCompleted = @todos.findOne(event.todoId).isCompleted
+      @todos.update event.todoId, $set: isCompleted: !isCompleted
+
+    'TodoMVC.FilterChanged': (event) -> @activeFilter event.filter
+  ]

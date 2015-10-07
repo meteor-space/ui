@@ -15,7 +15,7 @@ Package.onUse(function(api) {
     'tracker',
     'reactive-var',
     'space:base@2.4.2',
-    'space:messaging@1.7.1',
+    'space:messaging@1.7.2',
   ]);
 
   api.use([

@@ -11,7 +11,6 @@ Template.todo.helpers
   completedState: -> if @isCompleted then 'completed' else ''
 
   editingState: ->
-
     if @isEditing
       Template.instance().$('.edit').focus().select()
       return 'editing'

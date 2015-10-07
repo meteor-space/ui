@@ -7,11 +7,13 @@ class TodoMVC.Footer extends Space.ui.BlazeComponent
     store: 'TodoMVC.TodosStore'
     meteor: 'Meteor'
 
-  setDefaultState: -> availableFilters: @_mapAvailableFilters()
+  reactiveVars: -> [
+    availableFilters: @_mapAvailableFilters()
+  ]
 
-  setReactiveState: ->
-    activeTodosCount: @store.get('activeTodos').count()
-    completedTodosCount: @store.get('completedTodos').count()
+  activeTodosCount: -> @store.activeTodos().count()
+
+  completedTodosCount: -> @store.completedTodos().count()
 
   pluralize: (count) -> if count is 1 then 'item' else 'items'
 

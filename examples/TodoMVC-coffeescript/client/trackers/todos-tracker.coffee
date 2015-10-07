@@ -5,4 +5,4 @@ class TodoMVC.TodosTracker extends Space.messaging.Tracker
     meteor: 'Meteor'
 
   # Reactively subscribe to the todos data based on the active filter
-  autorun: -> @meteor.subscribe 'todos', @store.get 'activeFilter'
+  autorun: -> @meteor.subscribe 'todos', @store.activeFilter()

@@ -9,20 +9,22 @@ class TodoMVC.TodoList extends Space.ui.BlazeComponent
     meteor: 'Meteor'
   }
 
-  setDefaultState: -> editingTodoId: null
+  reactiveVars: -> [
+    editingTodoId: null
+  ]
 
-  allTodos: -> @store.get('todos');
+  allTodos: -> @store.filteredTodos()
 
-  hasAnyTodos: -> @store.get('todos').count() > 0
+  hasAnyTodos: -> @store.filteredTodos().count() > 0
 
-  allTodosCompleted: -> @store.get('activeTodos').count() is 0
+  allTodosCompleted: -> @store.activeTodos().count() is 0
 
   isToggleChecked: ->
     if @hasAnyTodos() && @allTodosCompleted() then 'checked' else false
 
   prepareTodoData: ->
     todo = @currentData()
-    todo.isEditing = @get('editingTodoId') is todo._id
+    todo.isEditing = @editingTodoId() is todo._id
     return todo
 
   events: -> [{
@@ -42,7 +44,7 @@ class TodoMVC.TodoList extends Space.ui.BlazeComponent
     todoId: @currentData()._id
   }
 
-  editTodo: -> @set 'editingTodoId', @currentData()._id
+  editTodo: -> @editingTodoId @currentData()._id
 
   submitNewTitle: (event) ->
     todo = Space.ui.getEventTarget(event)
@@ -55,4 +57,4 @@ class TodoMVC.TodoList extends Space.ui.BlazeComponent
 
   toggleAllTodos: -> @meteor.call 'toggleAllTodos'
 
-  stopEditing: -> @set 'editingTodoId', null
+  stopEditing: -> @editingTodoId null

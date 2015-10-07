@@ -11,9 +11,9 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
   * [Data Flow](#data-flow)
   * [Explicit Messaging](#explicit-messaging)
 * [API](#documentation)
-  * [Space.ui.Store](#spaceuistore)
-  * [Space.ui.BlazeComponent](#spaceuiblazecomponent)
-  * [Space.ui.Application](#spaceuiapplication)
+  * [Stores](#stores)
+  * [Components](#components)
+  * [Applications](#applications)
 * [Run the Tests](#run-the-tests)
 * [Run the TodoMVC Example](#run-the-todomvc-example)
 * [Release History](#release-history)
@@ -72,12 +72,16 @@ Each layer plays an important role and the implementation details can be changed
 Only the classes that `space:ui` provides are documented here.
 A lot of the basic functionality actually comes from the packages [space:base](https://github.com/meteor-space/base) and [space:messaging](https://github.com/meteor-space/messaging) and are documented there!
 
-### Space.ui.Store
+### Stores
 Stores manage application state, which is then referenced by any number of
 components in the application. In most cases this will mean that a store depends
 on one or more minimongo collections in your app and constructs queries based
 on the view logic of your app. But of course you can also define custom properties
 that become a reactive data-source usable in your rendering layer.
+
+### Components
+
+### Applications
 
 ## Run the Tests
 `meteor test-packages ./`

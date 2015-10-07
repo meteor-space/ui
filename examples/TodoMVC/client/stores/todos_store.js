@@ -20,7 +20,8 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
   reactiveVars: function() {
     return [{
-      activeFilter: this.FILTERS.ALL
+      activeFilter: this.FILTERS.ALL,
+      editingTodoId: null
     }];
   },
 
@@ -49,6 +50,8 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
     return [{
       'TodoMVC.TodoCreated': this._insertNewTodo,
       'TodoMVC.TodoDeleted': this._removeTodo,
+      'TodoMVC.TodoEditingStarted': this._setEditingTodoId,
+      'TodoMVC.TodoEditingEnded': this._unsetEditingTodoId,
       'TodoMVC.TodoTitleChanged': this._updateTodoTitle,
       'TodoMVC.TodoToggled': this._toggleTodo,
       'TodoMVC.FilterChanged': this._changeActiveFilter
@@ -64,6 +67,14 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
   _removeTodo: function(event) {
     this.todos.remove(event.todoId);
+  },
+
+  _setEditingTodoId: function(event) {
+    this.editingTodoId(event.todoId);
+  },
+
+  _unsetEditingTodoId: function() {
+    this.editingTodoId(null);
   },
 
   _updateTodoTitle: function(event) {

@@ -6,12 +6,6 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
     meteor: 'Meteor',
   },
 
-  reactiveVars: function() {
-    return [{
-      editingTodoId: null
-    }];
-  },
-
   todos: function() {
     return this.store.filteredTodos();
   },
@@ -34,7 +28,7 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
 
   prepareTodoData: function() {
     todo = this.currentData();
-    todo.isEditing = this.editingTodoId() === todo._id;
+    todo.isEditing = this.store.editingTodoId() === todo._id;
     return todo;
   },
 
@@ -62,7 +56,9 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
   },
 
   editTodo: function(event) {
-    this.editingTodoId(this.currentData()._id);
+    this.publish(new TodoMVC.TodoEditingStarted({
+      todoId: this.currentData()._id
+    }));
   },
 
   submitNewTitle: function(event) {
@@ -80,7 +76,9 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
   },
 
   stopEditing: function() {
-    this.editingTodoId(null);
+    this.publish(new TodoMVC.TodoEditingEnded({
+      todoId: this.currentData()._id
+    }));
   },
 })
 // Register blaze-component for template

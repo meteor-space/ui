@@ -27,7 +27,6 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
 
     onCreated: function() {
       this.constructor.Application.injector.injectInto(this);
-      this.setupReactiveVars();
     },
 
     publish: function (event) {
@@ -38,6 +37,4 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
       this.commandBus.send(command);
     }
   });
-
-  Space.ui.BlazeComponent.mixin(Space.ui.Stateful);
 }

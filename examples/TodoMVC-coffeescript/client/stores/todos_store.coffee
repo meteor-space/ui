@@ -1,16 +1,17 @@
 
 class TodoMVC.TodosStore extends Space.ui.Store
 
+  Dependencies:
+    todos: 'TodoMVC.Todos'
+
   FILTERS:
     ALL: 'all'
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
-  Dependencies:
-    todos: 'TodoMVC.Todos'
-
   reactiveVars: -> [
     activeFilter: @FILTERS.ALL
+    editingTodoId: null
   ]
 
   filteredTodos: ->
@@ -30,6 +31,10 @@ class TodoMVC.TodosStore extends Space.ui.Store
     }
 
     'TodoMVC.TodoDeleted': (event) -> @todos.remove event.todoId
+
+    'TodoMVC.TodoEditingStarted': (event) -> @editingTodoId event.todoId
+
+    'TodoMVC.TodoEditingEnded': (event) -> @editingTodoId null
 
     'TodoMVC.TodoTitleChanged': (event) -> @todos.update event.todoId, {
       $set: title: event.newTitle

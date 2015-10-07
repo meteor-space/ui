@@ -15,6 +15,14 @@ Space.ui.defineEvents('TodoMVC', {
     todoId: String
   },
 
+  TodoEditingStarted: {
+    todoId: String
+  },
+
+  TodoEditingEnded: {
+    todoId: String
+  },
+
   TodoTitleChanged: {
     todoId: String,
     newTitle: String

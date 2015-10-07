@@ -7,9 +7,9 @@ class TodoMVC.Footer extends Space.ui.BlazeComponent
     store: 'TodoMVC.TodosStore'
     meteor: 'Meteor'
 
-  reactiveVars: -> [
-    availableFilters: @_mapAvailableFilters()
-  ]
+  filters: -> _.map @store.FILTERS, (key) ->
+    name: key[0].toUpperCase() + key.slice 1
+    path: key
 
   activeTodosCount: -> @store.activeTodos().count()
 
@@ -20,7 +20,3 @@ class TodoMVC.Footer extends Space.ui.BlazeComponent
   events: -> [
     'click #clear-completed': (event) -> @meteor.call 'clearCompletedTodos'
   ]
-
-  _mapAvailableFilters: -> _.map @store.FILTERS, (key) ->
-    name: key[0].toUpperCase() + key.slice 1
-    path: key

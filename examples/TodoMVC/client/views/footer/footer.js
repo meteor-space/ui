@@ -6,10 +6,13 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'Footer', {
     meteor: 'Meteor'
   },
 
-  reactiveVars: function() {
-    return [{
-      availableFilters: this._mapAvailableFilters()
-    }];
+  filters: function() {
+    return _.map(this.store.FILTERS, function(key) {
+      return {
+        name: key[0].toUpperCase() + key.slice(1),
+        path: key
+      };
+    });
   },
 
   activeTodosCount: function() {

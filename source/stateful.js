@@ -34,7 +34,7 @@ Space.ui.Stateful = {
     reactiveVar.set(defaultValue);
 
     this[varName] = function(value) {
-      if(value !== null && value !== undefined) {
+      if(value !== undefined) {
         reactiveVar.set(value);
       }
       else {

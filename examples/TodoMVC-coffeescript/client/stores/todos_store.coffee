@@ -9,8 +9,13 @@ class TodoMVC.TodosStore extends Space.ui.Store
     ACTIVE: 'active'
     COMPLETED: 'completed'
 
+  _session: 'TodoMVC.TodosStoreSession'
+
   reactiveVars: -> [
     activeFilter: @FILTERS.ALL
+  ]
+
+  sessionVars: -> [
     editingTodoId: null
   ]
 
@@ -32,9 +37,10 @@ class TodoMVC.TodosStore extends Space.ui.Store
 
     'TodoMVC.TodoDeleted': (event) -> @todos.remove event.todoId
 
-    'TodoMVC.TodoEditingStarted': (event) -> @editingTodoId event.todoId
+    'TodoMVC.TodoEditingStarted': (event) ->
+      @_setSessionVar 'editingTodoId', event.todoId
 
-    'TodoMVC.TodoEditingEnded': (event) -> @editingTodoId null
+    'TodoMVC.TodoEditingEnded': (event) -> @_setSessionVar 'editingTodoId', null
 
     'TodoMVC.TodoTitleChanged': (event) -> @todos.update event.todoId, {
       $set: title: event.newTitle
@@ -44,5 +50,6 @@ class TodoMVC.TodosStore extends Space.ui.Store
       isCompleted = @todos.findOne(event.todoId).isCompleted
       @todos.update event.todoId, $set: isCompleted: !isCompleted
 
-    'TodoMVC.FilterChanged': (event) -> @activeFilter event.filter
+    'TodoMVC.FilterChanged': (event) ->
+      @_setReactiveVar 'activeFilter', event.filter
   ]

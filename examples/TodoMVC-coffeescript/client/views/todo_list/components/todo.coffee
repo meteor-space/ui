@@ -12,7 +12,8 @@ Template.todo.helpers
 
   editingState: ->
     if @isEditing
-      Template.instance().$('.edit').focus().select()
+      template = Template.instance()
+      template.$('.edit').focus().select() if template.view.isRendered
       return 'editing'
     else
       return ''

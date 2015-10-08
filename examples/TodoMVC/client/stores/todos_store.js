@@ -12,6 +12,8 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
     ACTIVE: 'active',
     COMPLETED: 'completed',
   },
+  
+  _session: 'TodoMVC.TodosStoreSession',
 
   // ====== Public reactive data accessors ======= //
 
@@ -21,6 +23,11 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
   reactiveVars: function() {
     return [{
       activeFilter: this.FILTERS.ALL,
+    }];
+  },
+
+  sessionVars: function() {
+    return [{
       editingTodoId: null
     }];
   },
@@ -70,11 +77,11 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
   },
 
   _setEditingTodoId: function(event) {
-    this.editingTodoId(event.todoId);
+    this._setSessionVar('editingTodoId', event.todoId);
   },
 
   _unsetEditingTodoId: function() {
-    this.editingTodoId(null);
+    this._setSessionVar('editingTodoId', null);
   },
 
   _updateTodoTitle: function(event) {
@@ -95,7 +102,7 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
   },
 
   _changeActiveFilter: function(event) {
-    this.activeFilter(event.filter);
+    this._setReactiveVar('activeFilter', event.filter);
   }
 
 });

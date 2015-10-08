@@ -16,7 +16,10 @@ Template.todo.helpers({
 
   editingState: function() {
     if(this.isEditing) {
-      Template.instance().$('.edit').focus().select();
+      var template = Template.instance();
+      if(template.view.isRendered) {
+        template.$('.edit').focus().select();
+      }
       return 'editing';
     }
     else {

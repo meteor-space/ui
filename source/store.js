@@ -69,7 +69,7 @@ Space.messaging.Controller.extend(Space.ui, 'Store', {
    */
   _generateSessionVar: function(defaultValue, varName) {
     var session = this._session;
-    session.set(varName, defaultValue);
+    session.setDefault(varName, defaultValue);
     this[varName] = function() {
       return session.get(varName);
     };
@@ -84,9 +84,6 @@ Space.messaging.Controller.extend(Space.ui, 'Store', {
   },
 
   _setSessionVar: function(varName, value) {
-    if(!this._.isString(value)) {
-      throw new Error('Session var <'+varName+'> can only be set to string values!');
-    }
     this._session.set(varName, value);
   }
 });

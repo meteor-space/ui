@@ -4,14 +4,27 @@ Space.messaging.Controller.extend(Space.ui, 'Store', {
   Dependencies: {
     injector: 'Injector',
     _: 'underscore',
+    reactiveDict: 'ReactiveDict'
   },
+
+  _reactiveVars: null,
+  _session: null,
 
   onDependenciesReady: function() {
     Space.messaging.Controller.prototype.onDependenciesReady.call(this);
+    this._reactiveVars = {};
     this._setupReactiveVars();
+    if(this._session !== null) {
+      this._session = new this.reactiveDict(this._session);
+      this._setDefaultSessionVars();
+    }
   },
 
   reactiveVars: function() {
+    return [];
+  },
+
+  sessionVars: function() {
     return [];
   },
 
@@ -23,24 +36,57 @@ Space.messaging.Controller.extend(Space.ui, 'Store', {
     var reactiveVarMaps = this.reactiveVars();
     reactiveVarMaps.unshift(reactiveVars);
     this._.extend.apply(null, reactiveVarMaps);
-    this._.each(reactiveVars, this._generateReactiveVarAccessor, this);
+    this._.each(reactiveVars, this._generateReactiveVar, this);
   },
 
   /**
    * Generates a method on this class instance for each reactive var
-   * that can be used to set and get the value of it.
+   * that can be used to get the value of it.
    */
-  _generateReactiveVarAccessor: function(defaultValue, varName) {
+  _generateReactiveVar: function(defaultValue, varName) {
     var reactiveVar = this.injector.get('ReactiveVar');
     reactiveVar.set(defaultValue);
-
-    this[varName] = function(value) {
-      if(value !== undefined) {
-        reactiveVar.set(value);
-      }
-      else {
-        return reactiveVar.get();
-      }
+    this._reactiveVars[varName] = reactiveVar;
+    this[varName] = function() {
+      return reactiveVar.get();
     };
+  },
+
+  /**
+   * Initialize the session vars with default values.
+   */
+  _setDefaultSessionVars: function() {
+    var sessionVars = {};
+    var sessionVarMaps = this.sessionVars();
+    sessionVarMaps.unshift(sessionVars);
+    this._.extend.apply(null, sessionVarMaps);
+    this._.each(sessionVars, this._generateSessionVar, this);
+  },
+
+  /**
+   * Generates a method on this class instance for each session var
+   * that can be used to get the value of it.
+   */
+  _generateSessionVar: function(defaultValue, varName) {
+    var session = this._session;
+    session.set(varName, defaultValue);
+    this[varName] = function() {
+      return session.get(varName);
+    };
+  },
+
+  _setReactiveVar: function(varName, value) {
+    var reactiveVar = this._reactiveVars[varName];
+    if(!reactiveVar) {
+      throw new Error('Did you forget to setup reactive var <'+varName+'>?');
+    }
+    reactiveVar.set(value);
+  },
+
+  _setSessionVar: function(varName, value) {
+    if(!this._.isString(value)) {
+      throw new Error('Session var <'+varName+'> can only be set to string values!');
+    }
+    this._session.set(varName, value);
   }
 });

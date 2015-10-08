@@ -14,6 +14,7 @@ Package.onUse(function(api) {
     'templating',
     'tracker',
     'reactive-var',
+    'reactive-dict',
     'space:base@2.4.2',
     'space:messaging@1.7.2',
   ]);

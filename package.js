@@ -31,21 +31,3 @@ Package.onUse(function(api) {
   ], 'client');
 
 });
-
-Package.onTest(function(api) {
-
-  api.use([
-    'coffeescript',
-    'underscore',
-    'templating',
-    'reactive-var',
-    'tracker',
-    'space:ui',
-    'practicalmeteor:munit@2.1.4',
-    'space:testing@1.3.0'
-  ]);
-
-  api.addFiles([
-  ], 'client');
-
-});

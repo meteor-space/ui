@@ -244,7 +244,7 @@ package via the `Space.ui.BlazeComponent` class.
 Here is the footer component of the TodoMVC example:
 
 ```javascript
-pace.ui.BlazeComponent.extend(TodoMVC, 'FooterComponent', {
+Space.ui.BlazeComponent.extend(TodoMVC, 'FooterComponent', {
 
   Dependencies: {
     store: 'TodoMVC.TodosStore',

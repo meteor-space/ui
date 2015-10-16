@@ -22,7 +22,6 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
 
     Dependencies: {
       eventBus: 'Space.messaging.EventBus',
-      commandBus: 'Space.messaging.CommandBus'
     },
 
     onCreated: function() {
@@ -31,10 +30,7 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
 
     publish: function (event) {
       this.eventBus.publish(event);
-    },
-
-    send: function (command) {
-      this.commandBus.send(command);
     }
+
   });
 }

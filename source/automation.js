@@ -1,6 +1,6 @@
-// Extend the base modules with space-ui specific sugar (see below)
-Space.ui.Module = Space.Module.extend();
-Space.ui.Application = Space.Application.extend();
+// Extend the base modules with space-flux specific sugar (see below)
+Space.flux.Module = Space.Module.extend();
+Space.flux.Application = Space.Application.extend();
 
 /**
  * Provides a convenience layer for mapping common components
@@ -54,5 +54,5 @@ automatedMappings = {
 };
 
 // Make the auto-mapping sugar available for modules and applications
-_.extend(Space.ui.Module.prototype, automatedMappings);
-_.extend(Space.ui.Application.prototype, automatedMappings);
+_.extend(Space.flux.Module.prototype, automatedMappings);
+_.extend(Space.flux.Application.prototype, automatedMappings);

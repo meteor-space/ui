@@ -1,8 +1,8 @@
 Package.describe({
-  summary: 'Meteor UI framework inspired by React and Flux.',
-  name: 'space:ui',
-  version: '5.3.0',
-  git: 'https://github.com/meteor-space/ui.git'
+  summary: 'Manage application UI state using Flux patterns specific to Meteor',
+  name: 'space:flux',
+  version: '0.6.0',
+  git: 'https://github.com/meteor-space/flux.git'
 });
 
 Package.onUse(function(api) {

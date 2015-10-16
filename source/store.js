@@ -1,5 +1,5 @@
 
-Space.messaging.Controller.extend(Space.ui, 'Store', {
+Space.messaging.Controller.extend(Space.flux, 'Store', {
 
   Dependencies: {
     injector: 'Injector',

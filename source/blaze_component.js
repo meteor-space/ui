@@ -17,7 +17,7 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
     }
   }
 
-  // Mixin convenient dependencies and make components stateful
+  // Mixin convenient dependencies
   Space.flux.BlazeComponent.mixin({
 
     Dependencies: {

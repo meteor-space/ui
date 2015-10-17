@@ -32,3 +32,17 @@ Package.onUse(function(api) {
   ], 'client');
 
 });
+
+Package.onTest(function(api) {
+
+  api.use([
+    'space:flux',
+    'practicalmeteor:munit@2.1.4',
+    'space:testing@1.5.0',
+  ]);
+
+  api.addFiles([
+    'tests/store.tests.js',
+  ], 'client');
+
+});

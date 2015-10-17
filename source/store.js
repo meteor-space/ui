@@ -2,9 +2,9 @@
 Space.messaging.Controller.extend(Space.flux, 'Store', {
 
   Dependencies: {
-    injector: 'Injector',
+    reactiveVar: 'ReactiveVar',
+    reactiveDict: 'ReactiveDict',
     _: 'underscore',
-    reactiveDict: 'ReactiveDict'
   },
 
   _reactiveVars: null,
@@ -14,10 +14,8 @@ Space.messaging.Controller.extend(Space.flux, 'Store', {
     Space.messaging.Controller.prototype.onDependenciesReady.call(this);
     this._reactiveVars = {};
     this._setupReactiveVars();
-    if(this._session !== null) {
-      this._session = new this.reactiveDict(this._session);
-      this._setDefaultSessionVars();
-    }
+    this._session = new this.reactiveDict(this._session);
+    this._setDefaultSessionVars();
   },
 
   reactiveVars: function() {
@@ -44,7 +42,7 @@ Space.messaging.Controller.extend(Space.flux, 'Store', {
    * that can be used to get the value of it.
    */
   _generateReactiveVar: function(defaultValue, varName) {
-    var reactiveVar = this.injector.get('ReactiveVar');
+    var reactiveVar = new this.reactiveVar();
     reactiveVar.set(defaultValue);
     this._reactiveVars[varName] = reactiveVar;
     this[varName] = function() {

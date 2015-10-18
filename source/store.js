@@ -1,5 +1,5 @@
 
-Space.messaging.Controller.extend(Space.flux, 'Store', {
+Space.Object.extend(Space.flux, 'Store', {
 
   Dependencies: {
     reactiveVar: 'ReactiveVar',
@@ -11,7 +11,7 @@ Space.messaging.Controller.extend(Space.flux, 'Store', {
   _session: null,
 
   onDependenciesReady: function() {
-    Space.messaging.Controller.prototype.onDependenciesReady.call(this);
+    Space.Object.prototype.onDependenciesReady.call(this);
     this._reactiveVars = {};
     this._setupReactiveVars();
     this._session = new this.reactiveDict(this._session);
@@ -85,3 +85,5 @@ Space.messaging.Controller.extend(Space.flux, 'Store', {
     this._session.set(varName, value);
   }
 });
+
+Space.flux.Store.mixin(Space.messaging.EventSubscribing);

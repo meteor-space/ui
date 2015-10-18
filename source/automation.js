@@ -17,7 +17,7 @@ automatedMappings = {
    * This life-cycle hook is called during initialization of the space
    * application and sets up the singleton mappings and UI components.
   **/
-  configure: function() {
+  onInitialize: function() {
     // Map service-like classes that need to run during the complete
     // life-cycle of a space application as singletons.
     var mapAsSingleton = function(klass) {
@@ -44,7 +44,7 @@ automatedMappings = {
    * This life-cycle hook is called when the app starts to run
    * and creates the singleton instances.
    */
-  startup: function() {
+  onStart: function() {
     var createSingletonInstance = _.bind(function(klass) {
       this.injector.create(klass);
     }, this);
@@ -54,5 +54,5 @@ automatedMappings = {
 };
 
 // Make the auto-mapping sugar available for modules and applications
-_.extend(Space.flux.Module.prototype, automatedMappings);
-_.extend(Space.flux.Application.prototype, automatedMappings);
+Space.flux.Module.mixin(automatedMappings);
+Space.flux.Application.mixin(automatedMappings);

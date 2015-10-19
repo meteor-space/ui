@@ -33,7 +33,7 @@ describe("Space.flux - Store", function () {
       }];
     },
 
-    events: function() {
+    eventSubscriptions: function() {
       return [{
         'StoreTest.PostIdChanged': this.updatePostId,
         'StoreTest.CategoryFilterChanged': this.updateCategoryFilter,

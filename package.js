@@ -15,8 +15,8 @@ Package.onUse(function(api) {
     'tracker',
     'reactive-var',
     'reactive-dict',
-    'space:base@3.0.0',
-    'space:messaging@2.0.0',
+    'space:base@3.1.0',
+    'space:messaging@2.1.1',
   ]);
 
   api.use([
@@ -37,8 +37,8 @@ Package.onTest(function(api) {
 
   api.use([
     'space:flux',
-    'practicalmeteor:munit@2.1.4',
-    'space:testing@1.5.0',
+    'practicalmeteor:munit@2.1.5',
+    'space:testing@2.0.0',
   ]);
 
   api.addFiles([

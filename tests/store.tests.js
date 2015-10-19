@@ -1,4 +1,4 @@
-describe("Space.ui - Store", function () {
+describe("Space.flux - Store", function () {
 
   StoreTest = Space.namespace('StoreTest');
 

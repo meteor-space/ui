@@ -1,8 +1,8 @@
 Package.describe({
-  summary: 'Meteor UI framework inspired by React and Flux.',
-  name: 'space:ui',
-  version: '5.3.0',
-  git: 'https://github.com/meteor-space/ui.git'
+  summary: 'Manage application UI state using Flux patterns specific to Meteor',
+  name: 'space:flux',
+  version: '0.6.0',
+  git: 'https://github.com/meteor-space/flux.git'
 });
 
 Package.onUse(function(api) {
@@ -15,8 +15,8 @@ Package.onUse(function(api) {
     'tracker',
     'reactive-var',
     'reactive-dict',
-    'space:base@2.4.2',
-    'space:messaging@1.7.2',
+    'space:base@3.1.0',
+    'space:messaging@2.1.1',
   ]);
 
   api.use([
@@ -29,6 +29,20 @@ Package.onUse(function(api) {
     'source/store.js',
     'source/blaze_component.js',
     'source/helpers.js',
+  ], 'client');
+
+});
+
+Package.onTest(function(api) {
+
+  api.use([
+    'space:flux',
+    'practicalmeteor:munit@2.1.5',
+    'space:testing@2.0.0',
+  ]);
+
+  api.addFiles([
+    'tests/store.tests.js',
   ], 'client');
 
 });

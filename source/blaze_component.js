@@ -2,27 +2,26 @@ var BlazeComponentsPackage = Package['peerlibrary:blaze-components'];
 if(BlazeComponentsPackage !== undefined) { // weak dependency
   var BlazeComponent = BlazeComponentsPackage.BlazeComponent;
 
-  Space.ui.BlazeComponent = Space.Object.extend();
+  Space.flux.BlazeComponent = Space.Object.extend();
 
   // Make it a Blaze Component by copying over static and prototype properties
   for(var property in BlazeComponent) {
     if(property !== '__super__') {
-      Space.ui.BlazeComponent[property] = BlazeComponent[property];
+      Space.flux.BlazeComponent[property] = BlazeComponent[property];
     }
   }
   for(var property in BlazeComponent.prototype) {
     if(property !== 'constructor') {
       var value = BlazeComponent.prototype[property];
-      Space.ui.BlazeComponent.prototype[property] = value;
+      Space.flux.BlazeComponent.prototype[property] = value;
     }
   }
 
-  // Mixin convenient dependencies and make components stateful
-  Space.ui.BlazeComponent.mixin({
+  // Mixin convenient dependencies
+  _.deepExtend(Space.flux.BlazeComponent.prototype, {
 
     Dependencies: {
       eventBus: 'Space.messaging.EventBus',
-      commandBus: 'Space.messaging.CommandBus'
     },
 
     onCreated: function() {
@@ -31,10 +30,7 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
 
     publish: function (event) {
       this.eventBus.publish(event);
-    },
-
-    send: function (command) {
-      this.commandBus.send(command);
     }
+
   });
 }

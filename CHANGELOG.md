@@ -1,6 +1,26 @@
 Changelog
 =========
 
+### 0.6.0
+BREAKING CHANGES:
+See [upgrade guide](https://meteor-space.readme.io/v1.0/docs/upgrade-guide) for
+full details
+- `Space.ui` namespace is now `Space.flux`
+- New Meteor package `space:flux`
+- `Space.ui.Mediator` was removed from the project in favor of more popular and
+recommended alternatives like blaze-components.
+- `Space.flux.BlazeComponent` is no longer stateful, since this is the
+responsibility of the `Space.flux.Store`
+- Reactive data sources now just need to be defined as methods on
+`Space.flux.Store`, with non-reactive sources added to either the new
+`reactiveVars` array, or the `sessionVars` array. This change was motivated
+to simplify the component's interface, but it also improves the clarity of
+reactive state management in the store.
+
+NON-BREAKING CHANGES:
+- `Space.flux.Store` instances now have an `eventSubscriptions` property to define
+the event subscribers  
+
 ### 5.3.0
 Updates to latest `space:base` and `space:messaging` packages.
 

@@ -1,4 +1,4 @@
-# space:flux [![Build Status](https://travis-ci.org/meteor-space/ui.svg?branch=master)](https://travis-ci.org/meteor-space/flux)
+# space:flux [![Build Status](https://travis-ci.org/meteor-space/flux.svg?branch=master)](https://travis-ci.org/meteor-space/flux)
 
 **Centrally manage View Component state to gain control over your Meteor UI**
 

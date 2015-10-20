@@ -1,7 +1,6 @@
-# space:flux [![Build Status](https://travis-ci.org/meteor-space/ui.svg?branch=master)](https://travis-ci.org/meteor-space/ui)
+# space:flux [![Build Status](https://travis-ci.org/meteor-space/ui.svg?branch=master)](https://travis-ci.org/meteor-space/flux)
 
-**Flexible Meteor UI framework inspired by [React](http://facebook.github.io/react/)
-and [Flux](http://facebook.github.io/flux/docs/overview.html).**
+**Centrally manage View Component state to gain control over your Meteor UI**
 
 ### Table of Contents:
 * [Installation](#installation)
@@ -28,23 +27,22 @@ and [Flux](http://facebook.github.io/flux/docs/overview.html).**
 `meteor add space:flux`
 
 ## Examples
-For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/ui/tree/master/examples/)
-It is available in Javascript and Coffeescript.
+For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)
 
 ## Concepts
-Meteor is a great platform for building realtime apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.
+Meteor is a great platform for building real-time apps with Javascript, but for bigger applications the lack of conventions and UI architecture can become a real problem. Templating in Meteor is nice but lacks a lot of architectural patterns. When using the standard templates / managers many people start spreading logic in the view layer, where it becomes hard to manage.
 
-The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed by Facebook, solves exactly the same problem for applications built apon [React](http://facebook.github.io/react/) components. Its not a real framework,
-more a set of simple conventions and ideas that play well together. `space:ui`
+The [Flux architecture](http://facebook.github.io/flux/docs/overview.html) developed by Facebook, solves exactly the same problem for applications built upon [React](http://facebook.github.io/react/) components. Its not a real framework,
+more a set of simple conventions and ideas that play well together. `space:flux`
 provides these building blocks for your Meteor application.
 
 ### Centralized Logic
-The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore]((https://github.com/meteor-space/ui/blob/master/examples/TodoMVC/client/stores/todos_store.js) that manages a list of todos.
+The core idea of Flux is to centralize the front-end logic into **stores**, the only places where application state is managed. They are what you might call *view model* in other frameworks, except that they don't have to map directly to the concept of a *thing* (e.g: Todo). Stores manage the state of parts of your application. This could be anything, from a `VideoPlaybackStore` that manages the current state of a video player, to a [TodosStore]((https://github.com/meteor-space/TodoMVC/blob/master/javascript/client/stores/todos_store.js) that manages a list of todos.
 
 ### Data Flow
 The biggest problem with Meteor templates is that they need to get their data
 from *somewhere*. Unfortunately there is no good pattern provided by the core
-team, so everyone has to come up with custom solutions. `space:ui` integrates
+team, so everyone has to come up with custom solutions. `space:flux` integrates
 with [blaze-components](https://github.com/peerlibrary/meteor-blaze-components),
 by providing a simple API to access reactive application state inside your
 components (provided by the stores).
@@ -74,7 +72,7 @@ given data and dispatch events about user interaction with buttons etc.
 Each layer plays an important role and the implementation details can be changed easily.
 
 ## API
-Only the classes that `space:ui` provides are documented here.
+Only the classes that `space:flux` provides are documented here.
 A lot of the basic functionality actually comes from the packages [space:base](https://github.com/meteor-space/base) and [space:messaging](https://github.com/meteor-space/messaging) and are documented there!
 
 ### Stores
@@ -141,7 +139,7 @@ Space.ui.Mediator.extend(TodoMVC, 'TodoListMediator', {
 ```javascript
 // Note: Only the necessary parts of the code are shown here for brevity
 
-Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
+Space.flux.BlazeComponent.extend(TodoMVC, 'TodoList', {
 
   // This modifies the editing state of each todo in the list reactively
   prepareTodoData: function() {
@@ -164,7 +162,7 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
 
 });
 
-Space.ui.Store.extend(TodoMVC, 'TodosStore', {
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
 
   reactiveVars: function() {
     return [{
@@ -191,12 +189,12 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 
 ### Simplified State Management
 Let's be honest, the previous state API was a mess and complicated things
-unnecessarily. Now, the only place where you define state is in instance of `Space.ui.Store`. There are two possiblities:
+unnecessarily. Now, the only place where you define state is in instance of `Space.flux.Store`. There are two possibilities:
 
 1. You already have a reactive data source like `Mongo.Collection::find`: in
 this case you simply create methods on the store class that return these:
 ```javascript
-Space.ui.Store.extend(TodoMVC, 'TodosStore', {
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
   completedTodos: function() {
     return this.todos.find({ isCompleted: true });
   }
@@ -205,7 +203,7 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 2. If you need to manage state that you don't want to hold in a collection
 you can use the new API to generate `ReactiveVar` instance accessors:
 ```javascript
-Space.ui.Store.extend(TodoMVC, 'TodosStore', {
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
   reactiveVars: function() {
     return [{
       activeFilter: this.FILTERS.ALL,
@@ -235,7 +233,7 @@ the framework in Javascript or ES2015. Here is the new declarative event /
 command handling API available:
 
 ```javascript
-Space.ui.Store.extend(TodoMVC, 'TodosStore', {
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
   // ====== Event handling setup ====== //
 
   // Map private methods to events coming from the outside
@@ -256,7 +254,7 @@ Space.ui.Store.extend(TodoMVC, 'TodosStore', {
 });
 
 // This is the same now as with BlazeComponents:
-Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
+Space.flux.BlazeComponent.extend(TodoMVC, 'TodoList', {
   events: function() {
     return [{
       'toggled .todo': this.toggleTodo,
@@ -277,7 +275,7 @@ Space.ui.BlazeComponent.extend(TodoMVC, 'TodoList', {
 `cd examples/TodoMVC && meteor`
 
 ## Release History
-You can find the complete release history in the [changelog](https://github.com/meteor-space/ui/blob/master/CHANGELOG.md)
+You can find the complete release history in the [changelog](https://github.com/meteor-space/flux/blob/master/CHANGELOG.md)
 
 ## License
 Licensed under the MIT license.

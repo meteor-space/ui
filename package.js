@@ -1,8 +1,8 @@
 Package.describe({
-  summary: 'Meteor UI framework inspired by React and Flux.',
-  name: 'space:ui',
-  version: '5.3.0',
-  git: 'https://github.com/meteor-space/ui.git'
+  summary: 'Manage application UI state using Flux patterns specific to Meteor',
+  name: 'space:flux',
+  version: '0.6.0',
+  git: 'https://github.com/meteor-space/flux.git'
 });
 
 Package.onUse(function(api) {
@@ -10,13 +10,13 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'coffeescript',
     'underscore',
     'templating',
     'tracker',
     'reactive-var',
-    'space:base@2.4.2',
-    'space:messaging@1.7.1',
+    'reactive-dict',
+    'space:base@3.1.0',
+    'space:messaging@2.1.1',
   ]);
 
   api.use([
@@ -26,12 +26,8 @@ Package.onUse(function(api) {
   api.addFiles([
     'source/module.js',
     'source/automation.js',
-    'source/stateful.js',
-    'source/store.coffee',
-    'source/mediator.coffee',
+    'source/store.js',
     'source/blaze_component.js',
-    'source/template_mediator_mapping.coffee',
-    'source/template_mediator_map.coffee',
     'source/helpers.js',
   ], 'client');
 
@@ -40,24 +36,13 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
 
   api.use([
-    'coffeescript',
-    'underscore',
-    'templating',
-    'reactive-var',
-    'tracker',
-    'space:ui',
-    'practicalmeteor:munit@2.1.4',
-    'space:testing@1.3.0'
+    'space:flux',
+    'practicalmeteor:munit@2.1.5',
+    'space:testing@2.0.0',
   ]);
 
   api.addFiles([
-    'tests/stateful.spec.coffee',
-    'tests/store.spec.coffee',
-    'tests/mediator.spec.coffee',
-    'tests/template_mediator_mapping.unit.coffee',
-    'tests/template_mediator_map.unit.coffee',
-    'tests/greeting_template.integration.html',
-    'tests/template_mediator_map.integration.coffee',
+    'tests/store.tests.js',
   ], 'client');
 
 });

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.6.1
+- Fixes link to Travis
+
+
 ### 0.6.0
 BREAKING CHANGES:
 See [upgrade guide](https://meteor-space.readme.io/v1.0/docs/upgrade-guide) for

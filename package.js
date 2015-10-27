@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Manage application UI state using Flux patterns specific to Meteor',
   name: 'space:flux',
-  version: '0.6.0',
+  version: '0.6.1',
   git: 'https://github.com/meteor-space/flux.git'
 });
 

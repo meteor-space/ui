@@ -16,7 +16,7 @@ Package.onUse(function(api) {
     'reactive-var',
     'reactive-dict',
     'space:base@3.1.1',
-    'space:messaging@2.1.1',
+    'space:messaging@2.1.0',
   ]);
 
   api.use([

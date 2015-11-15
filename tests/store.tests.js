@@ -1,14 +1,17 @@
 describe("Space.flux - Store", function () {
 
-  StoreTest = Space.namespace('StoreTest');
+  StoreTestModule = Space.Module.define('StoreTestModule', {
+    requiredModules: ['Space.flux'],
+    singletons: ['StoreTestModule.BlogPostsStore']
+  });
 
-  Space.flux.defineEvents('StoreTest', {
+  Space.flux.defineEvents('StoreTestModule', {
     PostIdChanged: { id: String },
     CategoryFilterChanged: { category: String },
     UserCommentChanged: { value: String }
   });
 
-  StoreTest.BlogPostsStore = Space.flux.Store.extend({
+  StoreTestModule.BlogPostsStore = Space.flux.Store.extend({
     /**
      * Reactive vars should be used for values that can be inferred by
      * state like the current route or computed data. These won't "survive"
@@ -35,9 +38,9 @@ describe("Space.flux - Store", function () {
 
     eventSubscriptions: function() {
       return [{
-        'StoreTest.PostIdChanged': this.updatePostId,
-        'StoreTest.CategoryFilterChanged': this.updateCategoryFilter,
-        'StoreTest.UserCommentChanged': this.updateUserComment,
+        'StoreTestModule.PostIdChanged': this.updatePostId,
+        'StoreTestModule.CategoryFilterChanged': this.updateCategoryFilter,
+        'StoreTestModule.UserCommentChanged': this.updateUserComment,
       }];
     },
 
@@ -55,9 +58,9 @@ describe("Space.flux - Store", function () {
   });
 
   it("assigns default values", function () {
-    StoreTest.BlogPostsStore
+    StoreTestModule.test(StoreTestModule.BlogPostsStore)
     .given() // defaults
-    .expectState({
+    .expect({
       postId: null,
       categoryFilter: 'all',
       userCommentValue: ''
@@ -65,14 +68,14 @@ describe("Space.flux - Store", function () {
   });
 
   it("changes state when handling events", function () {
-    StoreTest.BlogPostsStore
+    StoreTestModule.test(StoreTestModule.BlogPostsStore)
     .given()
     .when([
-      new StoreTest.PostIdChanged({ id: 'postId123' }),
-      new StoreTest.CategoryFilterChanged({ category: 'changedCategory' }),
-      new StoreTest.UserCommentChanged({ value: 'new comment' })
+      new StoreTestModule.PostIdChanged({ id: 'postId123' }),
+      new StoreTestModule.CategoryFilterChanged({ category: 'changedCategory' }),
+      new StoreTestModule.UserCommentChanged({ value: 'new comment' })
     ])
-    .expectState({
+    .expect({
       postId: 'postId123',
       categoryFilter: 'changedCategory',
       userCommentValue: 'new comment'

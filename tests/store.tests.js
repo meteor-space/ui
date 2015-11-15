@@ -1,4 +1,4 @@
-describe("Space.flux - Store", function () {
+describe("Space.flux - Store", function() {
 
   StoreTestModule = Space.Module.define('StoreTestModule', {
     requiredModules: ['Space.flux'],
@@ -40,7 +40,7 @@ describe("Space.flux - Store", function () {
       return [{
         'StoreTestModule.PostIdChanged': this.updatePostId,
         'StoreTestModule.CategoryFilterChanged': this.updateCategoryFilter,
-        'StoreTestModule.UserCommentChanged': this.updateUserComment,
+        'StoreTestModule.UserCommentChanged': this.updateUserComment
       }];
     },
 
@@ -54,10 +54,10 @@ describe("Space.flux - Store", function () {
 
     updateUserComment: function(event) {
       this._setSessionVar('userCommentValue', event.value);
-    },
+    }
   });
 
-  it("assigns default values", function () {
+  it("assigns default values", function() {
     StoreTestModule.test(StoreTestModule.BlogPostsStore)
     .given() // defaults
     .expect({
@@ -67,7 +67,7 @@ describe("Space.flux - Store", function () {
     });
   });
 
-  it("changes state when handling events", function () {
+  it("changes state when handling events", function() {
     StoreTestModule.test(StoreTestModule.BlogPostsStore)
     .given()
     .when([

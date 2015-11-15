@@ -9,6 +9,6 @@
   },
   "space:testing": {
     "git":"https://github.com/meteor-space/testing.git",
-    "branch": "chore/update-to-camel-case-apis"
+    "branch": "develop"
   }
 }

@@ -3,7 +3,7 @@ Space.flux.getEventTarget = function(event) {
 };
 
 Space.flux.defineEvents = function() {
-  var args = Array.prototype.slice.call(arguments);
+  let args = Array.prototype.slice.call(arguments);
   args.unshift(Space.messaging.Event);
   return Space.messaging.define.apply(this, args);
 };

@@ -20,7 +20,7 @@ if(BlazeComponentsPackage !== undefined) { // weak dependency
   // Mixin convenient dependencies
   _.deepExtend(Space.flux.BlazeComponent.prototype, {
 
-    Dependencies: {
+    dependencies: {
       eventBus: 'Space.messaging.EventBus',
     },
 

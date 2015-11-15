@@ -1,14 +1,14 @@
 {
   "space:base": {
     "git":"https://github.com/meteor-space/base.git",
-    "version": "9ffa935061ed85e9958a1810f77f57932a0cb60a"
+    "branch": "fix/remaining-camel-case-api-changes"
   },
   "space:messaging": {
     "git":"https://github.com/meteor-space/messaging.git",
-    "version": "0b10fca45edf6e1d630ba32defa502e28cb9f53b"
+    "branch": "chore/update-to-camel-case-api"
   },
   "space:testing": {
     "git":"https://github.com/meteor-space/testing.git",
-    "version": "0fa24e0db6fdf26443ec7919d379d0d04166c49c"
+    "branch": "chore/update-to-camel-case-apis"
   }
 }

@@ -1,7 +1,7 @@
 
 Space.Object.extend(Space.flux, 'Store', {
 
-  Dependencies: {
+  dependencies: {
     reactiveVar: 'ReactiveVar',
     reactiveDict: 'ReactiveDict',
     _: 'underscore',

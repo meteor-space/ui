@@ -1,8 +1,8 @@
 describe("Space.flux - Store", function () {
 
   StoreTestModule = Space.Module.define('StoreTestModule', {
-    RequiredModules: ['Space.flux'],
-    Singletons: ['StoreTestModule.BlogPostsStore']
+    requiredModules: ['Space.flux'],
+    singletons: ['StoreTestModule.BlogPostsStore']
   });
 
   Space.flux.defineEvents('StoreTestModule', {

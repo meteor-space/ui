@@ -13,10 +13,11 @@ Package.onUse(function(api) {
     'underscore',
     'templating',
     'tracker',
+    'ecmascript',
     'reactive-var',
     'reactive-dict',
     'space:base@3.1.1',
-    'space:messaging@2.1.0',
+    'space:messaging@2.1.0'
   ]);
 
   api.use([
@@ -28,7 +29,7 @@ Package.onUse(function(api) {
     'source/automation.js',
     'source/store.js',
     'source/blaze_component.js',
-    'source/helpers.js',
+    'source/helpers.js'
   ], 'client');
 
 });
@@ -36,13 +37,14 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
 
   api.use([
+    'ecmascript',
     'space:flux',
     'practicalmeteor:munit@2.1.5',
-    'space:testing@2.0.1',
+    'space:testing@2.0.1'
   ]);
 
   api.addFiles([
-    'tests/store.tests.js',
+    'tests/store.tests.js'
   ], 'client');
 
 });

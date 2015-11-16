@@ -1,7 +1,3 @@
-// Extend the base modules with space-flux specific sugar (see below)
-Space.flux.Module = Space.Module.extend();
-Space.flux.Application = Space.Application.extend();
-
 /**
  * Provides a convenience layer for mapping common components
  * within space applications as singletons by listing their
@@ -9,16 +5,22 @@ Space.flux.Application = Space.Application.extend();
  * stores: ['My.awesome.Store', 'My.second.Store']
 **/
 
-automatedMappings = {
+Space.Module.mixin({
+
   stores: [],
   controllers: [],
   components: [],
+
+  onDependenciesReady: function() {
+    this._wrapLifecycleHook('onInitialize', this._onInitializeFlux);
+    this._wrapLifecycleHook('afterInitialize', this.afterInitializeFlux);
+  },
 
   /**
    * This life-cycle hook is called during initialization of the space
    * application and sets up the singleton mappings and UI components.
   **/
-  onInitialize: function() {
+  _onInitializeFlux: function(onInitialize) {
     // Map service-like classes that need to run during the complete
     // life-cycle of a space application as singletons.
     let mapAsSingleton = function(klass) {
@@ -39,21 +41,20 @@ automatedMappings = {
       }
       component.Application = this.app;
     }, this);
+
+    onInitialize.call(this);
   },
 
   /**
    * This life-cycle hook is called when the app starts to run
    * and creates the singleton instances.
    */
-  onStart: function() {
+  afterInitializeFlux: function(afterInitialize) {
     let createSingletonInstance = _.bind(function(klass) {
       this.injector.create(klass);
     }, this);
     _.each(this.stores, createSingletonInstance);
     _.each(this.controllers, createSingletonInstance);
+    afterInitialize.call(this);
   }
-};
-
-// Make the auto-mapping sugar available for modules and applications
-Space.flux.Module.mixin(automatedMappings);
-Space.flux.Application.mixin(automatedMappings);
+});

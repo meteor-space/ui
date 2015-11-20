@@ -59,7 +59,6 @@ describe("Space.flux - Store", function() {
 
   it("assigns default values", function() {
     StoreTestModule.test(StoreTestModule.BlogPostsStore)
-    .given() // defaults
     .expect({
       postId: null,
       categoryFilter: 'all',
@@ -69,7 +68,6 @@ describe("Space.flux - Store", function() {
 
   it("changes state when handling events", function() {
     StoreTestModule.test(StoreTestModule.BlogPostsStore)
-    .given()
     .when([
       new StoreTestModule.PostIdChanged({ id: 'postId123' }),
       new StoreTestModule.CategoryFilterChanged({ category: 'changedCategory' }),

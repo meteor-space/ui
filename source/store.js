@@ -16,6 +16,9 @@ Space.Object.extend(Space.flux, 'Store', {
     this._setupReactiveVars();
     this._session = new this.ReactiveDict(this._session);
     this._setDefaultSessionVars();
+    for (computation of this.computations()) {
+      this.tracker.autorun(_.bind(computation, this), this._onComputationError);
+    }
   },
 
   reactiveVars: function() {
@@ -23,6 +26,10 @@ Space.Object.extend(Space.flux, 'Store', {
   },
 
   sessionVars: function() {
+    return [];
+  },
+
+  computations: function() {
     return [];
   },
 
@@ -83,6 +90,10 @@ Space.Object.extend(Space.flux, 'Store', {
 
   _setSessionVar: function(varName, value) {
     this._session.set(varName, value);
+  },
+
+  _onComputationError(error) {
+    throw error;
   }
 });
 

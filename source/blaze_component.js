@@ -18,20 +18,25 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
     }
   }
 
-  // Mixin convenient dependencies
-  _.deepExtend(Space.flux.BlazeComponent.prototype, {
+  Space.flux.BlazeComponent.mixin({
 
     dependencies: {
       eventBus: 'Space.messaging.EventBus'
     },
 
-    onCreated: function() {
+    onCreated() {
       this.constructor.Application.injector.injectInto(this);
     },
 
-    publish: function(event) {
+    onDestroyed() {
+      this._cleanupComputations();
+    },
+
+    publish(event) {
       this.eventBus.publish(event);
     }
 
   });
+
+  Space.flux.BlazeComponent.mixin(Space.flux.Stateful);
 }

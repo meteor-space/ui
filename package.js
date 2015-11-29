@@ -27,6 +27,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'source/module.js',
     'source/automation.js',
+    'source/mixins/stateful.js',
     'source/store.js',
     'source/blaze_component.js',
     'source/helpers.js'

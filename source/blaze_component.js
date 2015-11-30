@@ -25,6 +25,9 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
     },
 
     onCreated() {
+      if (!this.constructor.Application) {
+        throw new Error(`You forgot to map the component <${this}> in your app.`);
+      }
       this.constructor.Application.injector.injectInto(this);
     },
 

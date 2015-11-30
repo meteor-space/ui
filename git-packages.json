@@ -1,7 +1,7 @@
 {
   "space:base": {
     "git":"https://github.com/meteor-space/base.git",
-    "branch": "fix/let-mixins-override-prototype-methods"
+    "branch": "develop"
   },
   "space:messaging": {
     "git":"https://github.com/meteor-space/messaging.git",

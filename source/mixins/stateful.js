@@ -1,5 +1,9 @@
 Space.flux.Stateful = {
 
+  statics: {
+    _session: null
+  },
+
   dependencies: {
     ReactiveVar: 'ReactiveVar',
     ReactiveDict: 'ReactiveDict',
@@ -14,7 +18,11 @@ Space.flux.Stateful = {
   onDependenciesReady: function() {
     this._reactiveVars = {};
     this._setupReactiveVars();
-    this._session = new this.ReactiveDict(this._session);
+    // Only create one static singleton of the reactive-dict for this class!
+    if (this.constructor._session === null) {
+      this.constructor._session = new this.ReactiveDict(this._session);
+    }
+    this._session = this.constructor._session;
     this._setDefaultSessionVars();
     this._computations = [];
     for (computation of this.computations()) {

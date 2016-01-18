@@ -11,13 +11,13 @@ describe("Space.flux - Store", function() {
     UserCommentChanged: { value: String }
   });
 
-  StoreTestModule.BlogPostsStore = Space.flux.Store.extend({
+  Space.flux.Store.extend('StoreTestModule.BlogPostsStore', {
     /**
      * Reactive vars should be used for values that can be inferred by
      * state like the current route or computed data. These won't "survive"
      * hot-code pushes but will be rebuilt on every reload.
      */
-    reactiveVars: function() {
+    reactiveVars() {
       return [{
         // These things can be inferred e.g: by looking at the current route
         postId: null,
@@ -28,7 +28,7 @@ describe("Space.flux - Store", function() {
      * Session vars should be used for values that cannot be inferred by
      * routes or loaded data and should survive hot-code pushes.
      */
-    sessionVars: function() {
+    sessionVars() {
       return [{
         // Imagine a comment textarea where the user writes something.
         // This should survive hot-code pushes and save the value!
@@ -36,7 +36,7 @@ describe("Space.flux - Store", function() {
       }];
     },
 
-    eventSubscriptions: function() {
+    eventSubscriptions() {
       return [{
         'StoreTestModule.PostIdChanged': this.updatePostId,
         'StoreTestModule.CategoryFilterChanged': this.updateCategoryFilter,
@@ -44,15 +44,15 @@ describe("Space.flux - Store", function() {
       }];
     },
 
-    updatePostId: function(event) {
+    updatePostId(event) {
       this._setReactiveVar('postId', event.id);
     },
 
-    updateCategoryFilter: function(event) {
+    updateCategoryFilter(event) {
       this._setReactiveVar('categoryFilter', event.category);
     },
 
-    updateUserComment: function(event) {
+    updateUserComment(event) {
       this._setSessionVar('userCommentValue', event.value);
     }
   });

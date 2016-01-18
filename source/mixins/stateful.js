@@ -7,15 +7,13 @@ Space.flux.Stateful = {
   dependencies: {
     ReactiveVar: 'ReactiveVar',
     ReactiveDict: 'ReactiveDict',
-    _: 'underscore',
-    tracker: 'Tracker'
+    _: 'underscore'
   },
 
   _reactiveVars: null,
   _session: null,
-  _computations: null,
 
-  onDependenciesReady: function() {
+  onDependenciesReady() {
     this._reactiveVars = {};
     this._setupReactiveVars();
     // Only create one static singleton of the reactive-dict for this class!
@@ -24,23 +22,17 @@ Space.flux.Stateful = {
     }
     this._session = this.constructor._session;
     this._setDefaultSessionVars();
-    this._computations = [];
-    for (computation of this.computations()) {
-      this._computations.push(
-        this.tracker.autorun(_.bind(computation, this), this._onComputationError)
-      );
-    }
   },
 
-  reactiveVars: function() {
+  reactiveVars() {
     return [];
   },
 
-  sessionVars: function() {
+  sessionVars() {
     return [];
   },
 
-  computations: function() {
+  computations() {
     return [];
   },
 
@@ -60,7 +52,7 @@ Space.flux.Stateful = {
   /**
    * Initialize the reactive vars with default values.
    */
-  _setupReactiveVars: function() {
+  _setupReactiveVars() {
     let reactiveVars = {};
     let reactiveVarMaps = this.reactiveVars();
     reactiveVarMaps.unshift(reactiveVars);
@@ -72,7 +64,7 @@ Space.flux.Stateful = {
    * Generates a method on this class instance for each reactive var
    * that can be used to get the value of it.
    */
-  _generateReactiveVar: function(defaultValue, varName) {
+  _generateReactiveVar(defaultValue, varName) {
     let reactiveVar = new this.ReactiveVar();
     reactiveVar.set(defaultValue);
     this._reactiveVars[varName] = reactiveVar;
@@ -84,7 +76,7 @@ Space.flux.Stateful = {
   /**
    * Initialize the session vars with default values.
    */
-  _setDefaultSessionVars: function() {
+  _setDefaultSessionVars() {
     let sessionVars = {};
     let sessionVarMaps = this.sessionVars();
     sessionVarMaps.unshift(sessionVars);
@@ -96,7 +88,7 @@ Space.flux.Stateful = {
    * Generates a method on this class instance for each session var
    * that can be used to get the value of it.
    */
-  _generateSessionVar: function(defaultValue, varName) {
+  _generateSessionVar(defaultValue, varName) {
     let session = this._session;
     session.setDefault(varName, defaultValue);
     this[varName] = function() {
@@ -104,7 +96,7 @@ Space.flux.Stateful = {
     };
   },
 
-  _setReactiveVar: function(varName, value) {
+  _setReactiveVar(varName, value) {
     let reactiveVar = this._reactiveVars[varName];
     if (!reactiveVar) {
       throw new Error(`Did you forget to setup reactive var <${varName}>?`);
@@ -112,7 +104,7 @@ Space.flux.Stateful = {
     reactiveVar.set(value);
   },
 
-  _setSessionVar: function(varName, value) {
+  _setSessionVar(varName, value) {
     this._session.set(varName, value);
   },
 

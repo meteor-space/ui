@@ -20,7 +20,7 @@ Space.Module.mixin({
    * This life-cycle hook is called during initialization of the space
    * application and sets up the singleton mappings and UI components.
   **/
-  _onInitializeFlux: function(onInitialize) {
+  _onInitializeFlux(onInitialize) {
     // Map service-like classes that need to run during the complete
     // life-cycle of a space application as singletons.
     let mapAsSingleton = function(klass) {
@@ -49,7 +49,7 @@ Space.Module.mixin({
    * This life-cycle hook is called when the app starts to run
    * and creates the singleton instances.
    */
-  afterInitializeFlux: function(afterInitialize) {
+  afterInitializeFlux(afterInitialize) {
     let createSingletonInstance = _.bind(function(klass) {
       this.injector.create(klass);
     }, this);

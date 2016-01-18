@@ -42,4 +42,5 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
   });
 
   Space.flux.BlazeComponent.mixin(Space.flux.Stateful);
+  Space.flux.BlazeComponent.mixin(Space.flux.Reactive);
 }

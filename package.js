@@ -28,6 +28,7 @@ Package.onUse(function(api) {
     'source/module.js',
     'source/automation.js',
     'source/mixins/stateful.js',
+    'source/mixins/reactive.js',
     'source/store.js',
     'source/blaze_component.js',
     'source/helpers.js'

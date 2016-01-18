@@ -8,7 +8,7 @@ describe("Space.flux - Store", function() {
   Space.flux.defineEvents('StoreTestModule', {
     PostIdChanged: { id: String },
     CategoryFilterChanged: { category: String },
-    UserCommentChanged: { value: String }
+    UserCommentAdded: { value: String }
   });
 
   Space.flux.Store.extend('StoreTestModule.BlogPostsStore', {
@@ -40,8 +40,17 @@ describe("Space.flux - Store", function() {
       return [{
         'StoreTestModule.PostIdChanged': this.updatePostId,
         'StoreTestModule.CategoryFilterChanged': this.updateCategoryFilter,
-        'StoreTestModule.UserCommentChanged': this.updateUserComment
+        'StoreTestModule.UserCommentAdded': this.updateUserComment
       }];
+    },
+
+    computations() {
+      return [
+        this._calcNumberOfComments
+      ];
+    },
+
+    _calcNumberOfComments() {
     },
 
     updatePostId(event) {
@@ -71,7 +80,7 @@ describe("Space.flux - Store", function() {
     .when([
       new StoreTestModule.PostIdChanged({ id: 'postId123' }),
       new StoreTestModule.CategoryFilterChanged({ category: 'changedCategory' }),
-      new StoreTestModule.UserCommentChanged({ value: 'new comment' })
+      new StoreTestModule.UserCommentAdded({ value: 'new comment' })
     ])
     .expect({
       postId: 'postId123',

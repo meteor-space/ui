@@ -41,12 +41,15 @@ Package.onTest(function(api) {
   api.use([
     'ecmascript',
     'space:flux',
+    'reactive-var',
+    'tracker',
     'practicalmeteor:munit@2.1.5',
     'space:testing@2.0.1'
   ]);
 
   api.addFiles([
-    'tests/store.tests.js'
+    'tests/store.tests.js',
+    'tests/reactive.tests.js'
   ], 'client');
 
 });

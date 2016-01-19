@@ -1,7 +1,6 @@
 Space.flux.Reactive = {
 
   dependencies: {
-    _: 'underscore',
     tracker: 'Tracker'
   },
 
@@ -11,13 +10,25 @@ Space.flux.Reactive = {
     this._computations = [];
     for (computation of this.computations()) {
       this._computations.push(
-        this.tracker.autorun(_.bind(computation, this), this._onComputationError)
+        this.tracker.autorun(_.bind(computation, this), {
+          onError: this.onComputationError
+        })
       );
     }
   },
 
   computations() {
     return [];
+  },
+
+  stopComputations() {
+    for (computation of this._computations) {
+      computation.stop();
+    }
+  },
+
+  onComputationError(error) {
+    throw error;
   }
 
 };

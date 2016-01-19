@@ -32,7 +32,7 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
     },
 
     onDestroyed() {
-      this._cleanupComputations();
+      this.stopComputations();
     },
 
     publish(event) {

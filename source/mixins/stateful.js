@@ -32,10 +32,6 @@ Space.flux.Stateful = {
     return [];
   },
 
-  computations() {
-    return [];
-  },
-
   state() {
     let state = {};
     for (let key in this._reactiveVars) {
@@ -106,16 +102,6 @@ Space.flux.Stateful = {
 
   _setSessionVar(varName, value) {
     this._session.set(varName, value);
-  },
-
-  _onComputationError(error) {
-    throw error;
-  },
-
-  _cleanupComputations() {
-    for (computation of this._computations) {
-      computation.stop();
-    }
   }
 
 };

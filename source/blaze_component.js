@@ -32,7 +32,7 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
     },
 
     onDestroyed() {
-      this._cleanupComputations();
+      this.stopComputations();
     },
 
     publish(event) {
@@ -42,4 +42,5 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
   });
 
   Space.flux.BlazeComponent.mixin(Space.flux.Stateful);
+  Space.flux.BlazeComponent.mixin(Space.flux.Reactive);
 }

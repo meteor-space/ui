@@ -28,6 +28,7 @@ Package.onUse(function(api) {
     'source/module.js',
     'source/automation.js',
     'source/mixins/stateful.js',
+    'source/mixins/reactive.js',
     'source/store.js',
     'source/blaze_component.js',
     'source/helpers.js'
@@ -40,12 +41,15 @@ Package.onTest(function(api) {
   api.use([
     'ecmascript',
     'space:flux',
+    'reactive-var',
+    'tracker',
     'practicalmeteor:munit@2.1.5',
     'space:testing@2.0.1'
   ]);
 
   api.addFiles([
-    'tests/store.tests.js'
+    'tests/store.tests.js',
+    'tests/reactive.tests.js'
   ], 'client');
 
 });

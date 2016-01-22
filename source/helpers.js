@@ -4,6 +4,6 @@ Space.flux.getEventTarget = function(event) {
 
 Space.flux.defineEvents = function() {
   let args = Array.prototype.slice.call(arguments);
-  args.unshift(Space.messaging.Event);
+  args.unshift(Space.flux.Event);
   return Space.messaging.define.apply(this, args);
 };

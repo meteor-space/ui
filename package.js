@@ -1,13 +1,13 @@
 Package.describe({
   summary: 'Manage application UI state using Flux patterns specific to Meteor',
   name: 'space:flux',
-  version: '0.6.1',
+  version: '1.0.0',
   git: 'https://github.com/meteor-space/flux.git'
 });
 
 Package.onUse(function(api) {
 
-  api.versionsFrom("METEOR@1.0");
+  api.versionsFrom('1.2.0.1');
 
   api.use([
     'underscore',
@@ -16,8 +16,8 @@ Package.onUse(function(api) {
     'ecmascript',
     'reactive-var',
     'reactive-dict',
-    'space:base@3.1.1',
-    'space:messaging@2.1.0'
+    'space:base@4.0.0',
+    'space:messaging@3.0.0'
   ]);
 
   api.use([
@@ -31,7 +31,8 @@ Package.onUse(function(api) {
     'source/mixins/reactive.js',
     'source/store.js',
     'source/blaze_component.js',
-    'source/helpers.js'
+    'source/helpers.js',
+    'source/flux-event.js'
   ], 'client');
 
 });
@@ -44,12 +45,15 @@ Package.onTest(function(api) {
     'reactive-var',
     'tracker',
     'practicalmeteor:munit@2.1.5',
-    'space:testing@2.0.1'
+    'space:testing@3.0.1',
+    'space:testing-messaging@3.0.0',
+    'space:testing-flux@1.0.0'
   ]);
 
   api.addFiles([
     'tests/store.tests.js',
-    'tests/reactive.tests.js'
+    'tests/reactive.tests.js',
+    'tests/flux-event.tests.js'
   ], 'client');
 
 });

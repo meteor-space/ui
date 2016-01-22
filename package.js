@@ -31,7 +31,8 @@ Package.onUse(function(api) {
     'source/mixins/reactive.js',
     'source/store.js',
     'source/blaze_component.js',
-    'source/helpers.js'
+    'source/helpers.js',
+    'source/flux-event.js'
   ], 'client');
 
 });

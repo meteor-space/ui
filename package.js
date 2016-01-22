@@ -52,7 +52,8 @@ Package.onTest(function(api) {
 
   api.addFiles([
     'tests/store.tests.js',
-    'tests/reactive.tests.js'
+    'tests/reactive.tests.js',
+    'tests/flux-event.tests.js'
   ], 'client');
 
 });

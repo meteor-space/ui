@@ -14,7 +14,7 @@ Please see the [changelog](https://github.com/meteor-space/base/blob/master/CHAN
 Please see the [changelog](https://github.com/meteor-space/messaging/blob/master/CHANGELOG.md).
 
 - Must be running Meteor 1.2.0.1 or later.
-- `Space.ui.Store` has been extracted to a separate package `Space.flux`
+- `Space.ui.Store` has been extracted to a separate package [space:flux](https://github.com/meteor-space/flux/)
 - Reactive data sources now just need to be defined as methods on `Space.flux.Store`,
  with non-reactive sources returned in `reactiveVars` or `sessionVars`.
   This change was motivated to simplify the component's interface, but it also improves

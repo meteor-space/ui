@@ -43,4 +43,6 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
 
   Space.ui.BlazeComponent.mixin(Space.ui.Stateful);
   Space.ui.BlazeComponent.mixin(Space.ui.Reactive);
+} else {
+  throw new Space.Error('package peerlibrary:blaze-components is not installed');
 }

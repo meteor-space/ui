@@ -44,6 +44,8 @@ Package.onTest(function(api) {
     'reactive-var',
     'tracker',
     'practicalmeteor:munit@2.1.5',
+    'space:base@4.0.0',
+    'space:messaging@3.0.0',
     'space:testing@3.0.1'
   ]);
 

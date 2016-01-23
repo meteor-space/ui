@@ -3,22 +3,22 @@ let BlazeComponentsPackage = Package['peerlibrary:blaze-components'];
 if (BlazeComponentsPackage !== undefined) { // weak dependency
   let BlazeComponent = BlazeComponentsPackage.BlazeComponent;
 
-  Space.flux.BlazeComponent = Space.Object.extend();
+  Space.ui.BlazeComponent = Space.Object.extend();
 
   // Make it a Blaze Component by copying over static and prototype properties
   for (let property in BlazeComponent) {
     if (property !== '__super__') {
-      Space.flux.BlazeComponent[property] = BlazeComponent[property];
+      Space.ui.BlazeComponent[property] = BlazeComponent[property];
     }
   }
   for (let property in BlazeComponent.prototype) {
     if (property !== 'constructor') {
       let value = BlazeComponent.prototype[property];
-      Space.flux.BlazeComponent.prototype[property] = value;
+      Space.ui.BlazeComponent.prototype[property] = value;
     }
   }
 
-  Space.flux.BlazeComponent.mixin({
+  Space.ui.BlazeComponent.mixin({
 
     dependencies: {
       eventBus: 'Space.messaging.EventBus'
@@ -41,6 +41,6 @@ if (BlazeComponentsPackage !== undefined) { // weak dependency
 
   });
 
-  Space.flux.BlazeComponent.mixin(Space.flux.Stateful);
-  Space.flux.BlazeComponent.mixin(Space.flux.Reactive);
+  Space.ui.BlazeComponent.mixin(Space.ui.Stateful);
+  Space.ui.BlazeComponent.mixin(Space.ui.Reactive);
 }

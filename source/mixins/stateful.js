@@ -1,4 +1,4 @@
-Space.flux.Stateful = {
+Space.ui.Stateful = {
 
   statics: {
     _session: null

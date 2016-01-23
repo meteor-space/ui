@@ -1,32 +1,30 @@
 /**
- * Provides a convenience layer for mapping common components
+ * Provides a convenience layer for mapping specific parts
  * within space applications as singletons by listing their
  * full namespace paths in arrays like:
- * stores: ['My.awesome.Store', 'My.second.Store']
+ * controllers: ['My.awesome.Controller', 'My.second.Controller']
 **/
 
 Space.Module.mixin({
 
-  stores: [],
   controllers: [],
   components: [],
 
   onDependenciesReady: function() {
-    this._wrapLifecycleHook('onInitialize', this._onInitializeFlux);
-    this._wrapLifecycleHook('afterInitialize', this.afterInitializeFlux);
+    this._wrapLifecycleHook('onInitialize', this._onInitializeUi);
+    this._wrapLifecycleHook('afterInitialize', this.afterInitializeUi);
   },
 
   /**
    * This life-cycle hook is called during initialization of the space
    * application and sets up the singleton mappings and UI components.
   **/
-  _onInitializeFlux(onInitialize) {
+  _onInitializeUi(onInitialize) {
     // Map service-like classes that need to run during the complete
     // life-cycle of a space application as singletons.
     let mapAsSingleton = function(klass) {
       this.injector.map(klass).asSingleton();
     };
-    _.each(this.stores, mapAsSingleton, this);
     _.each(this.controllers, mapAsSingleton, this);
 
     /**
@@ -49,11 +47,10 @@ Space.Module.mixin({
    * This life-cycle hook is called when the app starts to run
    * and creates the singleton instances.
    */
-  afterInitializeFlux(afterInitialize) {
+  afterInitializeUi(afterInitialize) {
     let createSingletonInstance = _.bind(function(klass) {
       this.injector.create(klass);
     }, this);
-    _.each(this.stores, createSingletonInstance);
     _.each(this.controllers, createSingletonInstance);
     afterInitialize.call(this);
   }

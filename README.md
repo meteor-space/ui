@@ -26,6 +26,10 @@ _Pattern-agnostic base UI package to gain control over your Meteor UI_
 ## Installation
 `meteor add space:ui`
 
+Package `peerlibrary:blaze-components` is needed in order to use `Space.ui.BlazeComponent`:
+
+`meteor add peerlibrary:blaze-components`
+
 ## Examples
 For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)
 
@@ -81,8 +85,8 @@ A lot of the basic functionality actually comes from the packages [space:base](h
 
 ### Applications
 
-## Version 6 
-This major version has been months in the works, and we're excited to be introducing Version 6 as a simplification of APIs and separation of concerns. 
+## Version 6
+This major version has been months in the works, and we're excited to be introducing Version 6 as a simplification of APIs and separation of concerns.
 
 ### Flux is optional now
 With this release we see _flux_ concepts extracted into a dedicated package [space:flux](https://github.com/meteor-space/flux), allowing `space:ui` to provide pattern-agnostic UI base features suitable for tailored implementations. Installing `space:flux` will install `space:ui`, but if _flux_ or our implementation is not what you're looking for, just use `space:ui` instead. Too easy!
@@ -158,7 +162,7 @@ Space.flux.Store.extend(TodoMVC, 'TodosStore', {
       'TodoMVC.TodoEditingEnded': this._unsetEditingTodoId,
     }];
   },
-  
+
   _setEditingTodoId(event) {
     this._setSessionVar('editingTodoId', event.todoId);
   },
@@ -166,7 +170,7 @@ Space.flux.Store.extend(TodoMVC, 'TodosStore', {
   _unsetEditingTodoId() {
     this._setSessionVar('editingTodoId', null);
   }
-  
+
 });
 ```
 `Space.ui.BlazeComponent` is `Stateful`
@@ -184,7 +188,7 @@ Space.ui.BlazeComponent.extend('TodoMVC.MyCustomComponent', {
 ```
 
 ### Improved Javascript / ES6 Compatibility
-We're now 100% focused on ES6, and have introduced declarative APIs as the original Coffeescript style didn't translate well. View the complete [TodoMVC](https://github.com/meteor-space/TodoMVC/tree/develop/javascript) example here to get a feel for the new style 
+We're now 100% focused on ES6, and have introduced declarative APIs as the original Coffeescript style didn't translate well. View the complete [TodoMVC](https://github.com/meteor-space/TodoMVC/tree/develop/javascript) example here to get a feel for the new style
 
 
 ## Run the Tests

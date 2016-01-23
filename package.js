@@ -11,7 +11,6 @@ Package.onUse(function(api) {
 
   api.use([
     'underscore',
-    'templating',
     'tracker',
     'ecmascript',
     'reactive-var',
@@ -21,7 +20,7 @@ Package.onUse(function(api) {
   ]);
 
   api.use([
-    'peerlibrary:blaze-components@0.15.0'
+    'peerlibrary:blaze-components@0.16.2'
   ], 'client', {weak: true});
 
   api.addFiles([

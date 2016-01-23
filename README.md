@@ -78,7 +78,7 @@ given data and dispatch events about user interaction with buttons etc.
 Each layer plays an important role and the implementation details can be changed easily.
 
 ## API
-Only the classes that `space:flux` provides are documented here.
+Only the classes that `space:ui` provides are documented here.
 A lot of the basic functionality actually comes from the packages [space:base](https://github.com/meteor-space/base) and [space:messaging](https://github.com/meteor-space/messaging) and are documented there!
 
 ### Components

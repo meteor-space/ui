@@ -24,7 +24,11 @@
 * [License](#license)
 
 ## Installation
-`meteor add space:flux`
+`meteor add space:ui`
+
+Package `peerlibrary:blaze-components` is needed in order to use `Space.ui.BlazeComponent`:
+
+`meteor add peerlibrary:blaze-components`
 
 ## Examples
 For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)

@@ -1,7 +1,9 @@
+Space.ui = Space.Module.define('Space.ui', {
 
-Space.flux = Space.Module.define('Space.flux', {
-  RequiredModules: ['Space.messaging'],
-  onInitialize: function() {
+  requiredModules: ['Space.messaging'],
+
+  onInitialize() {
     this.injector.map('ReactiveDict').to(ReactiveDict);
   }
+
 });

@@ -1,34 +1,36 @@
 Package.describe({
-  summary: 'Manage application UI state using Flux patterns specific to Meteor',
-  name: 'space:flux',
-  version: '0.6.1',
-  git: 'https://github.com/meteor-space/flux.git'
+  summary: 'Pattern-agnostic base UI package to gain control over your Meteor UI',
+  name: 'space:ui',
+  version: '6.0.0',
+  git: 'https://github.com/meteor-space/ui.git'
 });
 
 Package.onUse(function(api) {
 
-  api.versionsFrom("METEOR@1.0");
+  api.versionsFrom('1.2.0.1');
 
   api.use([
     'underscore',
-    'templating',
     'tracker',
+    'ecmascript',
     'reactive-var',
     'reactive-dict',
-    'space:base@3.1.1',
-    'space:messaging@2.1.1',
+    'space:base@4.0.1',
+    'space:messaging@3.0.1'
   ]);
 
   api.use([
-    'peerlibrary:blaze-components@0.15.0'
+    'peerlibrary:blaze-components@0.16.2'
   ], 'client', {weak: true});
 
   api.addFiles([
     'source/module.js',
     'source/automation.js',
-    'source/store.js',
+    'source/mixins/stateful.js',
+    'source/mixins/reactive.js',
     'source/blaze_component.js',
     'source/helpers.js',
+    'source/event.js'
   ], 'client');
 
 });
@@ -36,13 +38,19 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
 
   api.use([
-    'space:flux',
+    'ecmascript',
+    'space:ui',
+    'reactive-var',
+    'tracker',
     'practicalmeteor:munit@2.1.5',
-    'space:testing@2.0.1',
+    'space:base@4.0.1',
+    'space:messaging@3.0.1',
+    'space:testing@3.0.1'
   ]);
 
   api.addFiles([
-    'tests/store.tests.js',
+    'tests/reactive.tests.js',
+    'tests/event.tests.js'
   ], 'client');
 
 });

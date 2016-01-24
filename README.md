@@ -14,11 +14,10 @@ _Pattern-agnostic base UI package to gain control over your Meteor UI_
 * [License](#license)
 
 ## Installation
-`meteor add space:ui`
+1. `meteor add space:ui`
+2. `meteor add peerlibrary:blaze-components`
+3. Optional: `meteor add space:flux`
 
-Package `peerlibrary:blaze-components` is needed in order to use `Space.ui.BlazeComponent`:
-
-`meteor add peerlibrary:blaze-components`
 
 ## Examples
 For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)

@@ -3,7 +3,7 @@
 _Pattern-agnostic base UI package to gain control over your Meteor UI_
 ___
 
-Licensed under the MIT license | [Changelog + Upgrade Guide](https://github.com/meteor-space/flux/blob/master/CHANGELOG.md)
+Licensed under the MIT license | [Changelog + Upgrade Guide](https://github.com/meteor-space/ui/blob/master/CHANGELOG.md)
 ## Documentation
 API Reference and User Guide are coming soon
 

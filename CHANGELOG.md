@@ -2,6 +2,93 @@ Changelog
 =========
 
 ## 6.0.0
+This major version has been months in the works, and we're excited to be introducing Version 6 as a simplification of APIs and separation of concerns.
+
+With this release we see _flux_ concepts extracted into a dedicated package [space:flux](https://github.com/meteor-space/flux), allowing `space:ui` to provide pattern-agnostic UI base features suitable for tailored implementations. Installing `space:flux` will install `space:ui`, but if _flux_ or our implementation is not what you're looking for, just use `space:ui` instead. Too easy!
+
+We're now 100% focused on ES6, and have introduced declarative APIs as the original Coffeescript style didn't translate well. View the complete [TodoMVC](https://github.com/meteor-space/TodoMVC/tree/develop/javascript) example here to get a feel for the new style
+
+State APIs have been unified into `Space.ui.Stateful`; an object added as a mixin. There are three types of state it can manage:
+
+
+
+- 1. You already have a reactive data source like `Mongo.Collection::find`: in
+this case you simply create methods on the class that return these:
+
+```javascript
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
+  completedTodos: function() {
+    return this.todos.find({ isCompleted: true });
+  }
+});
+
+```
+- 2. If you need to manage state that you don't want to hold in a collection
+you can use the new API to generate `ReactiveVar` instance accessors:
+
+```javascript
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
+  reactiveVars: function() {
+    return [{
+      activeFilter: this.FILTERS.ALL,
+    }];
+  },
+  filteredTodos: function() {
+    // Depend on the reactive value to choose a todos filter
+    switch (this.activeFilter()) {
+      case this.FILTERS.ALL: return this.todos.find();
+      case this.FILTERS.ACTIVE: return this.todos.find({ isCompleted: false});
+      case this.FILTERS.COMPLETED: return this.todos.find({ isCompleted: true });
+    }
+  },
+  _changeActiveFilter: function(event) {
+    // Set the reactive var to a new value
+    this.activeFilter(event.filter);
+  }
+});
+```
+
+- 3. If you need to manage state that you don't want to hold in a collection, and you need the values to persist during a hot-code push use the new sessionVars API to generate a scoped `ReactiveDict` instance accessor:
+
+```javascript
+Space.flux.Store.extend(TodoMVC, 'TodosStore', {
+  sessionVars() {
+    return [{
+      editingTodoId: null
+    }];
+  },
+
+  eventSubscriptions() {
+    return [{
+      'TodoMVC.TodoEditingStarted': this._setEditingTodoId,
+      'TodoMVC.TodoEditingEnded': this._unsetEditingTodoId,
+    }];
+  },
+
+  _setEditingTodoId(event) {
+    this._setSessionVar('editingTodoId', event.todoId);
+  },
+
+  _unsetEditingTodoId() {
+    this._setSessionVar('editingTodoId', null);
+  }
+
+});
+```
+`Space.ui.BlazeComponent` is `Stateful`
+
+```javascript
+Space.ui.BlazeComponent.extend('TodoMVC.MyCustomComponent', {
+  _session: 'TodoMVC.MyCustomComponent', // some unique name for session
+  sessionVars() {
+    return [{ mySessionVar: null }]; // default value
+  },
+  reactiveVars() {
+    return [{ someReactiveVar: null }]; // default value
+  }
+});
+```
+
 ### New Features:
 - `Space.ui.Event` is an extension of `Space.messaging.Event`
 Currently this is just a more expressive object, but any future UI specific 
@@ -20,7 +107,7 @@ Please see the [changelog](https://github.com/meteor-space/messaging/blob/master
   This change was motivated to simplify the component's interface, but it also improves
    the clarity of reactive state management in the store.
 - `Space.ui.Mediator` was removed from the project in favour of more popular and
-recommended alternatives like blaze-components.
+recommended alternatives like blaze-components. 
 
 
 ### Upgrade from 5.x
@@ -29,7 +116,7 @@ recommended alternatives like blaze-components.
 - `meteor add space:flux`
 - Switch base object `Space.ui.Store` to `Space.flux.Store`
 - Replace any `Space.ui.Mediator` and standard 'template managers' with a
- `Space.ui.BlazeComponent` 
+ `Space.ui.BlazeComponent` (Example: [TodoList component](https://github.com/meteor-space/ui/blob/develop/examples/TodoMVC/client/views/todo_list/todo_list.js)) 
 - Change all `Space.flux.Store` event subscribers to the new declarative
  `eventSubscriptions` API.
 - Ensure all store state is either determined via a method (if already reactive),

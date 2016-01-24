@@ -15,8 +15,8 @@ Package.onUse(function(api) {
     'ecmascript',
     'reactive-var',
     'reactive-dict',
-    'space:base@4.0.0',
-    'space:messaging@3.0.0'
+    'space:base@4.0.1',
+    'space:messaging@3.0.1'
   ]);
 
   api.use([
@@ -43,8 +43,8 @@ Package.onTest(function(api) {
     'reactive-var',
     'tracker',
     'practicalmeteor:munit@2.1.5',
-    'space:base@4.0.0',
-    'space:messaging@3.0.0',
+    'space:base@4.0.1',
+    'space:messaging@3.0.1',
     'space:testing@3.0.1'
   ]);
 

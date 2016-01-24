@@ -3,7 +3,7 @@
 _Pattern-agnostic base UI package to gain control over your Meteor UI_
 ___
 
-Licensed under the MIT license | [Changelog + Upgrade Guide](https://github.com/meteor-space/ui/blob/master/CHANGELOG.md)
+Licensed under the MIT license | [Changelog + Upgrade Guide](CHANGELOG.md)
 ## Documentation
 API Reference and User Guide are coming soon
 
@@ -16,7 +16,6 @@ _Implementing [flux](https://meteor-space.readme.io/docs/flux-in-depth)?_
 ```
 meteor add space:flux
 ```
-
 
 ## Examples
 For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)

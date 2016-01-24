@@ -1,4 +1,4 @@
-describe("Space.flux.Reactive", function() {
+describe("Space.ui.Reactive", function() {
 
   beforeEach(function() {
     // Setup reactive stub vars
@@ -9,7 +9,7 @@ describe("Space.flux.Reactive", function() {
 
     // Setup a class that has computations based on these reactive vars
     this.MyReactiveClass = Space.Object.extend('MyReactiveClass', {
-      mixin: Space.flux.Reactive,
+      mixin: Space.ui.Reactive,
       sum: null,
       product: null,
       computations() {

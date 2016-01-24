@@ -1,4 +1,4 @@
-Space.flux = Space.Module.define('Space.flux', {
+Space.ui = Space.Module.define('Space.ui', {
 
   requiredModules: ['Space.messaging'],
 

@@ -1,4 +1,4 @@
-Space.flux.Reactive = {
+Space.ui.Reactive = {
 
   dependencies: {
     tracker: 'Tracker'

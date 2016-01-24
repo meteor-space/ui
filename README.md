@@ -23,13 +23,34 @@ _Pattern-agnostic base UI package to gain control over your Meteor UI_
 For a quick start take a look at the [TodoMVC example](https://github.com/meteor-space/TodoMVC)
 
 ## API
-Only the classes that `space:ui` provides are documented here.
-A lot of the basic functionality actually comes from the packages [space:base](https://github.com/meteor-space/base) and [space:messaging](https://github.com/meteor-space/messaging) and are documented there!
+Only the classes that `space:ui` provides are documented here. 
+A lot of the basic functionality comes from the following 
+self-documented packages:
+- [space:base](https://github.com/meteor-space/base)
+- [space:messaging](https://github.com/meteor-space/messaging)
 
-### Components
+### Space.Module additional properties
+#### controllers
 
-### Applications
+#### components
 
+### Classes
+
+#### Space.ui.Component
+
+#### Space.ui.BlazeComponent
+
+#### Space.ui.Event
+
+### Mixins
+#### Space.ui.Reactive
+
+#### Space.ui.Stateful 
+
+### Helpers
+#### Space.ui.getEventTarget
+
+#### Space.ui.defineEvents
 
 ## Run the Tests
 `meteor test-packages ./`

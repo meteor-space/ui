@@ -36,8 +36,6 @@ self-documented packages:
 
 ### Classes
 
-#### Space.ui.Component
-
 #### Space.ui.BlazeComponent
 
 #### Space.ui.Event
